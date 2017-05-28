@@ -1,0 +1,98 @@
+﻿@using Evaluaciones.Membresia
+
+@model Evaluaciones.Web.UI.Areas.Administracion.Models.Aplicacion
+
+@{
+    ViewBag.Title = "Aplicaciones";
+    Layout = "~/Views/Shared/_LayoutLogged.cshtml";
+}
+
+<div class="cl-mcont">
+    <div class="row">
+        <div class="col-md-12">
+            <div class="block-flat">
+                <div class="header">
+                    <h3>Aplicaciones</h3>
+                </div>
+                <div class="content">
+                    <table id="gridView" class="table table-bordered">
+                        <thead>
+                            <tr>
+                                <th>Nombre</th>
+                                <th>Orden</th>
+                                <th>Acciones</th>
+                            </tr>
+                        </thead>
+                        <tfoot>
+                            <tr>
+                                <th>Nombre</th>
+                                <th>Orden</th>
+                                <th>Acciones</th>
+                            </tr>
+                        </tfoot>
+                    </table>
+                </div>
+            </div>
+        </div>
+    </div>
+</div>
+
+<form id="modalForm">
+
+    @Html.AntiForgeryToken()
+
+    @Html.Hidden("aplicacionId")
+
+    <div id="form-primary" class="md-modal colored-header custom-width md-effect-9">
+        <div class="md-content">
+            <div class="modal-header">
+                <h3>Aplicación</h3>
+                <button type="button" data-dismiss="modal" aria-hidden="true" class="close md-close">×</button>
+            </div>
+            <div class="modal-body form-horizontal">
+                <div class="row">
+                    <div class="col-md-8">
+                        <div class="form-group">
+                            @Html.LabelFor(x => x.Nombre, new { @for = "nombre", @class = "col-sm-2 control-label" })
+                            <div class="col-sm-8">
+                                @Html.TextBoxFor(x => x.Nombre, new { @class = "form-control", @id = "nombre", @placeholder = "Nombre", @maxLength = "60" })
+                            </div>
+                        </div>
+                        <div class="form-group">
+                            @Html.LabelFor(x => x.Clave, new { @for = "clave", @class = "col-sm-2 control-label" })
+                            <div class="col-sm-8">
+                                @Html.TextBoxFor(x => x.Clave, new { @class = "form-control", @id = "clave", @placeholder = "Clave", @maxLength = "50" })
+                            </div>
+                        </div>
+                        <div class="form-group">
+                            @Html.LabelFor(x => x.Orden, new { @for = "orden", @class = "col-sm-2 control-label" })
+                            <div class="col-sm-8">
+                                @Html.TextBoxFor(x => x.Orden, new { @class = "form-control", @id = "orden", @placeholder = "Orden", @maxLength = "2", @onlyNumbers = true })
+                            </div>
+                        </div>
+                    </div>
+                    <div class="col-sm-4">
+                        <fieldset>
+                            <legend>Pérfil</legend>
+                            @foreach (SelectListItem perfil in Model.Perfiles)
+                            {
+                                <div class="checkbox">
+                                    <label>
+                                        <input type="checkbox" name="SelectedPerfil" value="@perfil.Value" /> @perfil.Text
+                                    </label>
+                                </div>
+                            }
+                        </fieldset>
+                    </div>
+                </div>
+                <div class="modal-footer">
+                    <button type="button" data-dismiss="modal" class="btn btn-danger btn-flat md-close">Cancelar</button>
+                    <button type="submit" data-dismiss="modal" class="btn btn-primary btn-flat">Guardar</button>
+                </div>
+            </div>
+        </div>
+    </div>
+    <div class="md-overlay"></div>
+</form>
+
+@Scripts.Render("~/js/aplicacion")

@@ -1,0 +1,17 @@
+{
+  "name": "skycons",
+  "main": "skycons.js",
+  "version": "1.0.0",
+  "homepage": "https://github.com/miguelmich/skycons",
+  "authors": [
+    "The Dark Sky Company <support@forecast.io>"
+  ],
+  "description": "Skycons is a set of ten animated weather glyphs",
+  "license": "CC0 1.0",
+  "ignore": [
+    "**/.*",
+    "node_modules",
+    ".gitignore",
+    "bower_components"
+  ]
+}

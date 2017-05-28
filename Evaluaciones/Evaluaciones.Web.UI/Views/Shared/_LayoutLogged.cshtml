@@ -1,0 +1,119 @@
+﻿@using Evaluaciones.Helpers
+
+<!DOCTYPE html>
+
+<html>
+<head>
+    <meta name="viewport" content="width=device-width" />
+    <title>Insignia Evaluaciones!</title>
+
+    @Styles.Render("~/Content/bootstrap")
+    @Styles.Render("~/Content/font-awesome")
+    @Styles.Render("~/Content/jquery.nanoscroller")
+    @Styles.Render("~/Content/jquery.gritter")
+    @Styles.Render("~/Content/bootstrap.switch")
+    @Styles.Render("~/Content/bootstrap.datetimepicker")
+    @Styles.Render("~/Content/select2")
+    @Styles.Render("~/Content/bootstrap.slider")
+    @Styles.Render("~/Content/intro")
+    @Styles.Render("~/Content/jquery.niftymodals-css")
+    @Styles.Render("~/Content/jquery.icheck-css")
+
+    @Styles.Render("~/Content/layout")
+    @Styles.Render("~/Content/style-jquery-ui")
+    @Styles.Render("~/Content/sweetalert")
+    @Styles.Render("~/Content/bootstrap.datatable")
+
+    @Styles.Render("~/Content/style")
+
+    @Scripts.Render("~/Content/js/jquery")
+    @Scripts.Render("~/Content/js/bootstrap")
+    @Scripts.Render("~/Content/js/jquery-ui")
+</head>
+<body class="body">
+
+    <div id="head-nav" class="navbar navbar-default navbar-fixed-top">
+        <div class="container-fluid">
+            <div class="navbar-header">
+                <button type="button" data-toggle="collapse" data-target=".navbar-collapse" class="navbar-toggle"><span class="fa fa-gear"></span></button><a href="#" class="navbar-brand"><span>Evaluaciones!</span></a>
+            </div>
+            <div class="navbar-collapse collapse">
+                <ul class="nav navbar-nav">
+                    <li class="active">
+                        <a href="#">Home</a>
+                    </li>
+                    <li> @Html.ActionLink("Acerca de...", "About", "Admin", new { area = "Administracion" }) </li>
+                </ul>
+                <ul class="nav navbar-nav navbar-right user-nav">
+                    <li class="dropdown profile_menu">
+                        @Html.Partial("../Header/_Index", new Evaluaciones.Web.UI.Models.Header.Header { Id = new Guid(this.User.Identity.Name) })
+                        <ul class="dropdown-menu">
+                            <li>@Html.ActionLink("Mis Datos", "MisDatos", "Admin", new { area = "Administracion" })</li>
+                            <li>@Html.ActionLink("Cambiar Contraseña", "ChangePassword", "Admin", new { area = "Administracion" })</li>
+                            <li class="divider"></li>
+                            <li>@Html.ActionLink("Cerrar Sesión", "LogOut", "Admin", new { area = "Administracion" })</li>
+                        </ul>
+                    </li>
+                </ul>
+            </div>
+        </div>
+    </div>
+    <div id="cl-wrapper" class="fixed-menu">
+        <!--Sidebar item function-->
+        <!--Sidebar sub-item function-->
+        @*<div data-position="right" data-step="1" data-intro="&lt;strong&gt;Fixed Sidebar&lt;/strong&gt; &lt;br/&gt; It adjust to your needs." class="cl-sidebar">*@
+        <div data-position="right" class="cl-sidebar">
+            <div class="cl-toggle"><i class="fa fa-bars"></i></div>
+            <div class="cl-navblock">
+                <div class="menu-space">
+                    <div class="content">
+                        @Html.Menu(new Guid(this.User.Identity.Name))
+                    </div>
+                </div>
+                <div class="search-field collapse-button">
+                    <input type="text" placeholder="Search..." class="form-control search">
+                    <button id="sidebar-collapse" class="btn btn-default">
+                        <i class="fa fa-angle-left"></i>
+                    </button>
+                </div>
+            </div>
+        </div>
+        <div id="pcont" class="container-fluid">
+            <div class="cl-mcont">
+                @RenderBody()
+            </div>
+        </div>
+    </div>
+
+    @Scripts.Render("~/Content/js/jquery.nanoscroller")
+    @Scripts.Render("~/Content/js/cleanzone")
+    @Scripts.Render("~/Content/js/voice-recognition")
+    @Scripts.Render("~/Content/js/sweetalert")
+
+    @Scripts.Render("~/Content/js/jquery.niftymodals")
+    @Scripts.Render("~/Content/js/jquery.validation")
+    @Scripts.Render("~/Content/js/jquery.gritter")
+    @Scripts.Render("~/Content/js/skycons")
+    @Scripts.Render("~/Content/js/jquery.sparkline")
+    @Scripts.Render("~/Content/js/jquery.easypiechart")
+    @Scripts.Render("~/Content/js/intro.js")
+    @Scripts.Render("~/Content/js/jquery.flot")
+    @Scripts.Render("~/Content/js/jquery.flot.pie")
+    @Scripts.Render("~/Content/js/jquery.flot.resize")
+    @Scripts.Render("~/Content/js/page-dashboard")
+    @Scripts.Render("~/Content/js/jquery.datatable")
+    @Scripts.Render("~/Content/js/dataTables.bootstrap")
+    @Scripts.Render("~/Content/js/jquery.icheck")
+
+    @Scripts.Render("~/js/Layout/layout")
+    @Scripts.Render("~/js/Layout/menu-principal")
+
+    <script type="text/javascript">
+        $(document).ready(function () {
+            //initialize the javascript
+            App.init();
+            App.dashboard();
+        });
+    </script>
+</body>
+</html>

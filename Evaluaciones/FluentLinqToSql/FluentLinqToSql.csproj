@@ -1,0 +1,121 @@
+﻿<?xml version="1.0" encoding="utf-8"?>
+<Project ToolsVersion="4.0" DefaultTargets="Build" xmlns="http://schemas.microsoft.com/developer/msbuild/2003">
+  <PropertyGroup>
+    <Configuration Condition=" '$(Configuration)' == '' ">Debug</Configuration>
+    <Platform Condition=" '$(Platform)' == '' ">AnyCPU</Platform>
+    <ProductVersion>8.0.30703</ProductVersion>
+    <SchemaVersion>2.0</SchemaVersion>
+    <ProjectGuid>{7814BE78-9A53-41F1-AF08-A845203C900A}</ProjectGuid>
+    <OutputType>Library</OutputType>
+    <AppDesignerFolder>Properties</AppDesignerFolder>
+    <RootNamespace>FluentLinqToSql</RootNamespace>
+    <AssemblyName>FluentLinqToSql</AssemblyName>
+    <TargetFrameworkVersion>v4.5</TargetFrameworkVersion>
+    <FileAlignment>512</FileAlignment>
+    <TargetFrameworkProfile />
+  </PropertyGroup>
+  <PropertyGroup Condition=" '$(Configuration)|$(Platform)' == 'Debug|AnyCPU' ">
+    <DebugSymbols>true</DebugSymbols>
+    <DebugType>full</DebugType>
+    <Optimize>false</Optimize>
+    <OutputPath>bin\Debug\</OutputPath>
+    <DefineConstants>DEBUG;TRACE</DefineConstants>
+    <ErrorReport>prompt</ErrorReport>
+    <WarningLevel>4</WarningLevel>
+    <Prefer32Bit>false</Prefer32Bit>
+  </PropertyGroup>
+  <PropertyGroup Condition=" '$(Configuration)|$(Platform)' == 'Release|AnyCPU' ">
+    <DebugType>pdbonly</DebugType>
+    <Optimize>true</Optimize>
+    <OutputPath>bin\Release\</OutputPath>
+    <DefineConstants>TRACE</DefineConstants>
+    <ErrorReport>prompt</ErrorReport>
+    <WarningLevel>4</WarningLevel>
+    <Prefer32Bit>false</Prefer32Bit>
+  </PropertyGroup>
+  <ItemGroup>
+    <Reference Include="System" />
+    <Reference Include="System.ComponentModel.DataAnnotations" />
+    <Reference Include="System.configuration" />
+    <Reference Include="System.Data" />
+    <Reference Include="System.Data.Linq" />
+    <Reference Include="System.Transactions" />
+    <Reference Include="System.Web" />
+    <Reference Include="System.XML" />
+    <Reference Include="System.Xml.Linq" />
+  </ItemGroup>
+  <ItemGroup>
+    <Compile Include="ActiveRecord\ActiveRecord.cs" />
+    <Compile Include="ActiveRecord\ActiveRecordConfiguration.cs" />
+    <Compile Include="ActiveRecord\ContextScopeBase.cs" />
+    <Compile Include="ActiveRecord\DataAnnotationsValidator.cs" />
+    <Compile Include="ActiveRecord\DefaultScopeStorage.cs" />
+    <Compile Include="ActiveRecord\Exceptions.cs" />
+    <Compile Include="ActiveRecord\IDataAccess.cs" />
+    <Compile Include="ActiveRecord\IScopeStorage.cs" />
+    <Compile Include="ActiveRecord\IValidator.cs" />
+    <Compile Include="ActiveRecord\NameValueDeserializer.cs" />
+    <Compile Include="ActiveRecord\NotMappedAttribute.cs" />
+    <Compile Include="ActiveRecord\ScopeStorageModule.cs" />
+    <Compile Include="ActiveRecord\StaticScopeStorage.cs" />
+    <Compile Include="ActiveRecord\UpdateFromExtensions.cs" />
+    <Compile Include="ActiveRecord\ValidationError.cs" />
+    <Compile Include="ActiveRecord\ValidationException.cs" />
+    <Compile Include="ActiveRecord\ValidationResult.cs" />
+    <Compile Include="ActiveRecord\WebScopeStorage.cs" />
+    <Compile Include="ConventionMappingSource.cs" />
+    <Compile Include="FluentMappingSource.cs" />
+    <Compile Include="FunctionMapping.cs" />
+    <Compile Include="Internal\BindingMatcherAttribute.cs" />
+    <Compile Include="Internal\Constants.cs" />
+    <Compile Include="Internal\Extensions.cs" />
+    <Compile Include="Internal\FunctionMappingExpressionParser.cs" />
+    <Compile Include="Internal\IHasAttributes.cs" />
+    <Compile Include="Internal\LinqElement.cs" />
+    <Compile Include="Mapping.cs" />
+    <Compile Include="MappingConventions.cs" />
+    <Compile Include="Mappings\AssociationMapping.cs" />
+    <Compile Include="Mappings\BelongsToMapping.cs" />
+    <Compile Include="Mappings\ColumnMapping.cs" />
+    <Compile Include="Mappings\ConventionMapping.cs" />
+    <Compile Include="Mappings\DiscriminatorMapping.cs" />
+    <Compile Include="Mappings\FunctionMethodMapping.cs" />
+    <Compile Include="Mappings\FunctionParameterMapping.cs" />
+    <Compile Include="Mappings\FunctionReturnTypeMapping.cs" />
+    <Compile Include="Mappings\HasManyMapping.cs" />
+    <Compile Include="Mappings\HasOneMapping.cs" />
+    <Compile Include="Mappings\IAssociationMapping.cs" />
+    <Compile Include="Mappings\IBelongsToMapping.cs" />
+    <Compile Include="Mappings\IColumnMapping.cs" />
+    <Compile Include="Mappings\IDiscriminatorMapping.cs" />
+    <Compile Include="Mappings\IElementMapping.cs" />
+    <Compile Include="Mappings\IFunctionMethodMapping.cs" />
+    <Compile Include="Mappings\IFunctionParameterMapping.cs" />
+    <Compile Include="Mappings\IHasManyMapping.cs" />
+    <Compile Include="Mappings\IHasOneMapping.cs" />
+    <Compile Include="Mappings\IMapping.cs" />
+    <Compile Include="Mappings\IPropertyMapping.cs" />
+    <Compile Include="Mappings\SubClassMapping.cs" />
+    <Compile Include="Mappings\TypeMapping.cs" />
+    <Compile Include="Modifications\ChangeUpdateCheckToNever.cs" />
+    <Compile Include="Modifications\IMappingModification.cs" />
+    <Compile Include="Modifications\MappingModification.cs" />
+    <Compile Include="Modifications\ReplacePascalCaseWithUnderscoreModification.cs" />
+    <Compile Include="Modifications\UseFieldForAssociationStorage.cs" />
+    <Compile Include="Private.cs" />
+    <Compile Include="Properties\AssemblyInfo.cs" />
+    <Compile Include="TestHelper\Fake.cs" />
+    <Compile Include="TestHelper\FakeDataAccess.cs" />
+    <Compile Include="TestHelper\FakeDataScope.cs" />
+    <Compile Include="TestHelper\MappingException.cs" />
+    <Compile Include="TestHelper\MappingTester.cs" />
+  </ItemGroup>
+  <Import Project="$(MSBuildToolsPath)\Microsoft.CSharp.targets" />
+  <!-- To modify your build process, add your task inside one of the targets below and uncomment it. 
+       Other similar extension points exist, see Microsoft.Common.targets.
+  <Target Name="BeforeBuild">
+  </Target>
+  <Target Name="AfterBuild">
+  </Target>
+  -->
+</Project>

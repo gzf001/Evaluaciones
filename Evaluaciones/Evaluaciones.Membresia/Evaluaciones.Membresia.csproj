@@ -1,0 +1,146 @@
+﻿<?xml version="1.0" encoding="utf-8"?>
+<Project ToolsVersion="15.0" xmlns="http://schemas.microsoft.com/developer/msbuild/2003">
+  <Import Project="$(MSBuildExtensionsPath)\$(MSBuildToolsVersion)\Microsoft.Common.props" Condition="Exists('$(MSBuildExtensionsPath)\$(MSBuildToolsVersion)\Microsoft.Common.props')" />
+  <PropertyGroup>
+    <Configuration Condition=" '$(Configuration)' == '' ">Debug</Configuration>
+    <Platform Condition=" '$(Platform)' == '' ">AnyCPU</Platform>
+    <ProjectGuid>{DE11D280-C753-4BD0-9CC1-77868232115A}</ProjectGuid>
+    <OutputType>Library</OutputType>
+    <AppDesignerFolder>Properties</AppDesignerFolder>
+    <RootNamespace>Evaluaciones.Membresia</RootNamespace>
+    <AssemblyName>Evaluaciones.Membresia</AssemblyName>
+    <TargetFrameworkVersion>v4.5</TargetFrameworkVersion>
+    <FileAlignment>512</FileAlignment>
+    <TargetFrameworkProfile />
+  </PropertyGroup>
+  <PropertyGroup Condition=" '$(Configuration)|$(Platform)' == 'Debug|AnyCPU' ">
+    <DebugSymbols>true</DebugSymbols>
+    <DebugType>full</DebugType>
+    <Optimize>false</Optimize>
+    <OutputPath>bin\Debug\</OutputPath>
+    <DefineConstants>DEBUG;TRACE</DefineConstants>
+    <ErrorReport>prompt</ErrorReport>
+    <WarningLevel>4</WarningLevel>
+  </PropertyGroup>
+  <PropertyGroup Condition=" '$(Configuration)|$(Platform)' == 'Release|AnyCPU' ">
+    <DebugType>pdbonly</DebugType>
+    <Optimize>true</Optimize>
+    <OutputPath>bin\Release\</OutputPath>
+    <DefineConstants>TRACE</DefineConstants>
+    <ErrorReport>prompt</ErrorReport>
+    <WarningLevel>4</WarningLevel>
+  </PropertyGroup>
+  <ItemGroup>
+    <Reference Include="Microsoft.Web.Infrastructure, Version=1.0.0.0, Culture=neutral, PublicKeyToken=31bf3856ad364e35, processorArchitecture=MSIL">
+      <HintPath>..\packages\Microsoft.Web.Infrastructure.1.0.0.0\lib\net40\Microsoft.Web.Infrastructure.dll</HintPath>
+    </Reference>
+    <Reference Include="Newtonsoft.Json, Version=10.0.0.0, Culture=neutral, PublicKeyToken=30ad4fe6b2a6aeed, processorArchitecture=MSIL">
+      <HintPath>..\packages\Newtonsoft.Json.10.0.2\lib\net45\Newtonsoft.Json.dll</HintPath>
+    </Reference>
+    <Reference Include="System" />
+    <Reference Include="System.ComponentModel.DataAnnotations" />
+    <Reference Include="System.Core" />
+    <Reference Include="System.Data.Linq" />
+    <Reference Include="System.Web" />
+    <Reference Include="System.Web.Helpers, Version=3.0.0.0, Culture=neutral, PublicKeyToken=31bf3856ad364e35, processorArchitecture=MSIL">
+      <HintPath>..\packages\Microsoft.AspNet.WebPages.3.2.3\lib\net45\System.Web.Helpers.dll</HintPath>
+    </Reference>
+    <Reference Include="System.Web.Mvc, Version=5.2.3.0, Culture=neutral, PublicKeyToken=31bf3856ad364e35, processorArchitecture=MSIL">
+      <HintPath>..\packages\Microsoft.AspNet.Mvc.5.2.3\lib\net45\System.Web.Mvc.dll</HintPath>
+    </Reference>
+    <Reference Include="System.Web.Razor, Version=3.0.0.0, Culture=neutral, PublicKeyToken=31bf3856ad364e35, processorArchitecture=MSIL">
+      <HintPath>..\packages\Microsoft.AspNet.Razor.3.2.3\lib\net45\System.Web.Razor.dll</HintPath>
+    </Reference>
+    <Reference Include="System.Web.WebPages, Version=3.0.0.0, Culture=neutral, PublicKeyToken=31bf3856ad364e35, processorArchitecture=MSIL">
+      <HintPath>..\packages\Microsoft.AspNet.WebPages.3.2.3\lib\net45\System.Web.WebPages.dll</HintPath>
+    </Reference>
+    <Reference Include="System.Web.WebPages.Deployment, Version=3.0.0.0, Culture=neutral, PublicKeyToken=31bf3856ad364e35, processorArchitecture=MSIL">
+      <HintPath>..\packages\Microsoft.AspNet.WebPages.3.2.3\lib\net45\System.Web.WebPages.Deployment.dll</HintPath>
+    </Reference>
+    <Reference Include="System.Web.WebPages.Razor, Version=3.0.0.0, Culture=neutral, PublicKeyToken=31bf3856ad364e35, processorArchitecture=MSIL">
+      <HintPath>..\packages\Microsoft.AspNet.WebPages.3.2.3\lib\net45\System.Web.WebPages.Razor.dll</HintPath>
+    </Reference>
+    <Reference Include="System.Xml.Linq" />
+    <Reference Include="System.Data.DataSetExtensions" />
+    <Reference Include="Microsoft.CSharp" />
+    <Reference Include="System.Data" />
+    <Reference Include="System.Net.Http" />
+    <Reference Include="System.Xml" />
+  </ItemGroup>
+  <ItemGroup>
+    <Compile Include="Account.cs" />
+    <Compile Include="Ambito.cs" />
+    <Compile Include="Business\Accion.cs" />
+    <Compile Include="Business\Aplicacion.cs" />
+    <Compile Include="Business\AplicacionPerfil.cs" />
+    <Compile Include="Business\Auditoria.cs" />
+    <Compile Include="Business\CentroCostoAplicacion.cs" />
+    <Compile Include="Business\EmpresaAplicacion.cs" />
+    <Compile Include="Business\Menu.cs" />
+    <Compile Include="Business\MenuItem.cs" />
+    <Compile Include="Business\MenuItemAccion.cs" />
+    <Compile Include="Business\Perfil.cs" />
+    <Compile Include="Business\PerfilUsuario.cs" />
+    <Compile Include="Business\Rol.cs" />
+    <Compile Include="Business\RolAccion.cs" />
+    <Compile Include="Business\RolPersona.cs" />
+    <Compile Include="Business\RolPersonaCentroCosto.cs" />
+    <Compile Include="Business\RolPersonaEmpresa.cs" />
+    <Compile Include="Business\Usuario.cs" />
+    <Compile Include="CentroCosto.cs" />
+    <Compile Include="ChangePasswordStatus.cs" />
+    <Compile Include="Context.cs" />
+    <Compile Include="Empresa.cs" />
+    <Compile Include="Entity\Accion.cs" />
+    <Compile Include="Entity\Aplicacion.cs" />
+    <Compile Include="Entity\AplicacionPerfil.cs" />
+    <Compile Include="Entity\Auditoria.cs" />
+    <Compile Include="Entity\CentroCostoAplicacion.cs" />
+    <Compile Include="Entity\EmpresaAplicacion.cs" />
+    <Compile Include="Entity\Menu.cs" />
+    <Compile Include="Entity\MenuItem.cs" />
+    <Compile Include="Entity\MenuItemAccion.cs" />
+    <Compile Include="Entity\Perfil.cs" />
+    <Compile Include="Entity\PerfilUsuario.cs" />
+    <Compile Include="Entity\Rol.cs" />
+    <Compile Include="Entity\RolAccion.cs" />
+    <Compile Include="Entity\RolPersona.cs" />
+    <Compile Include="Entity\RolPersonaCentroCosto.cs" />
+    <Compile Include="Entity\RolPersonaEmpresa.cs" />
+    <Compile Include="Entity\Usuario.cs" />
+    <Compile Include="LoginStatus.cs" />
+    <Compile Include="PasswordRecoveryStatus.cs" />
+    <Compile Include="PerfilType.cs" />
+    <Compile Include="Persistent\Aplicacion.cs" />
+    <Compile Include="Persistent\AplicacionPerfil.cs" />
+    <Compile Include="Persistent\Auditoria.cs" />
+    <Compile Include="Persistent\CentroCostoAplicacion.cs" />
+    <Compile Include="Persistent\EmpresaAplicacion.cs" />
+    <Compile Include="Persistent\Menu.cs" />
+    <Compile Include="Persistent\MenuItem.cs" />
+    <Compile Include="Persistent\MenuItemAccion.cs" />
+    <Compile Include="Persistent\PerfilUsuario.cs" />
+    <Compile Include="Persistent\Rol.cs" />
+    <Compile Include="Persistent\RolAccion.cs" />
+    <Compile Include="Persistent\RolPersona.cs" />
+    <Compile Include="Persistent\RolPersonaCentroCosto.cs" />
+    <Compile Include="Persistent\RolPersonaEmpresa.cs" />
+    <Compile Include="Persistent\Usuario.cs" />
+    <Compile Include="Properties\AssemblyInfo.cs" />
+    <Compile Include="Query.cs" />
+  </ItemGroup>
+  <ItemGroup>
+    <ProjectReference Include="..\Evaluaciones\Evaluaciones.csproj">
+      <Project>{a73e5c06-9117-4f3e-a5ee-514ec29133f0}</Project>
+      <Name>Evaluaciones</Name>
+    </ProjectReference>
+    <ProjectReference Include="..\FluentLinqToSql\FluentLinqToSql.csproj">
+      <Project>{7814be78-9a53-41f1-af08-a845203c900a}</Project>
+      <Name>FluentLinqToSql</Name>
+    </ProjectReference>
+  </ItemGroup>
+  <ItemGroup>
+    <None Include="packages.config" />
+  </ItemGroup>
+  <Import Project="$(MSBuildToolsPath)\Microsoft.CSharp.targets" />
+</Project>

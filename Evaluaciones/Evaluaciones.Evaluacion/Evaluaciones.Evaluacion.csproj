@@ -1,0 +1,105 @@
+﻿<?xml version="1.0" encoding="utf-8"?>
+<Project ToolsVersion="15.0" xmlns="http://schemas.microsoft.com/developer/msbuild/2003">
+  <Import Project="$(MSBuildExtensionsPath)\$(MSBuildToolsVersion)\Microsoft.Common.props" Condition="Exists('$(MSBuildExtensionsPath)\$(MSBuildToolsVersion)\Microsoft.Common.props')" />
+  <PropertyGroup>
+    <Configuration Condition=" '$(Configuration)' == '' ">Debug</Configuration>
+    <Platform Condition=" '$(Platform)' == '' ">AnyCPU</Platform>
+    <ProjectGuid>{8D3542A8-3667-42E6-ACB0-04A4D1362233}</ProjectGuid>
+    <OutputType>Library</OutputType>
+    <AppDesignerFolder>Properties</AppDesignerFolder>
+    <RootNamespace>Evaluaciones.Evaluacion</RootNamespace>
+    <AssemblyName>Evaluaciones.Evaluacion</AssemblyName>
+    <TargetFrameworkVersion>v4.5</TargetFrameworkVersion>
+    <FileAlignment>512</FileAlignment>
+    <TargetFrameworkProfile />
+  </PropertyGroup>
+  <PropertyGroup Condition=" '$(Configuration)|$(Platform)' == 'Debug|AnyCPU' ">
+    <DebugSymbols>true</DebugSymbols>
+    <DebugType>full</DebugType>
+    <Optimize>false</Optimize>
+    <OutputPath>bin\Debug\</OutputPath>
+    <DefineConstants>DEBUG;TRACE</DefineConstants>
+    <ErrorReport>prompt</ErrorReport>
+    <WarningLevel>4</WarningLevel>
+  </PropertyGroup>
+  <PropertyGroup Condition=" '$(Configuration)|$(Platform)' == 'Release|AnyCPU' ">
+    <DebugType>pdbonly</DebugType>
+    <Optimize>true</Optimize>
+    <OutputPath>bin\Release\</OutputPath>
+    <DefineConstants>TRACE</DefineConstants>
+    <ErrorReport>prompt</ErrorReport>
+    <WarningLevel>4</WarningLevel>
+  </PropertyGroup>
+  <ItemGroup>
+    <Reference Include="System" />
+    <Reference Include="System.Core" />
+    <Reference Include="System.Data.Linq" />
+    <Reference Include="System.Web" />
+    <Reference Include="System.Xml.Linq" />
+    <Reference Include="System.Data.DataSetExtensions" />
+    <Reference Include="Microsoft.CSharp" />
+    <Reference Include="System.Data" />
+    <Reference Include="System.Net.Http" />
+    <Reference Include="System.Xml" />
+  </ItemGroup>
+  <ItemGroup>
+    <Compile Include="Business\Dificultad.cs" />
+    <Compile Include="Business\Evaluacion.cs" />
+    <Compile Include="Business\EvaluacionPrueba.cs" />
+    <Compile Include="Business\Habilidad.cs" />
+    <Compile Include="Business\Pregunta.cs" />
+    <Compile Include="Business\PreguntaAlternativa.cs" />
+    <Compile Include="Business\PreguntaBaseCurricular.cs" />
+    <Compile Include="Business\PreguntaSeleccionMultiple.cs" />
+    <Compile Include="Business\PreguntaSeleccionMultipleCorrecta.cs" />
+    <Compile Include="Business\PreguntaVerdaderoFalso.cs" />
+    <Compile Include="Business\Prueba.cs" />
+    <Compile Include="Business\PruebaPregunta.cs" />
+    <Compile Include="Business\RecursosPme.cs" />
+    <Compile Include="Business\Referencia.cs" />
+    <Compile Include="Business\TipoEvaluacion.cs" />
+    <Compile Include="Business\TipoReactivo.cs" />
+    <Compile Include="Context.cs" />
+    <Compile Include="Entity\Dificultad.cs" />
+    <Compile Include="Entity\Evaluacion.cs" />
+    <Compile Include="Entity\EvaluacionPrueba.cs" />
+    <Compile Include="Entity\Habilidad.cs" />
+    <Compile Include="Entity\Pregunta.cs" />
+    <Compile Include="Entity\PreguntaAlternativa.cs" />
+    <Compile Include="Entity\PreguntaBaseCurricular.cs" />
+    <Compile Include="Entity\PreguntaSeleccionMultiple.cs" />
+    <Compile Include="Entity\PreguntaSeleccionMultipleCorrecta.cs" />
+    <Compile Include="Entity\PreguntaVerdaderoFalso.cs" />
+    <Compile Include="Entity\Prueba.cs" />
+    <Compile Include="Entity\PruebaPregunta.cs" />
+    <Compile Include="Entity\RecursosPme.cs" />
+    <Compile Include="Entity\Referencia.cs" />
+    <Compile Include="Entity\TipoEvaluacion.cs" />
+    <Compile Include="Entity\TipoReactivo.cs" />
+    <Compile Include="Persistent\Evaluacion.cs" />
+    <Compile Include="Persistent\EvaluacionPrueba.cs" />
+    <Compile Include="Persistent\Pregunta.cs" />
+    <Compile Include="Persistent\PreguntaAlternativa.cs" />
+    <Compile Include="Persistent\PreguntaBaseCurricular.cs" />
+    <Compile Include="Persistent\PreguntaSeleccionMultiple.cs" />
+    <Compile Include="Persistent\PreguntaSeleccionMultipleCorrecta.cs" />
+    <Compile Include="Persistent\PreguntaVerdaderoFalso.cs" />
+    <Compile Include="Persistent\Prueba.cs" />
+    <Compile Include="Persistent\PruebaPregunta.cs" />
+    <Compile Include="Persistent\RecursosPme.cs" />
+    <Compile Include="Persistent\Referencia.cs" />
+    <Compile Include="Properties\AssemblyInfo.cs" />
+    <Compile Include="Query.cs" />
+  </ItemGroup>
+  <ItemGroup>
+    <ProjectReference Include="..\Evaluaciones\Evaluaciones.csproj">
+      <Project>{a73e5c06-9117-4f3e-a5ee-514ec29133f0}</Project>
+      <Name>Evaluaciones</Name>
+    </ProjectReference>
+    <ProjectReference Include="..\FluentLinqToSql\FluentLinqToSql.csproj">
+      <Project>{7814be78-9a53-41f1-af08-a845203c900a}</Project>
+      <Name>FluentLinqToSql</Name>
+    </ProjectReference>
+  </ItemGroup>
+  <Import Project="$(MSBuildToolsPath)\Microsoft.CSharp.targets" />
+</Project>

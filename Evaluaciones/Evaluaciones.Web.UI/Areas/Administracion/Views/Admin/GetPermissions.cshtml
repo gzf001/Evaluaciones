@@ -1,0 +1,117 @@
+﻿@model Evaluaciones.Web.UI.Areas.Administracion.Models.RolAccion
+
+@{
+    ViewBag.Title = "GetPermissions";
+    Layout = "~/Views/Shared/_LayoutLogged.cshtml";
+}
+
+<div id="form-primary">
+    <div class="md-content">
+        <div class="modal-header">
+            <h3>Permisos</h3>
+        </div>
+        <div class="modal-body form-horizontal">
+            <div class="row">
+                <div class="form-group">
+                    @Html.LabelFor(x => x.Rol.Ambito.Nombre, new { @for = "ambitoCodigo", @class = "col-sm-2 control-label" })
+                    <div class="col-sm-8">
+                        @Html.TextBoxFor(x => x.Rol.Ambito.Nombre, new { @class = "form-control", @id = "ambitoCodigo", @disabled = "false" })
+                    </div>
+                </div>
+                <div class="form-group">
+                    @Html.LabelFor(x => x.Rol.Nombre, new { @for = "nombre", @class = "col-sm-2 control-label" })
+                    <div class="col-sm-8">
+                        @Html.TextBoxFor(x => x.Rol.Nombre, new { @class = "form-control", @id = "nombre", @placeholder = "Nombre", @maxLength = "´70" })
+                    </div>
+                </div>
+                <div class="form-group">
+                    @Html.LabelFor(x => x.Rol.Clave, new { @for = "clave", @class = "col-sm-2 control-label" })
+                    <div class="col-sm-8">
+                        @Html.TextBoxFor(x => x.Rol.Clave, new { @class = "form-control", @id = "clave", @placeholder = "Clave", @maxLength = "50" })
+                    </div>
+                </div>
+                <div class="form-group">
+                    @Html.LabelFor(x => x.AplicacionId, new { @for = "aplicacion", @class = "col-sm-2 control-label" })
+                    <div class="col-sm-8">
+                        @Html.DropDownListFor(x => x.AplicacionId, Evaluaciones.Membresia.Aplicacion.Aplicaciones, new { @id = "aplicacion", @class = "form-control" })
+                    </div>
+                </div>
+            </div>
+            <div class="modal-footer">
+                @Html.ActionLink("Cancelar", "Roles", "Admin", new { @area = "Administracion", @class = "btn btn-danger btn-flat" })
+                <button type="submit" data-dismiss="modal" class="btn btn-primary btn-flat">Guardar</button>
+            </div>
+        </div>
+    </div>
+</div>
+
+@Html.HiddenFor(x => x.RolId)
+
+<div class="cl-mcont">
+    <div class="row">
+        <div class="col-md-12">
+            <div class="block-flat">
+                <div class="content">
+                    <table id="gridView" class="table table-bordered">
+                        <thead>
+                            <tr>
+                                <th>Ítem</th>
+                                <th>Acción</th>
+                            </tr>
+                        </thead>
+                        <tfoot>
+                            <tr>
+                                <th>Ítem</th>
+                                <th>Acción</th>
+                            </tr>
+                        </tfoot>
+                    </table>
+                </div>
+            </div>
+        </div>
+    </div>
+</div>
+
+<script type="text/javascript">
+
+    $(document).ready(function () {
+
+        $(document).tooltip();
+
+        var table;
+
+        $('#aplicacion').change(function () {
+
+            if (table != null) {
+
+                table.destroy();
+
+            }
+
+            table = gridView();
+        })
+    });
+
+    function gridView() {
+
+        var table = $('#gridView').DataTable({
+
+            "ajax": "/Administracion/Admin/GetRolAccion/" + $('#RolId').val() + "/" + $('#aplicacion').val(),
+            "columns": [
+                { "data": "MenuItem" },
+                { "data": "Accion" }
+            ],
+            "order": [[0, "asc"]],
+            "columnDefs": [
+                {
+                    "targets": [1],
+                    "searchable": false,
+                    "sortable": false
+                }
+            ]
+        });
+
+        return table;
+    }
+
+</script>
