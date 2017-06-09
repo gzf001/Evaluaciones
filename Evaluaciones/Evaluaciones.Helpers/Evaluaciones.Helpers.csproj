@@ -64,7 +64,6 @@
   </ItemGroup>
   <ItemGroup>
     <Compile Include="ActionLinkExtension.cs" />
-    <Compile Include="Controller.cs" />
     <Compile Include="DropDownListExtensions.cs" />
     <Compile Include="ImageLink.cs" />
     <Compile Include="MenuExtension.cs" />
@@ -75,6 +74,10 @@
     <ProjectReference Include="..\Evaluaciones.Membresia\Evaluaciones.Membresia.csproj">
       <Project>{de11d280-c753-4bd0-9cc1-77868232115a}</Project>
       <Name>Evaluaciones.Membresia</Name>
+    </ProjectReference>
+    <ProjectReference Include="..\Evaluaciones.Web\Evaluaciones.Web.csproj">
+      <Project>{d8bf5978-ec97-40d2-9649-8a0c4401f0e2}</Project>
+      <Name>Evaluaciones.Web</Name>
     </ProjectReference>
     <ProjectReference Include="..\Evaluaciones\Evaluaciones.csproj">
       <Project>{a73e5c06-9117-4f3e-a5ee-514ec29133f0}</Project>

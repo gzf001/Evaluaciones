@@ -15,13 +15,13 @@ namespace Evaluaciones.Web.UI.Areas.Administracion.Models
             this.Acciones = new List<SelectListItem>();
         }
 
-        public string Accion
+        public string AccionNombre
         {
             get;
             set;
         }
 
-        public string MenuItem
+        public string MenuItemNombre
         {
             get;
             set;

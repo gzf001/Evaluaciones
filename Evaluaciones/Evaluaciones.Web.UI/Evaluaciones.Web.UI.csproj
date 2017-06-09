@@ -80,8 +80,14 @@
       <HintPath>..\packages\Microsoft.AspNet.WebApi.WebHost.4.0.30506.0\lib\net40\System.Web.Http.WebHost.dll</HintPath>
       <Private>True</Private>
     </Reference>
+    <Reference Include="System.Web.Mvc, Version=5.2.3.0, Culture=neutral, PublicKeyToken=31bf3856ad364e35, processorArchitecture=MSIL">
+      <HintPath>..\packages\Microsoft.AspNet.Mvc.5.2.3\lib\net45\System.Web.Mvc.dll</HintPath>
+    </Reference>
     <Reference Include="System.Web.Optimization, Version=1.1.0.0, Culture=neutral, PublicKeyToken=31bf3856ad364e35, processorArchitecture=MSIL">
       <HintPath>..\packages\Microsoft.AspNet.Web.Optimization.1.1.3\lib\net40\System.Web.Optimization.dll</HintPath>
+    </Reference>
+    <Reference Include="System.Web.Razor, Version=3.0.0.0, Culture=neutral, PublicKeyToken=31bf3856ad364e35, processorArchitecture=MSIL">
+      <HintPath>..\packages\Microsoft.AspNet.Razor.3.2.3\lib\net45\System.Web.Razor.dll</HintPath>
     </Reference>
     <Reference Include="System.Xml.Linq" />
     <Reference Include="System.Drawing" />
@@ -95,9 +101,6 @@
     </Reference>
   </ItemGroup>
   <ItemGroup>
-    <Reference Include="System.Web.Razor">
-      <HintPath>..\packages\Microsoft.AspNet.Razor.3.2.3\lib\net45\System.Web.Razor.dll</HintPath>
-    </Reference>
     <Reference Include="System.Web.Webpages">
       <HintPath>..\packages\Microsoft.AspNet.Webpages.3.2.3\lib\net45\System.Web.Webpages.dll</HintPath>
     </Reference>
@@ -109,9 +112,6 @@
     </Reference>
     <Reference Include="System.Web.Helpers">
       <HintPath>..\packages\Microsoft.AspNet.Webpages.3.2.3\lib\net45\System.Web.Helpers.dll</HintPath>
-    </Reference>
-    <Reference Include="System.Web.Mvc">
-      <HintPath>..\packages\Microsoft.AspNet.Mvc.5.2.3\lib\net45\System.Web.Mvc.dll</HintPath>
     </Reference>
   </ItemGroup>
   <ItemGroup>
@@ -982,6 +982,7 @@
     <Content Include="Content\assets\jquery.select2\select2_locale_en.js.template" />
     <Content Include="Content\assets\skycons\bower.json" />
     <Content Include="Content\assets\skycons\README.md" />
+    <Content Include="Views\Utils\View.cshtml" />
     <None Include="Web.Debug.config">
       <DependentUpon>Web.config</DependentUpon>
     </None>
@@ -991,7 +992,6 @@
   </ItemGroup>
   <ItemGroup>
     <Folder Include="App_Data\" />
-    <Folder Include="Views\Utils\" />
   </ItemGroup>
   <ItemGroup>
     <ProjectReference Include="..\Evaluaciones.Evaluacion\Evaluaciones.Evaluacion.csproj">
@@ -1005,6 +1005,10 @@
     <ProjectReference Include="..\Evaluaciones.Membresia\Evaluaciones.Membresia.csproj">
       <Project>{de11d280-c753-4bd0-9cc1-77868232115a}</Project>
       <Name>Evaluaciones.Membresia</Name>
+    </ProjectReference>
+    <ProjectReference Include="..\Evaluaciones.Web\Evaluaciones.Web.csproj">
+      <Project>{d8bf5978-ec97-40d2-9649-8a0c4401f0e2}</Project>
+      <Name>Evaluaciones.Web</Name>
     </ProjectReference>
     <ProjectReference Include="..\Evaluaciones\Evaluaciones.csproj">
       <Project>{a73e5c06-9117-4f3e-a5ee-514ec29133f0}</Project>

@@ -6,7 +6,7 @@ using System.Web.Mvc;
 
 namespace Evaluaciones.Web.UI.Controllers.Home
 {
-    public class HomeController : Evaluaciones.Helpers.Controller
+    public class HomeController : Evaluaciones.Web.Controller
     {
         [HttpGet]
         [AllowAnonymous]

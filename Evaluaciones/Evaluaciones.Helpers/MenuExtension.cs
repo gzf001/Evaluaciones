@@ -99,7 +99,7 @@ namespace Evaluaciones.Helpers
             return retorno;
         }
 
-        public static MvcHtmlString MenuOrderable(this HtmlHelper helper, Evaluaciones.Membresia.Aplicacion aplicacion)
+        public static MvcHtmlString MenuOrderable(this HtmlHelper helper, Evaluaciones.Membresia.Aplicacion aplicacion, Evaluaciones.Web.Controller controller)
         {
             if (!aplicacion.MenuItemId.HasValue)
             {
@@ -120,9 +120,11 @@ namespace Evaluaciones.Helpers
 
                 t.InnerHtml += string.Format("<div class='dd-handle'>{0}</div>", menuItem.Nombre);
 
-                t.InnerHtml += string.Format("<div>{0}{1}{2}</div>", Evaluaciones.Helpers.ActionLinkExtension.ActionLinkCrudEmbedded(menuItem.Id, menuItem.MenuItemId, TypeButton.Add), Evaluaciones.Helpers.ActionLinkExtension.ActionLinkCrudEmbedded(menuItem.Id, menuItem.MenuItemId, TypeButton.Edit), Evaluaciones.Helpers.ActionLinkExtension.ActionLinkCrudEmbedded(menuItem.Id, menuItem.MenuItemId, TypeButton.Delete));
+                t.InnerHtml += string.Format("<div>{0}{1}{2}</div>", Evaluaciones.Helpers.ActionLinkExtension.ActionLinkCrudEmbedded(menuItem.Id, menuItem.MenuItemId, TypeButton.Add, controller),
+                                                                     Evaluaciones.Helpers.ActionLinkExtension.ActionLinkCrudEmbedded(menuItem.Id, menuItem.MenuItemId, TypeButton.Edit, controller),
+                                                                     Evaluaciones.Helpers.ActionLinkExtension.ActionLinkCrudEmbedded(menuItem.Id, menuItem.MenuItemId, TypeButton.Delete, controller));
 
-                string html = MenuExtension.MenuOrderable(menuItem);
+                string html = MenuExtension.MenuOrderable(menuItem, controller);
 
                 if (string.IsNullOrEmpty(html))
                 {
@@ -143,7 +145,7 @@ namespace Evaluaciones.Helpers
             return new MvcHtmlString(t.ToString(TagRenderMode.Normal));
         }
 
-        private static string MenuOrderable(Evaluaciones.Membresia.MenuItem menuItem)
+        private static string MenuOrderable(Evaluaciones.Membresia.MenuItem menuItem, Evaluaciones.Web.Controller controller)
         {
             string retorno = string.Empty;
 
@@ -155,16 +157,19 @@ namespace Evaluaciones.Helpers
                 {
                     retorno += string.Format("<li class='dd-item' data-id='{0}'>", m.Id);
                     retorno += string.Format("<div class='dd-handle'>{0}</div>", m.Nombre);
-                    retorno += string.Format("<div>{0}{1}{2}</div>", Evaluaciones.Helpers.ActionLinkExtension.ActionLinkCrudEmbedded(m.Id, m.MenuItemId, TypeButton.Add), Evaluaciones.Helpers.ActionLinkExtension.ActionLinkCrudEmbedded(m.Id, m.MenuItemId, TypeButton.Edit), Evaluaciones.Helpers.ActionLinkExtension.ActionLinkCrudEmbedded(m.Id, m.MenuItemId, TypeButton.Delete));
+                    retorno += string.Format("<div>{0}{1}{2}</div>", Evaluaciones.Helpers.ActionLinkExtension.ActionLinkCrudEmbedded(m.Id, m.MenuItemId, TypeButton.Add, controller),
+                                                                     Evaluaciones.Helpers.ActionLinkExtension.ActionLinkCrudEmbedded(m.Id, m.MenuItemId, TypeButton.Edit, controller),
+                                                                     Evaluaciones.Helpers.ActionLinkExtension.ActionLinkCrudEmbedded(m.Id, m.MenuItemId, TypeButton.Delete, controller));
                     retorno += "<ol class='dd-list'>";
-                    retorno += MenuExtension.MenuOrderable(m);
+                    retorno += MenuExtension.MenuOrderable(m, controller);
                     retorno += "</ol></li>";
                 }
                 else
                 {
                     retorno += string.Format("<li class='dd-item' data-id='{0}'>", m.Id);
                     retorno += string.Format("<div class='dd-handle'>{0}</div>", m.Nombre);
-                    retorno += string.Format("<div>{0}{1}</div>", Evaluaciones.Helpers.ActionLinkExtension.ActionLinkCrudEmbedded(m.Id, m.MenuItemId, TypeButton.Edit), Evaluaciones.Helpers.ActionLinkExtension.ActionLinkCrudEmbedded(m.Id, m.MenuItemId, TypeButton.Delete));
+                    retorno += string.Format("<div>{0}{1}</div>", Evaluaciones.Helpers.ActionLinkExtension.ActionLinkCrudEmbedded(m.Id, m.MenuItemId, TypeButton.Edit, controller),
+                                                                  Evaluaciones.Helpers.ActionLinkExtension.ActionLinkCrudEmbedded(m.Id, m.MenuItemId, TypeButton.Delete, controller));
                     retorno += "</li>";
                 }
             }

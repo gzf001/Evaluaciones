@@ -4,14 +4,13 @@
   <PropertyGroup>
     <Configuration Condition=" '$(Configuration)' == '' ">Debug</Configuration>
     <Platform Condition=" '$(Platform)' == '' ">AnyCPU</Platform>
-    <ProjectGuid>{A73E5C06-9117-4F3E-A5EE-514EC29133F0}</ProjectGuid>
+    <ProjectGuid>{D8BF5978-EC97-40D2-9649-8A0C4401F0E2}</ProjectGuid>
     <OutputType>Library</OutputType>
     <AppDesignerFolder>Properties</AppDesignerFolder>
-    <RootNamespace>Evaluaciones</RootNamespace>
-    <AssemblyName>Evaluaciones</AssemblyName>
+    <RootNamespace>Evaluaciones.Web</RootNamespace>
+    <AssemblyName>Evaluaciones.Web</AssemblyName>
     <TargetFrameworkVersion>v4.5</TargetFrameworkVersion>
     <FileAlignment>512</FileAlignment>
-    <TargetFrameworkProfile />
   </PropertyGroup>
   <PropertyGroup Condition=" '$(Configuration)|$(Platform)' == 'Debug|AnyCPU' ">
     <DebugSymbols>true</DebugSymbols>
@@ -35,10 +34,7 @@
       <HintPath>..\packages\Microsoft.Web.Infrastructure.1.0.0.0\lib\net40\Microsoft.Web.Infrastructure.dll</HintPath>
     </Reference>
     <Reference Include="System" />
-    <Reference Include="System.ComponentModel.DataAnnotations" />
-    <Reference Include="System.configuration" />
     <Reference Include="System.Core" />
-    <Reference Include="System.Data.Linq" />
     <Reference Include="System.Web" />
     <Reference Include="System.Web.Helpers, Version=3.0.0.0, Culture=neutral, PublicKeyToken=31bf3856ad364e35, processorArchitecture=MSIL">
       <HintPath>..\packages\Microsoft.AspNet.WebPages.3.2.3\lib\net45\System.Web.Helpers.dll</HintPath>
@@ -66,69 +62,20 @@
     <Reference Include="System.Xml" />
   </ItemGroup>
   <ItemGroup>
-    <Compile Include="Business\Ambito.cs" />
-    <Compile Include="Business\Anio.cs" />
-    <Compile Include="Business\AnioMes.cs" />
-    <Compile Include="Business\AreaGeografica.cs" />
-    <Compile Include="Business\Calendario.cs" />
-    <Compile Include="Business\CentroCosto.cs" />
-    <Compile Include="Business\Ciudad.cs" />
-    <Compile Include="Business\Comuna.cs" />
-    <Compile Include="Business\Dia.cs" />
-    <Compile Include="Business\Empresa.cs" />
-    <Compile Include="Business\EstadoCivil.cs" />
-    <Compile Include="Business\Feriado.cs" />
-    <Compile Include="Business\Mes.cs" />
-    <Compile Include="Business\Nacionalidad.cs" />
-    <Compile Include="Business\NivelEducacional.cs" />
-    <Compile Include="Business\Persona.cs" />
-    <Compile Include="Business\PuebloIndigena.cs" />
-    <Compile Include="Business\Region.cs" />
-    <Compile Include="Business\Secuencia.cs" />
-    <Compile Include="Business\SecuenciaCentroCosto.cs" />
-    <Compile Include="Business\SecuenciaEmpresa.cs" />
-    <Compile Include="Business\Semana.cs" />
-    <Compile Include="Business\Sexo.cs" />
-    <Compile Include="Context.cs" />
-    <Compile Include="Entity\Ambito.cs" />
-    <Compile Include="Entity\Anio.cs" />
-    <Compile Include="Entity\AnioMes.cs" />
-    <Compile Include="Entity\AreaGeografica.cs" />
-    <Compile Include="Entity\Calendario.cs" />
-    <Compile Include="Entity\CentroCosto.cs" />
-    <Compile Include="Entity\Ciudad.cs" />
-    <Compile Include="Entity\Comuna.cs" />
-    <Compile Include="Entity\Dia.cs" />
-    <Compile Include="Entity\Empresa.cs" />
-    <Compile Include="Entity\EstadoCivil.cs" />
-    <Compile Include="Entity\Feriado.cs" />
-    <Compile Include="Entity\Mes.cs" />
-    <Compile Include="Entity\Nacionalidad.cs" />
-    <Compile Include="Entity\NivelEducacional.cs" />
-    <Compile Include="Entity\Persona.cs" />
-    <Compile Include="Entity\PuebloIndigena.cs" />
-    <Compile Include="Entity\Region.cs" />
-    <Compile Include="Entity\Secuencia.cs" />
-    <Compile Include="Entity\SecuenciaCentroCosto.cs" />
-    <Compile Include="Entity\SecuenciaEmpresa.cs" />
-    <Compile Include="Entity\Semana.cs" />
-    <Compile Include="Entity\Sexo.cs" />
-    <Compile Include="FindType.cs" />
-    <Compile Include="Helper.cs" />
-    <Compile Include="Persistent\CentroCosto.cs" />
-    <Compile Include="Persistent\Empresa.cs" />
-    <Compile Include="Persistent\Feriado.cs" />
-    <Compile Include="Persistent\Persona.cs" />
-    <Compile Include="Persistent\SecuenciaCentroCosto.cs" />
-    <Compile Include="Persistent\SecuenciaEmpresa.cs" />
+    <Compile Include="ActionType.cs" />
+    <Compile Include="Authorization.cs" />
+    <Compile Include="Controller.cs" />
+    <Compile Include="Error.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />
-    <Compile Include="Query.cs" />
-    <Compile Include="RegularExpressions.cs" />
   </ItemGroup>
   <ItemGroup>
-    <ProjectReference Include="..\FluentLinqToSql\FluentLinqToSql.csproj">
-      <Project>{7814be78-9a53-41f1-af08-a845203c900a}</Project>
-      <Name>FluentLinqToSql</Name>
+    <ProjectReference Include="..\Evaluaciones.Membresia\Evaluaciones.Membresia.csproj">
+      <Project>{de11d280-c753-4bd0-9cc1-77868232115a}</Project>
+      <Name>Evaluaciones.Membresia</Name>
+    </ProjectReference>
+    <ProjectReference Include="..\Evaluaciones\Evaluaciones.csproj">
+      <Project>{a73e5c06-9117-4f3e-a5ee-514ec29133f0}</Project>
+      <Name>Evaluaciones</Name>
     </ProjectReference>
   </ItemGroup>
   <ItemGroup>

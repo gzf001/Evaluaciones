@@ -87,15 +87,20 @@
 
     $(document).on('click', 'a[typebutton=Add]', function () {
 
-        popUp();
+        $.getJSON('/Administracion/Admin/AddAplicacion', function (data) {
 
-        $('#aplicacionId').val(generateId());
+            popUp();
 
+            $('#aplicacionId').val(data.Id);
+            $('#nombre').val(data.Nombre);
+            $('#clave').val(data.Clave);
+            $('#orden').val(data.Orden);
+        });
     });
 
     $(document).on('click', 'a[typebutton=Edit]', function () {
 
-        $.getJSON('/Administracion/Admin/GetAplicacion/' + $(this).attr('data-value'), function (data) {
+        $.getJSON('/Administracion/Admin/EditAplicacion/' + $(this).attr('data-value'), function (data) {
 
             popUp();
 

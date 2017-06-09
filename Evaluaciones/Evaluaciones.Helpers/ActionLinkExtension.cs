@@ -9,8 +9,16 @@ namespace Evaluaciones.Helpers
 {
     public static class ActionLinkExtension
     {
-        public static MvcHtmlString ActionLink(this HtmlHelper htmlHelper, string text, string action, string controller, string area, Evaluaciones.Helpers.TypeButton typeButton, object dataValue, string css, string faIcon, string toolTip)
+        public static MvcHtmlString ActionLink(this HtmlHelper htmlHelper, string text, string action, string controllerName, string area, TypeButton typeButton, object dataValue, string css = null, string faIcon = null, string toolTip = null, string onClick = null, Evaluaciones.Web.Controller controller = null)
         {
+            if (controller != null)
+            {
+                if (!Evaluaciones.Helpers.ActionLinkExtension.ValidatePermission(controller, typeButton))
+                {
+                    return new MvcHtmlString("");
+                }
+            }
+
             TagBuilder t = new TagBuilder("a");
 
             if (!string.IsNullOrEmpty(css))
@@ -26,11 +34,11 @@ namespace Evaluaciones.Helpers
             {
                 if (string.IsNullOrEmpty(area))
                 {
-                    t.MergeAttribute("href", string.Format("/{0}/{1}", controller, action));
+                    t.MergeAttribute("href", string.Format("/{0}/{1}", controllerName, action));
                 }
                 else
                 {
-                    t.MergeAttribute("href", string.Format("/{0}/{1}/{2}", area, controller, action));
+                    t.MergeAttribute("href", string.Format("/{0}/{1}/{2}", area, controllerName, action));
                 }
             }
 
@@ -76,8 +84,13 @@ namespace Evaluaciones.Helpers
             return new MvcHtmlString(t.ToString(TagRenderMode.Normal));
         }
 
-        public static MvcHtmlString ActionLinkCrudEmbedded(Guid id, Guid? parentId, Evaluaciones.Helpers.TypeButton typeButton)
+        public static MvcHtmlString ActionLinkCrudEmbedded(Guid id, Guid? parentId, TypeButton typeButton, Evaluaciones.Web.Controller controller, string faIcon = null)
         {
+            if (!Evaluaciones.Helpers.ActionLinkExtension.ValidatePermission(controller, typeButton))
+            {
+                return new MvcHtmlString("");
+            }
+
             TagBuilder t = new TagBuilder("a");
 
             t.MergeAttribute("data-value", id.ToString());
@@ -132,6 +145,47 @@ namespace Evaluaciones.Helpers
             t.MergeAttribute("typeButton", typeButton.ToString());
 
             return new MvcHtmlString(t.ToString(TagRenderMode.Normal));
+        }
+
+        private static bool ValidatePermission(Evaluaciones.Web.Controller controller, Evaluaciones.Helpers.TypeButton typeButton)
+        {
+            switch (typeButton)
+            {
+                case Evaluaciones.Helpers.TypeButton.Accept:
+                    {
+                        #region Acceder
+
+                        return Evaluaciones.Membresia.RolAccion.Exists(controller.CurrentEmpresa, controller.CurrentCentroCosto, controller.CurrentPersona, controller.CurrentMenuItem, Evaluaciones.Membresia.Accion.Aceptar);
+
+                        #endregion
+                    }
+                case Evaluaciones.Helpers.TypeButton.Add:
+                    {
+                        #region Agregar
+
+                        return Evaluaciones.Membresia.RolAccion.Exists(controller.CurrentEmpresa, controller.CurrentCentroCosto, controller.CurrentPersona, controller.CurrentMenuItem, Evaluaciones.Membresia.Accion.Agregar);
+
+                        #endregion
+                    }
+                case Evaluaciones.Helpers.TypeButton.Edit:
+                    {
+                        #region Editar
+
+                        return Evaluaciones.Membresia.RolAccion.Exists(controller.CurrentEmpresa, controller.CurrentCentroCosto, controller.CurrentPersona, controller.CurrentMenuItem, Evaluaciones.Membresia.Accion.Editar);
+
+                        #endregion
+                    }
+                case Evaluaciones.Helpers.TypeButton.Delete:
+                    {
+                        #region Eliminar
+
+                        return Evaluaciones.Membresia.RolAccion.Exists(controller.CurrentEmpresa, controller.CurrentCentroCosto, controller.CurrentPersona, controller.CurrentMenuItem, Evaluaciones.Membresia.Accion.Eliminar);
+
+                        #endregion
+                    }
+            }
+
+            return true;
         }
     }
 }

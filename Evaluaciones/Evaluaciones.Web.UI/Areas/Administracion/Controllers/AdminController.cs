@@ -6,7 +6,7 @@ using System.Web.Mvc;
 
 namespace Evaluaciones.Web.UI.Areas.Administracion.Controllers
 {
-    public class AdminController : Evaluaciones.Helpers.Controller
+    public class AdminController : Evaluaciones.Web.Controller
     {
         [Authorize]
         [HttpGet]
@@ -226,10 +226,11 @@ namespace Evaluaciones.Web.UI.Areas.Administracion.Controllers
             return this.RedirectToAction("Login", "Home", new { area = string.Empty });
         }
 
-        #region Aplicaciones
+        #region Aplicacion
 
         [Authorize]
         [HttpGet]
+        [Evaluaciones.Web.Authorization(ActionType = new Evaluaciones.Web.ActionType[] { Evaluaciones.Web.ActionType.Access }, Root = "Aplicaciones")]
         public ActionResult Aplicaciones()
         {
             Evaluaciones.Web.UI.Areas.Administracion.Models.Aplicacion model = new Evaluaciones.Web.UI.Areas.Administracion.Models.Aplicacion();
@@ -248,6 +249,7 @@ namespace Evaluaciones.Web.UI.Areas.Administracion.Controllers
 
         [Authorize]
         [HttpPost]
+        //[Evaluaciones.Web.Authorization(ActionType = new Evaluaciones.Web.ActionType[] { Evaluaciones.Web.ActionType.Accept }, Root = "Aplicaciones")]
         public ActionResult Aplicaciones(Evaluaciones.Web.UI.Areas.Administracion.Models.Aplicacion model)
         {
             if (!this.ModelState.IsValid)
@@ -278,8 +280,8 @@ namespace Evaluaciones.Web.UI.Areas.Administracion.Controllers
                     Id = model.Id,
                     MenuId = aplicacion == null ? default(Guid) : aplicacion.MenuId,
                     MenuItemId = aplicacion == null ? default(Guid) : aplicacion.MenuItemId,
-                    Nombre = model.Nombre.Trim(),
-                    Clave = model.Clave.Trim(),
+                    Nombre = model.Nombre,
+                    Clave = model.Clave,
                     Orden = model.Orden
                 }.Save(context);
 
@@ -295,12 +297,21 @@ namespace Evaluaciones.Web.UI.Areas.Administracion.Controllers
                 context.SubmitChanges();
             }
 
-            return this.Json("200 ok", JsonRequestBehavior.DenyGet);
+            return this.Json("ok 200", JsonRequestBehavior.DenyGet);
         }
 
         [Authorize]
         [HttpGet]
-        public JsonResult GetAplicacion(Guid id)
+        //[Evaluaciones.Web.Authorization(ActionType = new Evaluaciones.Web.ActionType[] { Evaluaciones.Web.ActionType.Add }, Root = "Aplicaciones")]
+        public ActionResult AddAplicacion()
+        {
+            return this.Json(new Evaluaciones.Membresia.Aplicacion(), JsonRequestBehavior.AllowGet);
+        }
+
+        [Authorize]
+        [HttpGet]
+        //[Evaluaciones.Web.Authorization(ActionType = new Evaluaciones.Web.ActionType[] { Evaluaciones.Web.ActionType.Edit }, Root = "Aplicaciones")]
+        public ActionResult EditAplicacion(Guid id)
         {
             Evaluaciones.Membresia.Aplicacion aplicacion = Evaluaciones.Membresia.Aplicacion.Get(id);
 
@@ -318,6 +329,31 @@ namespace Evaluaciones.Web.UI.Areas.Administracion.Controllers
 
         [Authorize]
         [HttpGet]
+        public JsonResult GetAplicaciones()
+        {
+            Evaluaciones.Web.UI.Areas.Administracion.Models.Aplicacion.Aplicaciones aplicaciones = new Evaluaciones.Web.UI.Areas.Administracion.Models.Aplicacion.Aplicaciones();
+
+            aplicaciones.data = new List<Evaluaciones.Web.UI.Areas.Administracion.Models.Aplicacion>();
+
+            foreach (Evaluaciones.Membresia.Aplicacion aplicacion in Evaluaciones.Membresia.Aplicacion.GetAll())
+            {
+                aplicaciones.data.Add(new Evaluaciones.Web.UI.Areas.Administracion.Models.Aplicacion
+                {
+                    Id = aplicacion.Id,
+                    Nombre = aplicacion.Nombre,
+                    Clave = aplicacion.Clave,
+                    Orden = aplicacion.Orden,
+                    Accion = string.Format("{0}{1}", Evaluaciones.Helpers.ActionLinkExtension.ActionLinkCrudEmbedded(aplicacion.Id, null, Evaluaciones.Helpers.TypeButton.Edit, this),
+                                                     Evaluaciones.Helpers.ActionLinkExtension.ActionLinkCrudEmbedded(aplicacion.Id, null, Evaluaciones.Helpers.TypeButton.Delete, this))
+                });
+            }
+
+            return this.Json(aplicaciones, JsonRequestBehavior.AllowGet);
+        }
+
+        [Authorize]
+        [HttpGet]
+        //[Evaluaciones.Web.Authorization(ActionType = new Evaluaciones.Web.ActionType[] { Evaluaciones.Web.ActionType.Delete }, Root = "Aplicaciones")]
         public JsonResult DeleteAplicacion(Guid id)
         {
             Evaluaciones.Membresia.Aplicacion aplicacion = Evaluaciones.Membresia.Aplicacion.Get(id);
@@ -340,36 +376,13 @@ namespace Evaluaciones.Web.UI.Areas.Administracion.Controllers
             return this.Json("200 ok", JsonRequestBehavior.AllowGet);
         }
 
-        [Authorize]
-        [HttpGet]
-        public JsonResult GetAplicaciones()
-        {
-            Evaluaciones.Web.UI.Areas.Administracion.Models.Aplicacion.Aplicaciones aplicaciones = new Evaluaciones.Web.UI.Areas.Administracion.Models.Aplicacion.Aplicaciones();
-
-            aplicaciones.data = new List<Evaluaciones.Web.UI.Areas.Administracion.Models.Aplicacion>();
-
-            foreach (Evaluaciones.Membresia.Aplicacion aplicacion in Evaluaciones.Membresia.Aplicacion.GetAll())
-            {
-                aplicaciones.data.Add(new Evaluaciones.Web.UI.Areas.Administracion.Models.Aplicacion
-                {
-                    Id = aplicacion.Id,
-                    Nombre = aplicacion.Nombre,
-                    Clave = aplicacion.Clave,
-                    Orden = aplicacion.Orden,
-                    Accion = string.Format("{0}{1}", Evaluaciones.Helpers.ActionLinkExtension.ActionLinkCrudEmbedded(aplicacion.Id, null, Evaluaciones.Helpers.TypeButton.Edit),
-                                                     Evaluaciones.Helpers.ActionLinkExtension.ActionLinkCrudEmbedded(aplicacion.Id, null, Evaluaciones.Helpers.TypeButton.Delete))
-                });
-            }
-
-            return this.Json(aplicaciones, JsonRequestBehavior.AllowGet);
-        }
-
         #endregion
 
         #region Ítems de menú
 
         [Authorize]
         [HttpGet]
+        [Evaluaciones.Web.Authorization(ActionType = new Evaluaciones.Web.ActionType[] { Evaluaciones.Web.ActionType.Access }, Root = "ItemsMenu")]
         public ActionResult ItemsMenu()
         {
             return this.View();
@@ -504,6 +517,7 @@ namespace Evaluaciones.Web.UI.Areas.Administracion.Controllers
 
         [Authorize]
         [HttpGet]
+        [Evaluaciones.Web.Authorization(ActionType = new Evaluaciones.Web.ActionType[] { Evaluaciones.Web.ActionType.Edit }, Root = "ItemsMenu")]
         public JsonResult GetItemMenu(Guid aplicacionId, Guid itemId)
         {
             Evaluaciones.Membresia.MenuItem menuItem = Evaluaciones.Membresia.MenuItem.Get(aplicacionId, Evaluaciones.Membresia.Menu.MenuPrincipal.Id, itemId);
@@ -525,7 +539,7 @@ namespace Evaluaciones.Web.UI.Areas.Administracion.Controllers
         {
             Evaluaciones.Membresia.Aplicacion aplicacion = Evaluaciones.Membresia.Aplicacion.Get(aplicacionId);
 
-            return this.Json(Evaluaciones.Helpers.MenuExtension.MenuOrderable(null, aplicacion).ToString(), JsonRequestBehavior.AllowGet);
+            return this.Json(Evaluaciones.Helpers.MenuExtension.MenuOrderable(null, aplicacion, this).ToString(), JsonRequestBehavior.AllowGet);
         }
 
         #endregion
@@ -586,8 +600,8 @@ namespace Evaluaciones.Web.UI.Areas.Administracion.Controllers
                     Nombre = r.Nombre,
                     Clave = r.Clave,
                     Accion = string.Format("{0}{1}{2}", Evaluaciones.Helpers.ActionLinkExtension.ActionLink(null, null, string.Format("GetPermissions?rolId={0}", r.Id), "Admin", "Administracion", Evaluaciones.Helpers.TypeButton.Accept, r.Id, "btn btn-success btn-xs btn-flat", "fa-legal", "Configurar permisos"),
-                                                        Evaluaciones.Helpers.ActionLinkExtension.ActionLinkCrudEmbedded(r.Id, null, Evaluaciones.Helpers.TypeButton.Edit),
-                                                        Evaluaciones.Helpers.ActionLinkExtension.ActionLinkCrudEmbedded(r.Id, null, Evaluaciones.Helpers.TypeButton.Delete))
+                                                        Evaluaciones.Helpers.ActionLinkExtension.ActionLinkCrudEmbedded(r.Id, null, Evaluaciones.Helpers.TypeButton.Edit, this),
+                                                        Evaluaciones.Helpers.ActionLinkExtension.ActionLinkCrudEmbedded(r.Id, null, Evaluaciones.Helpers.TypeButton.Delete, this))
                 });
             }
 
@@ -647,44 +661,111 @@ namespace Evaluaciones.Web.UI.Areas.Administracion.Controllers
             });
         }
 
-        //[Authorize]
-        [HttpGet]
-        public JsonResult GetRolAccion(Guid rolId, Guid aplicacionId)
+        [Authorize]
+        [HttpPost]
+        //[Evaluaciones.Web.Authorization(ActionType = new Evaluaciones.Web.ActionType[] { Evaluaciones.Web.ActionType.Accept }, Root = "Roles")]
+        public ActionResult GetPermissions(List<Evaluaciones.Web.UI.Areas.Administracion.Models.RolAccion> model)
         {
-            Evaluaciones.Membresia.Rol rol = Evaluaciones.Membresia.Rol.Get(rolId);
+            if (!this.ModelState.IsValid)
+            {
+                return this.View(model);
+            }
 
-            Evaluaciones.Membresia.Aplicacion aplicacion = Evaluaciones.Membresia.Aplicacion.Get(aplicacionId);
+            Evaluaciones.Membresia.Aplicacion aplicacion = Evaluaciones.Membresia.Aplicacion.Get(model.First<Evaluaciones.Web.UI.Areas.Administracion.Models.RolAccion>().AplicacionId);
 
-            List<Evaluaciones.Membresia.Accion> acciones = Evaluaciones.Membresia.Accion.GetAll();
+            Evaluaciones.Membresia.Rol rol = Evaluaciones.Membresia.Rol.Get(model.First<Evaluaciones.Web.UI.Areas.Administracion.Models.RolAccion>().RolId);
+
+            Evaluaciones.Membresia.Menu menu = Evaluaciones.Membresia.Menu.MenuPrincipal;
+
+            using (Evaluaciones.Membresia.Context context = new Evaluaciones.Membresia.Context())
+            {
+                foreach (Evaluaciones.Membresia.RolAccion rolAccion in Evaluaciones.Membresia.RolAccion.GetAll(aplicacion, rol))
+                {
+                    new Evaluaciones.Membresia.RolAccion
+                    {
+                        RolId = rolAccion.RolId,
+                        AplicacionId = rolAccion.AplicacionId,
+                        MenuId = rolAccion.MenuId,
+                        MenuItemId = rolAccion.MenuItemId,
+                        AccionCodigo = rolAccion.AccionCodigo
+                    }.Delete(context);
+                }
+
+                context.SubmitChanges();
+            }
+
+            using (Evaluaciones.Membresia.Context context = new Evaluaciones.Membresia.Context())
+            {
+                foreach (Evaluaciones.Web.UI.Areas.Administracion.Models.RolAccion rolAccion in model.Where<Evaluaciones.Web.UI.Areas.Administracion.Models.RolAccion>(x => x.AccionCodigo != default(int)))
+                {
+                    new Evaluaciones.Membresia.RolAccion
+                    {
+                        RolId = rolAccion.RolId,
+                        AplicacionId = rolAccion.AplicacionId,
+                        MenuId = menu.Id,
+                        MenuItemId = rolAccion.MenuItemId,
+                        AccionCodigo = rolAccion.AccionCodigo
+                    }.Save(context);
+                }
+
+                context.SubmitChanges();
+            }
+
+            return this.Json("200 ok", JsonRequestBehavior.DenyGet);
+        }
+
+        [Authorize]
+        [HttpGet]
+        public JsonResult GetRolAccion(Guid rolId, string aplicacionId)
+        {
+            Guid apId;
 
             Evaluaciones.Web.UI.Areas.Administracion.Models.RolAccion.RolAcciones rolAcciones = new Evaluaciones.Web.UI.Areas.Administracion.Models.RolAccion.RolAcciones();
 
-            foreach (Evaluaciones.Membresia.MenuItem menuItem in Evaluaciones.Membresia.MenuItem.GetAll(Evaluaciones.Membresia.Menu.MenuPrincipal, aplicacion))
+            if (Guid.TryParse(aplicacionId, out apId))
             {
-                Evaluaciones.Web.UI.Areas.Administracion.Models.RolAccion model = new Evaluaciones.Web.UI.Areas.Administracion.Models.RolAccion
-                {
-                    RolId = rol.Id,
-                    AplicacionId = aplicacion.Id,
-                    MenuId = menuItem.MenuId,
-                    MenuItemId = menuItem.Id,
-                    MenuItem = menuItem.Nombre
-                };
+                Evaluaciones.Membresia.Rol rol = Evaluaciones.Membresia.Rol.Get(rolId);
 
-                foreach (Evaluaciones.Membresia.Accion accion in acciones)
-                {
-                    model.Accion += string.Format("<label class='checkbox-inline'><input type='checkbox' checked='' name='Accion' class='icheck'>{0}</label>", accion.Nombre);
+                Evaluaciones.Membresia.Aplicacion aplicacion = Evaluaciones.Membresia.Aplicacion.Get(apId);
 
-                    model.Acciones.Add(new SelectListItem
+                List<Evaluaciones.Membresia.Accion> acciones = Evaluaciones.Membresia.Accion.GetAll();
+
+                foreach (Evaluaciones.Membresia.MenuItem menuItem in Evaluaciones.Membresia.MenuItem.GetAll(Evaluaciones.Membresia.Menu.MenuPrincipal, aplicacion).FindAll(x => !x.Equals(aplicacion.Inicio)))
+                {
+                    Evaluaciones.Web.UI.Areas.Administracion.Models.RolAccion model = new Evaluaciones.Web.UI.Areas.Administracion.Models.RolAccion
                     {
-                        Text = accion.Nombre,
-                        Value = accion.Codigo.ToString()
-                    });
+                        RolId = rol.Id,
+                        AplicacionId = aplicacion.Id,
+                        MenuId = menuItem.MenuId,
+                        MenuItemId = menuItem.Id,
+                        MenuItemNombre = menuItem.Nombre
+                    };
+
+                    if (!menuItem.RootNode)
+                    {
+                        foreach (Evaluaciones.Membresia.Accion accion in acciones)
+                        {
+                            bool exists = Evaluaciones.Membresia.RolAccion.Exists(rol, menuItem, accion);
+
+                            model.AccionNombre += string.Format("<label class='checkbox-inline'><input type='checkbox' {0} name='Accion' class='icheck' data-parent={1} data-value={2}>{3}</label>", exists ? "checked= '{0}'" : string.Empty, menuItem.Id, accion.Codigo, accion.Nombre);
+
+                            model.Acciones.Add(new SelectListItem
+                            {
+                                Text = accion.Nombre,
+                                Value = accion.Codigo.ToString()
+                            });
+                        }
+                    }
+
+                    rolAcciones.data.Add(model);
                 }
 
-                rolAcciones.data.Add(model);
+                return this.Json(rolAcciones, JsonRequestBehavior.AllowGet);
             }
-
-            return this.Json(rolAcciones, JsonRequestBehavior.AllowGet);
+            else
+            {
+                return this.Json(rolAcciones, JsonRequestBehavior.AllowGet);
+            }
         }
 
         #endregion

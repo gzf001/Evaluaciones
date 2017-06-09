@@ -2,7 +2,7 @@
 
 namespace Evaluaciones.Web.UI.Areas.Administracion
 {
-    public class AdministracionAreaRegistration : AreaRegistration 
+    public class AdministracionAreaRegistration : AreaRegistration
     {
         public override string AreaName
         {
@@ -33,10 +33,16 @@ namespace Evaluaciones.Web.UI.Areas.Administracion
             #region Aplicaciones
 
             context.MapRoute(
-                name: "GetAplicacion",
-                url: "Administracion/Admin/GetAplicacion",
-                defaults: new { area = "Administracion", controller = "Admin", action = "GetAplicacion" }
-            );
+               name: "GetAddAplicacion",
+               url: "Administracion/Admin/GetAplicacion",
+               defaults: new { area = "Administracion", controller = "Admin", action = "AddAplicacion" }
+           );
+
+            context.MapRoute(
+               name: "GetEditAplicacion",
+               url: "Administracion/Admin/GetAplicacion/{id}",
+               defaults: new { area = "Administracion", controller = "Admin", action = "EditAplicacion", id = "" }
+           );
 
             context.MapRoute(
                 name: "GetAplicaciones",
