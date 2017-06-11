@@ -8,6 +8,8 @@ namespace Evaluaciones.Web.UI.Areas.Administracion.Controllers
 {
     public class AdminController : Evaluaciones.Web.Controller
     {
+        const string Area = "Administracion";
+
         [Authorize]
         [HttpGet]
         public ActionResult Index()
@@ -17,162 +19,7 @@ namespace Evaluaciones.Web.UI.Areas.Administracion.Controllers
 
         [Authorize]
         [HttpGet]
-        public ActionResult MisDatos()
-        {
-            Evaluaciones.Persona persona = Evaluaciones.Persona.Get(new Guid(this.User.Identity.Name));
-
-            Evaluaciones.Web.UI.Areas.Administracion.Models.Persona model = new Evaluaciones.Web.UI.Areas.Administracion.Models.Persona
-            {
-                Id = persona.Id,
-                Run = persona.Run,
-                RunCuerpo = persona.RunCuerpo,
-                RunDigito = persona.RunDigito,
-                Nombres = persona.Nombres,
-                ApellidoPaterno = persona.ApellidoPaterno,
-                ApellidoMaterno = persona.ApellidoMaterno,
-                Email = persona.Email,
-                SexoCodigo = persona.SexoCodigo,
-                FechaNacimiento = persona.FechaNacimiento,
-                NacionalidadCodigo = persona.NacionalidadCodigo,
-                EstadoCivilCodigo = persona.EstadoCivilCodigo,
-                NivelEducacionalCodigo = persona.NivelEducacionalCodigo,
-                RegionCodigo = persona.RegionCodigo,
-                CiudadCodigo = persona.CiudadCodigo,
-                ComunaCodigo = persona.ComunaCodigo,
-                VillaPoblacion = persona.VillaPoblacion,
-                Direccion = persona.Direccion,
-                Telefono = persona.Telefono,
-                Celular = persona.Celular,
-                Observaciones = persona.Observaciones,
-                Ocupacion = persona.Ocupacion,
-                TelefonoLaboral = persona.TelefonoLaboral,
-                DireccionLaboral = persona.DireccionLaboral,
-            };
-
-            return this.View(model);
-        }
-
-        [Authorize]
-        [HttpPost]
-        [ValidateAntiForgeryToken]
-        public ActionResult MisDatos(Evaluaciones.Web.UI.Areas.Administracion.Models.Persona model)
-        {
-            if (!this.ModelState.IsValid)
-            {
-                return this.View(model);
-            }
-
-            string run = model.Run.Replace(".", string.Empty).Replace("-", string.Empty);
-
-            int runCuerpo;
-
-            if (!int.TryParse(run.Substring(0, run.Length - 1), out runCuerpo))
-            {
-                this.ModelState.AddModelError("errorRunCuerpo", "El R.U.N. es erróneo");
-
-                return this.View(model);
-            }
-
-            char runDigito = char.Parse(run.Replace(runCuerpo.ToString(), string.Empty));
-
-            if (!Evaluaciones.Helper.ValidaRun(runCuerpo, runDigito))
-            {
-                this.ModelState.AddModelError("errorRunCuerpo", "El R.U.N. es erróneo");
-
-                return this.View(model);
-            }
-
-            try
-            {
-                using (Evaluaciones.Context context = new Evaluaciones.Context())
-                {
-                    new Evaluaciones.Persona
-                    {
-                        Id = this.CurrentUsuario.Id,
-                        RunCuerpo = runCuerpo,
-                        RunDigito = runDigito,
-                        Nombres = model.Nombres,
-                        ApellidoPaterno = model.ApellidoPaterno,
-                        ApellidoMaterno = string.IsNullOrEmpty(model.ApellidoMaterno) ? default(string) : model.ApellidoMaterno.Trim(),
-                        Email = string.IsNullOrEmpty(model.Email) ? default(string) : model.Email.Trim(),
-                        SexoCodigo = model.SexoCodigo,
-                        FechaNacimiento = model.FechaNacimiento.HasValue ? model.FechaNacimiento.Value : default(DateTime),
-                        NacionalidadCodigo = model.NacionalidadCodigo.HasValue ? model.NacionalidadCodigo.Value : default(short),
-                        EstadoCivilCodigo = model.EstadoCivilCodigo.HasValue ? model.EstadoCivilCodigo.Value : default(short),
-                        NivelEducacionalCodigo = model.NivelEducacionalCodigo.HasValue ? model.NivelEducacionalCodigo.Value : default(int),
-                        RegionCodigo = model.RegionCodigo.HasValue ? model.RegionCodigo.Value : default(short),
-                        CiudadCodigo = model.CiudadCodigo.HasValue ? model.CiudadCodigo.Value : default(short),
-                        ComunaCodigo = model.ComunaCodigo.HasValue ? model.ComunaCodigo.Value : default(short),
-                        VillaPoblacion = string.IsNullOrEmpty(model.VillaPoblacion) ? default(string) : model.VillaPoblacion.Trim(),
-                        Direccion = string.IsNullOrEmpty(model.Direccion) ? default(string) : model.Direccion.Trim(),
-                        Telefono = model.Telefono.HasValue ? model.Telefono.Value : default(int),
-                        Celular = model.Celular.HasValue ? model.Celular.Value : default(int),
-                        Observaciones = string.IsNullOrEmpty(model.Observaciones) ? default(string) : model.Observaciones.Trim(),
-                        Ocupacion = string.IsNullOrEmpty(model.Ocupacion) ? default(string) : model.Ocupacion.Trim(),
-                        TelefonoLaboral = model.TelefonoLaboral.HasValue ? model.TelefonoLaboral.Value : default(int),
-                        DireccionLaboral = string.IsNullOrEmpty(model.DireccionLaboral) ? default(string) : model.DireccionLaboral.Trim(),
-                    }.Save(context);
-
-                    context.SubmitChanges();
-                }
-
-                this.ViewBag.Message = "Sus información ha sido guardada correctamente!";
-
-                return this.View(model);
-            }
-            catch (Exception ex)
-            {
-                if (ex.Message.Contains("UK_Persona_RunCuerpo"))
-                {
-                    this.ModelState.AddModelError("errorRun", "El R.U.N. ingresado se encuentra registrado para otro usuario");
-
-                    return this.View(model);
-                }
-                else
-                {
-                    this.ModelState.AddModelError("errorGeneral", ex.Message);
-
-                    return this.View(model);
-                }
-            }
-        }
-
-        [Authorize]
-        [HttpGet]
-        public ActionResult ChangePassword()
-        {
-            return this.View();
-        }
-
-        [Authorize]
-        [HttpPost]
-        [ValidateAntiForgeryToken]
-        public ActionResult ChangePassword(Evaluaciones.Web.UI.Areas.Administracion.Models.ChangePassword model)
-        {
-            if (!this.ModelState.IsValid)
-            {
-                return this.View(model);
-            }
-
-            string password = Evaluaciones.Membresia.Account.EncryptPassword(model.Password);
-
-            if (!this.CurrentUsuario.Password.Equals(password))
-            {
-                this.ModelState.AddModelError("errorPassword", "La contraseña actual no es correcta");
-
-                return this.View(model);
-            }
-
-            Evaluaciones.Membresia.Account.DoChangePassword(this.CurrentUsuario, model.Password1, model.Password2);
-
-            this.ViewBag.Message = "Sus contraseña fue cambiada correctamente!";
-
-            return this.View();
-        }
-
-        [Authorize]
-        [HttpGet]
-        public ActionResult Ciudades(string regionCodigo)
+        public JsonResult Ciudades(string regionCodigo)
         {
             Evaluaciones.Region region = Evaluaciones.Region.Get(short.Parse(regionCodigo));
 
@@ -191,7 +38,7 @@ namespace Evaluaciones.Web.UI.Areas.Administracion.Controllers
 
         [Authorize]
         [HttpGet]
-        public ActionResult Comunas(string regionCodigo, string ciudadCodigo)
+        public JsonResult Comunas(string regionCodigo, string ciudadCodigo)
         {
             Evaluaciones.Ciudad ciudad = Evaluaciones.Ciudad.Get(short.Parse(regionCodigo), short.Parse(ciudadCodigo));
 
@@ -208,29 +55,11 @@ namespace Evaluaciones.Web.UI.Areas.Administracion.Controllers
             return this.Json(defaultItem.Concat(selectList), JsonRequestBehavior.AllowGet);
         }
 
-        [Authorize]
-        [HttpGet]
-        public ActionResult About()
-        {
-            return this.View();
-        }
-
-        [Authorize]
-        [HttpGet]
-        public ActionResult LogOut()
-        {
-            System.Web.Security.FormsAuthentication.SignOut();
-
-            this.Session.Abandon();
-
-            return this.RedirectToAction("Login", "Home", new { area = string.Empty });
-        }
-
         #region Aplicacion
 
         [Authorize]
         [HttpGet]
-        [Evaluaciones.Web.Authorization(ActionType = new Evaluaciones.Web.ActionType[] { Evaluaciones.Web.ActionType.Access }, Root = "Aplicaciones")]
+        [Evaluaciones.Web.Authorization(ActionType = new Evaluaciones.Web.ActionType[] { Evaluaciones.Web.ActionType.Access }, Root = "Aplicaciones", Area = Area)]
         public ActionResult Aplicaciones()
         {
             Evaluaciones.Web.UI.Areas.Administracion.Models.Aplicacion model = new Evaluaciones.Web.UI.Areas.Administracion.Models.Aplicacion();
@@ -249,7 +78,7 @@ namespace Evaluaciones.Web.UI.Areas.Administracion.Controllers
 
         [Authorize]
         [HttpPost]
-        //[Evaluaciones.Web.Authorization(ActionType = new Evaluaciones.Web.ActionType[] { Evaluaciones.Web.ActionType.Accept }, Root = "Aplicaciones")]
+        [Evaluaciones.Web.Authorization(ActionType = new Evaluaciones.Web.ActionType[] { Evaluaciones.Web.ActionType.Accept }, Root = "Aplicaciones", Area = Area)]
         public ActionResult Aplicaciones(Evaluaciones.Web.UI.Areas.Administracion.Models.Aplicacion model)
         {
             if (!this.ModelState.IsValid)
@@ -282,6 +111,7 @@ namespace Evaluaciones.Web.UI.Areas.Administracion.Controllers
                     MenuItemId = aplicacion == null ? default(Guid) : aplicacion.MenuItemId,
                     Nombre = model.Nombre,
                     Clave = model.Clave,
+                    Fa_Icon = model.Fa_Icon,
                     Orden = model.Orden
                 }.Save(context);
 
@@ -302,7 +132,7 @@ namespace Evaluaciones.Web.UI.Areas.Administracion.Controllers
 
         [Authorize]
         [HttpGet]
-        //[Evaluaciones.Web.Authorization(ActionType = new Evaluaciones.Web.ActionType[] { Evaluaciones.Web.ActionType.Add }, Root = "Aplicaciones")]
+        [Evaluaciones.Web.Authorization(ActionType = new Evaluaciones.Web.ActionType[] { Evaluaciones.Web.ActionType.Add }, Root = "Aplicaciones", Area = Area)]
         public ActionResult AddAplicacion()
         {
             return this.Json(new Evaluaciones.Membresia.Aplicacion(), JsonRequestBehavior.AllowGet);
@@ -310,7 +140,7 @@ namespace Evaluaciones.Web.UI.Areas.Administracion.Controllers
 
         [Authorize]
         [HttpGet]
-        //[Evaluaciones.Web.Authorization(ActionType = new Evaluaciones.Web.ActionType[] { Evaluaciones.Web.ActionType.Edit }, Root = "Aplicaciones")]
+        [Evaluaciones.Web.Authorization(ActionType = new Evaluaciones.Web.ActionType[] { Evaluaciones.Web.ActionType.Edit }, Root = "Aplicaciones", Area = Area)]
         public ActionResult EditAplicacion(Guid id)
         {
             Evaluaciones.Membresia.Aplicacion aplicacion = Evaluaciones.Membresia.Aplicacion.Get(id);
@@ -322,6 +152,7 @@ namespace Evaluaciones.Web.UI.Areas.Administracion.Controllers
                 Id = aplicacion.Id,
                 Nombre = aplicacion.Nombre,
                 Clave = aplicacion.Clave,
+                Fa_Icon = aplicacion.Fa_Icon,
                 Orden = aplicacion.Orden,
                 SelectedPerfil = aplicacionPerfiles.Any() ? aplicacionPerfiles.Select<Evaluaciones.Membresia.AplicacionPerfil, int>(x => x.PerfilCodigo).ToList<int>() : null
             }, JsonRequestBehavior.AllowGet);
@@ -353,7 +184,7 @@ namespace Evaluaciones.Web.UI.Areas.Administracion.Controllers
 
         [Authorize]
         [HttpGet]
-        //[Evaluaciones.Web.Authorization(ActionType = new Evaluaciones.Web.ActionType[] { Evaluaciones.Web.ActionType.Delete }, Root = "Aplicaciones")]
+        [Evaluaciones.Web.Authorization(ActionType = new Evaluaciones.Web.ActionType[] { Evaluaciones.Web.ActionType.Delete }, Root = "Aplicaciones", Area = Area)]
         public JsonResult DeleteAplicacion(Guid id)
         {
             Evaluaciones.Membresia.Aplicacion aplicacion = Evaluaciones.Membresia.Aplicacion.Get(id);
@@ -367,6 +198,7 @@ namespace Evaluaciones.Web.UI.Areas.Administracion.Controllers
                     MenuItemId = aplicacion.MenuItemId,
                     Nombre = aplicacion.Nombre,
                     Clave = aplicacion.Clave,
+                    Fa_Icon = aplicacion.Fa_Icon,
                     Orden = aplicacion.Orden
                 }.Delete(context);
 
@@ -382,7 +214,7 @@ namespace Evaluaciones.Web.UI.Areas.Administracion.Controllers
 
         [Authorize]
         [HttpGet]
-        [Evaluaciones.Web.Authorization(ActionType = new Evaluaciones.Web.ActionType[] { Evaluaciones.Web.ActionType.Access }, Root = "ItemsMenu")]
+        [Evaluaciones.Web.Authorization(ActionType = new Evaluaciones.Web.ActionType[] { Evaluaciones.Web.ActionType.Access }, Root = "ItemsMenu", Area = Area)]
         public ActionResult ItemsMenu()
         {
             return this.View();
@@ -454,6 +286,24 @@ namespace Evaluaciones.Web.UI.Areas.Administracion.Controllers
 
         [Authorize]
         [HttpGet]
+        [Evaluaciones.Web.Authorization(ActionType = new Evaluaciones.Web.ActionType[] { Evaluaciones.Web.ActionType.Edit }, Root = "ItemsMenu", Area = Area)]
+        public JsonResult EditItemMenu(Guid aplicacionId, Guid itemId)
+        {
+            Evaluaciones.Membresia.MenuItem menuItem = Evaluaciones.Membresia.MenuItem.Get(aplicacionId, Evaluaciones.Membresia.Menu.MenuPrincipal.Id, itemId);
+
+            Evaluaciones.Web.UI.Areas.Administracion.Models.MenuItem m = new Evaluaciones.Web.UI.Areas.Administracion.Models.MenuItem
+            {
+                Nombre = menuItem.Nombre,
+                Informacion = menuItem.Informacion,
+                Url = menuItem.Url,
+                Visible = menuItem.Visible
+            };
+
+            return this.Json(m, JsonRequestBehavior.AllowGet);
+        }
+
+        [Authorize]
+        [HttpGet]
         public JsonResult DeleteItemsMenu(Guid aplicacionId, Guid itemId)
         {
             try
@@ -513,24 +363,6 @@ namespace Evaluaciones.Web.UI.Areas.Administracion.Controllers
             Evaluaciones.Membresia.MenuItem.OrderMenu(data);
 
             return this.Json("200 ok", JsonRequestBehavior.AllowGet);
-        }
-
-        [Authorize]
-        [HttpGet]
-        [Evaluaciones.Web.Authorization(ActionType = new Evaluaciones.Web.ActionType[] { Evaluaciones.Web.ActionType.Edit }, Root = "ItemsMenu")]
-        public JsonResult GetItemMenu(Guid aplicacionId, Guid itemId)
-        {
-            Evaluaciones.Membresia.MenuItem menuItem = Evaluaciones.Membresia.MenuItem.Get(aplicacionId, Evaluaciones.Membresia.Menu.MenuPrincipal.Id, itemId);
-
-            Evaluaciones.Web.UI.Areas.Administracion.Models.MenuItem m = new Evaluaciones.Web.UI.Areas.Administracion.Models.MenuItem
-            {
-                Nombre = menuItem.Nombre,
-                Informacion = menuItem.Informacion,
-                Url = menuItem.Url,
-                Visible = menuItem.Visible
-            };
-
-            return this.Json(m, JsonRequestBehavior.AllowGet);
         }
 
         [Authorize]
@@ -769,12 +601,5 @@ namespace Evaluaciones.Web.UI.Areas.Administracion.Controllers
         }
 
         #endregion
-
-        [Authorize]
-        [HttpGet]
-        public ActionResult Auditoria()
-        {
-            return this.View();
-        }
     }
 }

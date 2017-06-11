@@ -1,0 +1,165 @@
+﻿@model Evaluaciones.Web.UI.Areas.Administracion.Models.Persona
+@using Evaluaciones.Helpers
+
+@{
+    ViewBag.Title = "MisDatos";
+    Layout = "~/Views/Shared/_Layout.cshtml";
+}
+
+<div class="tray tray-center">
+    <div class="mw900 center-block center-children">
+
+        <div class="admin-form theme-primary mw800 active" id="register" role="tabpanel">
+            <div class="panel panel-primary heading-border">
+                <div class="panel-heading">
+                    <span class="panel-title">
+                        <i class="fa fa-pencil-square"></i>Mis Datos
+                    </span>
+                </div>
+
+                @using (Html.BeginForm("MisDatos", "User", new { area = "Administracion", ReturnUrl = ViewBag.ReturnUrl }, FormMethod.Post, new { @class = "form-horizontal", role = "form" }))
+                {
+                    @Html.AntiForgeryToken()
+
+                    @Html.Raw(Html.CustomValidationSummary())
+                    <div class="panel-body p25">
+                        @Html.LabelFor(x => x.Nombres, new { @for = "nombres", @class = "field-label" })
+                        <div class="section row">
+                            <div class="col-md-4">
+                                @Html.TextBoxFor(x => x.Nombres, new { @class = "gui-input", @id = "Nombres", @placeholder = "Nombres", @maxLength = "45" })
+                            </div>
+                            <div class="col-md-4">
+                                @Html.TextBoxFor(x => x.ApellidoPaterno, new { @class = "gui-input", @id = "ApellidoPaterno", @placeholder = "Apellido paterno", @maxLength = "45" })
+                            </div>
+                            <div class="col-md-4">
+                                @Html.TextBoxFor(x => x.ApellidoMaterno, new { @class = "gui-input", @id = "ApellidoMaterno", @placeholder = "Apellido materno", @maxLength = "45" })
+                            </div>
+                        </div>
+                        <div class="section row">
+                            <div class="col-md-6">
+                                @Html.LabelFor(x => x.Run, new { @for = "run", @class = "field-label" })
+                                @Html.TextBoxFor(x => x.Run, new { @class = "gui-input rut", @id = "run", @placeholder = "R.U.N.", @maxLength = "11" })
+                            </div>
+                            <div class="col-md-6">
+                                @Html.LabelFor(x => x.SexoCodigo, new { @for = "SexoCodigo", @class = "field-label" })
+                                <label for="SexoCodigo" class="field prepend-icon">
+                                    @foreach (Evaluaciones.Sexo sexo in Evaluaciones.Sexo.GetAll())
+                                    {
+                                    <label class="radio-inline mr10">
+                                        @Html.RadioButtonFor(x => x.SexoCodigo, sexo.Codigo, new { @id = "sexo" })
+                                        @sexo.Nombre
+                                    </label>
+                                    }
+                                </label>
+                            </div>
+                        </div>
+                        <div class="section row">
+                            <div class="col-md-6">
+                                @Html.LabelFor(x => x.Email, new { @for = "email", @class = "field-label" })
+                                <label for="email" class="field prepend-icon">
+                                    @Html.TextBoxFor(x => x.Email, new { @class = "gui-input", @id = "email", @placeholder = "Email", @maxLength = "70" })
+                                    <label for="email" class="field-icon">
+                                        <i class="fa fa-envelope"></i>
+                                    </label>
+                                </label>
+                            </div>
+                            <div class="col-md-6">
+                                @Html.LabelFor(x => x.FechaNacimiento, new { @for = "fechaNacimiento", @class = "field-label" })
+                                <label for="fechaNacimiento" class="field prepend-icon">
+                                    @Html.TextBoxFor(x => x.FechaNacimiento, Model.FechaNacimiento.HasValue ? Model.FechaNacimiento.Value.ToShortDateString() : string.Empty, new { @class = "gui-input hasDatePicker", @id = "fechaNacimiento", @placeholder = "Fecha de nacimiento", @maxLength = "10" })
+                                    <label class="field-icon">
+                                        <i class="fa fa-calendar-o"></i>
+                                    </label>
+                                </label>
+                            </div>
+                        </div>
+                        <div class="section row">
+                            <div class="col-md-6">
+                                @Html.LabelFor(x => x.NacionalidadCodigo, new { @for = "nacionalidad", @class = "field-label" })
+                                <label class="field select">
+                                    @Html.DropDownListFor(x => x.NacionalidadCodigo, Evaluaciones.Nacionalidad.Nacionalidades, new { @class = "", @id = "nacionalidad" })
+                                    <i class="arrow"></i>
+                                </label>
+                            </div>
+                            <div class="col-md-6">
+                                @Html.LabelFor(x => x.EstadoCivilCodigo, new { @for = "estadoCivil", @class = "field-label" })
+                                <label class="field select">
+                                    @Html.DropDownListFor(x => x.EstadoCivilCodigo, Evaluaciones.EstadoCivil.EstadosCiviles, new { @class = "", @id = "estadoCivil" })
+                                    <i class="arrow"></i>
+                                </label>
+                            </div>
+                        </div>
+                        <div class="section row">
+                            <div class="col-md-6">
+                                @Html.LabelFor(x => x.NivelEducacionalCodigo, new { @for = "nivelEducacional", @class = "field-label" })
+                                <label class="field select">
+                                    @Html.DropDownListFor(x => x.NivelEducacionalCodigo, Evaluaciones.NivelEducacional.NivelesEducacionales, new { @id = "nivelEducacional" })
+                                    <i class="arrow"></i>
+                                </label>
+                            </div>
+                            <div class="col-md-6">
+                                @Html.LabelFor(x => x.RegionCodigo, new { @for = "region", @class = "field-label" })
+                                <label class="field select">
+                                    @Html.DropDownListFor(x => x.RegionCodigo, Evaluaciones.Region.Regiones, new { @id = "region" })
+                                    <i class="arrow"></i>
+                                </label>
+                            </div>
+                        </div>
+                        <div class="section row">
+                            <div class="col-md-6">
+                                @Html.LabelFor(x => x.Direccion, new { @for = "direccion", @class = "field-label" })
+                                <label class="field textarea-grow">
+                                    @Html.TextAreaFor(x => x.Direccion, new { @class = "gui-textarea", @id = "direccion", @placeholder = "" })
+                                </label>
+                            </div>
+                            <div class="col-md-6">
+                                @Html.LabelFor(x => x.CiudadCodigo, new { @for = "ciudad", @class = "field-label" })
+                                <label class="field select">
+                                    @Html.DropDownListFor(x => x.CiudadCodigo, Model.CiudadCodigo.HasValue ? Evaluaciones.Ciudad.Ciudades(Model.RegionCodigo.Value) : Evaluaciones.Ciudad.DefaultItem, new { @id = "ciudad" })
+                                    <i class="arrow"></i>
+                                </label>
+                            </div>
+                        </div>
+                        <div class="section row">
+                            <div class="col-md-6">
+                                @Html.LabelFor(x => x.VillaPoblacion, new { @for = "villaPoblacion", @class = "field-label" })
+                                @Html.TextBoxFor(x => x.VillaPoblacion, new { @class = "gui-input", @id = "villaPoblacion", @placeholder = "Villa o población", @maxLength = "60" })
+                            </div>
+                            <div class="col-md-6">
+                                @Html.LabelFor(x => x.ComunaCodigo, new { @for = "comuna", @class = "field-label" })
+                                <label class="field select">
+                                    @Html.DropDownListFor(x => x.ComunaCodigo, Model.ComunaCodigo.HasValue ? Evaluaciones.Comuna.Comunas(Model.RegionCodigo.Value, Model.CiudadCodigo.Value) : Evaluaciones.Comuna.DefaultItem, new { @class = "", @id = "comuna" })
+                                    <i class="arrow"></i>
+                                </label>
+                            </div>
+                        </div>
+                        <div class="section row">
+                            <div class="col-md-6">
+                                @Html.LabelFor(x => x.Telefono, new { @for = "telefono", @class = "field-label" })
+                                <label for="telefono" class="field prepend-icon">
+                                    @Html.TextBoxFor(x => x.Telefono, new { @class = "gui-input", @id = "telefono", @placeholder = "Teléfono", @onlyNumbers = "true" })
+                                    <label for="telefono" class="field-icon">
+                                        <i class="fa fa-phone-square"></i>
+                                    </label>
+                                </label>
+                            </div>
+                            <div class="col-md-6">
+                                @Html.LabelFor(x => x.Celular, new { @for = "celular", @class = "field-label" })
+                                <label for="celular" class="field prepend-icon">
+                                    @Html.TextBoxFor(x => x.Celular, new { @class = "gui-input", @id = "celular", @placeholder = "Celular", @onlyNumbers = "true" })
+                                    <label for="celular" class="field-icon">
+                                        <i class="fa fa-phone-square"></i>
+                                    </label>
+                                </label>
+                            </div>
+                        </div>
+                    </div>
+                    <div class="panel-footer pull-right">
+                        @Html.ActionLink("Cancelar", "MisDatos", new { area = "Admin" }, new { @class = "button btn-dark" })
+                        <button type="submit" class="button btn-primary">Guardar</button>
+                    </div>
+                }
+            </div>
+        </div>
+    </div>
+</div>

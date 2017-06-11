@@ -1,0 +1,34 @@
+﻿@model Evaluaciones.Web.UI.Models.PartialHeader
+
+<ul class="nav navbar-nav navbar-right">
+    <li>
+        <span class="label bg-primary mr10">Unidad: @Model.Unidad</span>
+    </li>
+    <li>
+        <span class="label bg-primary mr10">Nivel: @Model.Nivel</span>
+    </li>
+
+    <li class="dropdown">
+        <a href="#" class="dropdown-toggle fw600 p15" data-toggle="dropdown">
+            <img src="/Content/images/avatars/avatar_incognito.png" alt="avatar" class="mw30 br64 mr15"> @Model.UserName
+            <span class="caret caret-tp hidden-xs"></span>
+        </a>
+        <ul class="dropdown-menu list-group dropdown-persist w250" role="menu">
+            <li class="list-group-item">
+                <a href="/Administracion/User/MisDatos" class="animated animated-short fadeInUp">
+                    <span class="fa fa-user"></span> Mis datos
+                </a>
+            </li>
+            <li class="list-group-item">
+                <a href="/Administracion/User/ChangePassword" class="animated animated-short fadeInUp">
+                    <span class="fa fa-key"></span> Cambiar Contraseña
+                </a>
+            </li>
+            <li class="dropdown-footer">
+                <a href="/Administracion/User/LogOut" class="">
+                    <span class="fa fa-power-off pr5"></span> Cerrar Sesión
+                </a>
+            </li>
+        </ul>
+    </li>
+</ul>

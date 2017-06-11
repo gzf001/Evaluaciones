@@ -7,6 +7,5 @@ namespace Evaluaciones.Web.UI.Areas.Administracion.Models
 {
     public class Persona : Evaluaciones.Persona
     {
-
     }
 }

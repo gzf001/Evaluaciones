@@ -1,0 +1,21 @@
+﻿@model Evaluaciones.Web.UI.Models.PartialSwal
+
+@if (!string.IsNullOrEmpty(@Model.Message))
+{
+    <script type="text/javascript">
+        $(function () {
+            @if (!string.IsNullOrEmpty(@Model.Title) && !string.IsNullOrEmpty(@Model.Message) && !string.IsNullOrEmpty(@Model.EventType.ToString()))
+            {
+                @Html.Raw("swal('" + Model.Title + "', '" + Model.Message + "', '" + Model.EventType.ToString() + "')");
+            }
+            else if (!string.IsNullOrEmpty(@Model.Title) && !string.IsNullOrEmpty(@Model.Message))
+            {
+                @Html.Raw("swal('" + Model.Title + "', '" + Model.Message + "')");
+            }
+            else if (!string.IsNullOrEmpty(@Model.Message))
+            {
+                @Html.Raw("swal('" + Model.Message + "')");
+            }
+       });
+    </script>
+}

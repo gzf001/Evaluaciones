@@ -1,0 +1,95 @@
+﻿@using Evaluaciones.Helpers
+
+<!DOCTYPE html>
+
+<html>
+<head>
+    <meta name="viewport" content="width=device-width" />
+    <title>NetCore Evaluaciones!</title>
+
+    @Scripts.Render("~/Content/jquery")
+    @Scripts.Render("~/Content/bootstrapJS")
+
+    @Styles.Render("~/Content/bootstrap")
+    @Styles.Render("~/Content/css/layout")
+</head>
+<body>
+    <div>
+
+        <nav class="navbar navbar-inverse navbar-fixed-top">
+            <div class="container">
+                <div class="navbar-header">
+                    <div class="row">
+                        <button type="button" class="navbar-toggle collapsed" data-toggle="collapse" data-target="#navbar" aria-expanded="false" aria-controls="navbar">
+                            <span class="sr-only"></span>
+                            <span class="icon-bar"></span>
+                            <span class="icon-bar"></span>
+                            <span class="icon-bar"></span>
+                        </button>
+                    </div>
+                    <div class="row">
+                        @Html.ActionImage("Login", "Home", "/Content/images/logo_netcore3.png")
+                    </div>
+                    <div class="row">
+                        <p class="fuenteEvaluaciones">Evaluaciones</p>
+                    </div>
+                </div>
+                @RenderBody()
+            </div>
+        </nav>
+        <div id="carousel" class="carousel slide marignSlider" data-ride="carousel">
+            <!-- Indicadores que estan bajo cada imagen-->
+            <ol class="carousel-indicators">
+                <li data-target="#carousel" data-slide-to="0" class="active"></li>
+                <li data-target="#carousel" data-slide-to="1"></li>
+                <li data-target="#carousel" data-slide-to="2"></li>
+            </ol>
+
+            <!-- Wrapper for slides -->
+            <div class="carousel-inner" role="listbox">
+                <div class="item active">
+                    <img class="imageSlider" src="~/Content/images/slide-1.jpg" alt="#">
+                    <div class="carousel-caption fontCaptionSlider">
+                        <h3>Evaluaciones</h3>
+                        <p>El proceso de evaluación es uno de los ámbitos fundamentales del quehacer docente, sobre todo por la información relevante que entrega sobre los alcances de la enseñanza y el logro de aprendizaje alcanzados por los estudiantes.</p>
+                    </div>
+                </div>
+                <div class="item">
+                    <img class="imageSlider" src="~/Content/images/slide-2.jpg" alt="#">
+                    <div class="carousel-caption fontCaptionSlider">
+                        <h3>Instrumentos</h3>
+                        <p>Con estos instrumentos se apoya a los establecimientos a realizar la aplicación anual de una evaluación inicial, una evaluación de proceso y una final, que van acompañadas de un conjunto de estrategias y procedimientos para un seguimiento sistemático.</p>
+                    </div>
+                </div>
+                <div class="item">
+                    <img class="imageSlider" src="~/Content/images/slide-3.jpg" alt="#">
+                    <div class="carousel-caption fontCaptionSlider">
+                        <h3>Resultados</h3>
+                        <p>Los resultados se entregan vía plataforma informática después de 48 horas hábiles después de recibir las hojas de respuesta. Estos consideran la tabulación de la información por establecimiento, curso, asignatura y alumno.</p>
+                    </div>
+                </div>
+            </div>
+
+            <!-- Controls -->
+            <a class="left carousel-control" href="#carousel" role="button" data-slide="prev">
+                <span class="glyphicon glyphicon-chevron-left" aria-hidden="true"></span>
+                <span class="sr-only">Anterior</span>
+            </a>
+            <a class="right carousel-control" href="#carousel" role="button" data-slide="next">
+                <span class="glyphicon glyphicon-chevron-right" aria-hidden="true"></span>
+                <span class="sr-only">Siguiente</span>
+            </a>
+        </div>
+
+        <div id="footer" class="footer">
+            <div class="container">
+                <p class="text-muted credit fontFooter">
+                    Empresas Evaluaciones Ltda, http://www.iEvaluaciones.cl, 2005 - 2017. General Holley 2363 of. 305, Providencia, Chile. Teléfono (56-2) 2378 98 84.
+                    Consultas a: soporte@netcore.cl
+                </p>
+            </div>
+        </div>
+
+    </div>
+</body>
+</html>

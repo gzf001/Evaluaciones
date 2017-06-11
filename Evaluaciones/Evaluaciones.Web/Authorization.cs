@@ -21,6 +21,12 @@ namespace Evaluaciones.Web
             set;
         }
 
+        public string Area
+        {
+            get;
+            set;
+        }
+
         public override void OnActionExecuting(ActionExecutingContext filterContext)
         {
             Evaluaciones.Persona persona = (filterContext.Controller as Evaluaciones.Web.Controller).CurrentPersona;
@@ -36,11 +42,9 @@ namespace Evaluaciones.Web
                 throw new Exception(CustomError.SinPermiso_403.ToString());
             }
 
-            string area = filterContext.Controller.ControllerContext.RouteData.Values["area"].ToString();
-
             string controller = filterContext.Controller.ControllerContext.RouteData.Values["controller"].ToString();
 
-            Evaluaciones.Membresia.MenuItem menuItem = Evaluaciones.Membresia.MenuItem.Get(string.Format("/{0}/{1}/{2}", area, controller, this.Root), false);
+            Evaluaciones.Membresia.MenuItem menuItem = Evaluaciones.Membresia.MenuItem.Get(string.Format("/{0}/{1}/{2}", this.Area, controller, this.Root), false);
 
             #region Permisos Efectivos
 

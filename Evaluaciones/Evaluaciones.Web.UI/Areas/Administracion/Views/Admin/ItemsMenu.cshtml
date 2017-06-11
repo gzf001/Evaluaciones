@@ -1,109 +1,135 @@
-﻿@using Evaluaciones.Helpers
-@using Evaluaciones.Web.UI.Helper
+﻿@model Evaluaciones.Web.UI.Areas.Administracion.Models.MenuItem
 
-@model Evaluaciones.Web.UI.Areas.Administracion.Models.MenuItem
+@using Evaluaciones.Helpers
+@using Evaluaciones.Web.UI.Helpers
 
 @{
     ViewBag.Title = "ItemsMenu";
-    Layout = "~/Views/Shared/_LayoutLogged.cshtml";
+    Layout = "~/Views/Shared/_Layout.cshtml";
 }
 
-<div class="panel panel-default panel-default-fe">
-    <div class="panel-heading panel-heading-fe">
-        <h4>Administración de ítems de menú</h4>
-    </div>
-    <div class="panel-body">
+@Styles.Render("~/Content/nestable")
+
+<div id="form" class="admin-form">
+    <div class="panel">
+        <div class="panel-heading">
+            <span class="panel-title">Administración de ítems de menú</span>
+        </div>
         <div class="form-horizontal">
-            <div class="form-group">
-                @Html.LabelFor(x => x.Aplicacion.Nombre, new { @for = "aplicacion", @class = "col-sm-4 control-label" })
-                <div class="col-sm-5">
-                    @Html.DropDownListFor(x => x.Aplicacion.Nombre, Evaluaciones.Membresia.Aplicacion.Aplicaciones, new { @id = "aplicacion", @class = "form-control" })
+            <div class="panel-body">
+                <div class="form-group">
+                    @Html.LabelFor(x => x.AplicacionId, new { @for = "aplicacion", @class = "col-md-4 control-label" })
+                    <div class="col-md-3">
+                        <div class="bs-component">
+                            @Html.DropDownListFor(x => x.AplicacionId, Evaluaciones.Membresia.Aplicacion.Aplicaciones, new { @id = "aplicacion", @class = "form-control" })
+                            <i class="arrow"></i>
+                        </div>
+                    </div>
                 </div>
-            </div>
-            <div class="form-group">
-                <div class="col-sm-offset-7 col-sm-3">
-                    <button id="cancelOrder" class="btn btn-danger">Cancelar</button>
-                    <button id="saveOrder" class="btn btn-primary">Guardar</button>
+                <div class="pull-right col-sm-7">
+                    <button type="button" id="cancelOrder" class="button btn-dark">Cancelar</button>
+                    <button id="saveOrder" class="button btn-primary">Guardar</button>
                 </div>
             </div>
         </div>
+    </div>
+    <div class="row mt5">
         <div class="col-md-6 col-md-offset-3">
             <span id="menuItems" />
         </div>
     </div>
 </div>
 
-<form id="modalForm">
+<div id="modal-form" class="popup-basic admin-form mfp-with-anim mfp-hide mw800">
+    <div class="panel">
+        <div class="panel-heading">
+            <span class="panel-title">Administración de Ítems de Menú</span>
+        </div>
+        <form id="formModal" method="post">
 
-    @Html.AntiForgeryToken()
+            @Html.AntiForgeryToken()
 
-    @Html.Hidden("aplicacionId")
-
-    <div id="form-primary" class="md-modal colored-header success md-effect-9">
-        <div class="md-content">
-            <div class="modal-header">
-                <h3>Aplicación</h3>
-                <button type="button" data-dismiss="modal" aria-hidden="true" class="close md-close">×</button>
-            </div>
-            <div class="modal-body form">
-                @Html.AntiForgeryToken()
-
-                @Html.Hidden("menuItemId")
-                @Html.Hidden("id")
-
-                <div class="col-md-7">
-                    <div class="row">
+            <div class="panel-body">
+                <div class="col-md-6">
+                    <div class="section row">
                         <div class="col-md-12">
                             <div class="form-group">
-                                @Html.LabelFor(x => x.Aplicacion.Nombre, new { @for = "nombreAplicacion", @class = "control-label" })
-                                @Html.TextBoxFor(x => x.Aplicacion.Nombre, new { @class = "form-control", @id = "nombreAplicacion", @disabled = "false" })
-                            </div>
-                            <div class="form-group">
-                                @Html.LabelFor(x => x.Nombre, new { @for = "nombre", @class = "control-label" })
-                                @Html.TextBoxFor(x => x.Nombre, new { @class = "form-control", @id = "nombre", @placeholder = "Nombre", @maxLength = "80" })
-                            </div>
-                            <div class="form-group">
-                                @Html.LabelFor(x => x.Informacion, new { @for = "informacion", @class = "control-label" })
-                                @Html.TextAreaFor(x => x.Informacion, new { @class = "form-control", @id = "informacion", @placeholder = "Información" })
-                            </div>
-                            <div class="form-group">
-                                @Html.LabelFor(x => x.Icono, new { @for = "icono", @class = "control-label" })
-                                @Html.TextBoxFor(x => x.Icono, new { @class = "form-control", @id = "icono", @placeholder = "Ícono", @maxLength = "70" })
-                            </div>
-                            <div class="form-group">
-                                @Html.LabelFor(x => x.Url, new { @for = "url", @class = "control-label" })
-                                @Html.TextBoxFor(x => x.Url, new { @class = "form-control", @id = "url", @placeholder = "URL", @maxLength = "256", @disabled = "false" })
-                            </div>
-                            <div class="form-group">
-                                <div class="checkbox">
-                                    <label>
-                                        @Html.CheckBoxFor(m => m.Visible)
-                                        @Html.LabelFor(m => m.Visible)
+                                @Html.LabelFor(x => x.NombreAplicacion, new { @for = "mombreAplicacion", @class = "field-label" })
+                                <label for="email" class="field prepend-icon">
+                                    @Html.TextBoxFor(x => x.NombreAplicacion, new { @class = "textBoxDisabled", @id = "nombreAplicacion", @disabled = false })
+                                    <label for="mombreAplicacion" class="field-icon">
+                                        <i class="fa fa-asterisk"></i>
                                     </label>
-                                </div>
+                                </label>
+                            </div>
+                            <div class="form-group">
+                                @Html.LabelFor(x => x.Nombre, new { @for = "nombre", @class = "field-label" })
+                                <label for="fechaNacimiento" class="field prepend-icon">
+                                    @Html.TextBoxFor(x => x.Nombre, new { @class = "gui-input", @id = "nombre", @placeholder = "Nombre", @maxLength = "50" })
+                                    <label class="field-icon">
+                                        <i class="fa fa-bullseye"></i>
+                                    </label>
+                                </label>
+                            </div>
+                        </div>
+                        <div class="col-md-12">
+                            <div class="form-group">
+                                @Html.LabelFor(x => x.Url, new { @for = "url", @class = "field-label" })
+                                <label for="fechaNacimiento" class="field prepend-icon">
+                                    @Html.TextBoxFor(x => x.Url, new { @class = "textBoxDisabled", @id = "url", @disabled = false })
+                                    <label class="field-icon">
+                                        <i class="fa fa-code"></i>
+                                    </label>
+                                </label>
+                            </div>
+                        </div>
+                        <div class="col-md-12">
+                            <div class="form-group">
+                                @Html.LabelFor(x => x.Informacion, new { @for = "informacion", @class = "field-label" })
+                                <label for="fechaNacimiento" class="field prepend-icon">
+                                    @Html.TextAreaFor(x => x.Informacion, new { @class = "gui-input", @id = "informacion", @placeholder = "Información" })
+                                    <label class="field-icon">
+                                        <i class="fa fa-info"></i>
+                                    </label>
+                                </label>
+                            </div>
+                            <div class="form-group">
+                                @Html.LabelFor(x => x.Icono, new { @for = "icono", @class = "field-label" })
+                                <label for="fechaNacimiento" class="field prepend-icon">
+                                    @Html.TextBoxFor(x => x.Icono, new { @class = "gui-input", @id = "icono", @placeholder = "Ícono", @maxLength = "20" })
+                                    <label class="field-icon">
+                                        <i class="fa fa-heart"></i>
+                                    </label>
+                                </label>
+                            </div>
+                        </div>
+                        <div class="col-md-12">
+                            <div class="form-group">
+                                @Html.CheckBoxFor(x => x.Visible, new { @id = "visible" })
+                                @Html.LabelFor(x => x.Visible, new { @for = "visible" })
                             </div>
                         </div>
                     </div>
                 </div>
-                <div class="col-md-5">
-                    <div class="form-group">
-                        <div id="tree" class="scrollDivMenu">
-                            <br />
-                            @Html.TreeViewMenu()
-                        </div>
+                <div class="col-md-6">
+                    <div id="tree" class="scrollDivMenu">
+                        @Html.TreeViewMenu("menuMethods")
                     </div>
-                </div>
-                <div class="modal-footer">
-                    <button type="button" data-dismiss="modal" class="btn btn-danger btn-flat md-close">Cancelar</button>
-                    <button type="submit" data-dismiss="modal" class="btn btn-primary btn-flat">Guardar</button>
                 </div>
             </div>
-        </div>
+            <div class="panel-footer">
+                <button type="button" id="cancel" class="button btn-dark">Cancelar</button>
+                <button type="submit" id="save" class="button btn-primary">Guardar</button>
+            </div>
+        </form>
     </div>
-    <div class="md-overlay"></div>
-</form>
+</div>
 
 @Html.Hidden("menuJson")
+@Html.Hidden("parentId", new { @value = this.ViewBag.ParentId })
+@Html.Hidden("id", new { @value = this.ViewBag.ParentId })
 
-@Scripts.Render("~/Content/js/jquery.nestable")
-@Scripts.Render("~/js/itemsMenu")
+@Scripts.Render("~/Content/jqueryNestable")
+@Styles.Render("~/Content/fancytree")
+@Scripts.Render("~/Content/jqueryFancyTree")
+@Scripts.Render("~/js/menuItem")

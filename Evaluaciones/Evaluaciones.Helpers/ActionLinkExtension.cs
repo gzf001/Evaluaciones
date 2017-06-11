@@ -9,11 +9,11 @@ namespace Evaluaciones.Helpers
 {
     public static class ActionLinkExtension
     {
-        public static MvcHtmlString ActionLink(this HtmlHelper htmlHelper, string text, string action, string controllerName, string area, TypeButton typeButton, object dataValue, string css = null, string faIcon = null, string toolTip = null, string onClick = null, Evaluaciones.Web.Controller controller = null)
+        public static MvcHtmlString ActionLink(this HtmlHelper htmlHelper, string text, string action, string controllerName, string area, TypeButton typeButton, object dataValue, string css = null, string faIcon = null, string toolTip = null, string onClick = null, Controller controller = null)
         {
             if (controller != null)
             {
-                if (!Evaluaciones.Helpers.ActionLinkExtension.ValidatePermission(controller, typeButton))
+                if (!Evaluaciones.Helpers.ActionLinkExtension.ValidatePermission((controller as Evaluaciones.Web.Controller), typeButton))
                 {
                     return new MvcHtmlString("");
                 }
@@ -34,7 +34,7 @@ namespace Evaluaciones.Helpers
             {
                 if (string.IsNullOrEmpty(area))
                 {
-                    t.MergeAttribute("href", string.Format("/{0}/{1}", controllerName, action));
+                    t.MergeAttribute("href", string.Format("/{0}/{1}", "", action));
                 }
                 else
                 {
@@ -59,8 +59,21 @@ namespace Evaluaciones.Helpers
 
             switch (typeButton)
             {
+                case Evaluaciones.Helpers.TypeButton.Add:
+                    {
+                        t.AddCssClass("btn btn-success btn-xs btn-flat");
+
+                        t.MergeAttribute("title", "Agregar");
+
+                        t.InnerHtml = string.Format("<i class='fa fa-plus'>{0}</i>", text);
+
+                        break;
+                    }
+
                 case Evaluaciones.Helpers.TypeButton.Edit:
                     {
+                        t.AddCssClass("btn btn-primary btn-xs btn-flat");
+
                         t.MergeAttribute("title", "Editar");
 
                         t.InnerHtml = string.Format("<i class='fa fa-pencil'>{0}</i>", text);
@@ -69,6 +82,8 @@ namespace Evaluaciones.Helpers
                     }
                 case Evaluaciones.Helpers.TypeButton.Delete:
                     {
+                        t.AddCssClass("btn btn-danger btn-xs btn-flat");
+
                         t.MergeAttribute("title", "Eliminar");
 
                         t.InnerHtml = string.Format("<i class='fa fa-times'>{0}</i>", text);
@@ -77,14 +92,17 @@ namespace Evaluaciones.Helpers
                     }
             }
 
-            t.MergeAttribute("onclick", "clickEdicion(this)");
+            if (!string.IsNullOrEmpty(onClick))
+            {
+                t.MergeAttribute("onclick", onClick.ToString());
+            }
 
             t.MergeAttribute("typeButton", typeButton.ToString());
 
             return new MvcHtmlString(t.ToString(TagRenderMode.Normal));
         }
 
-        public static MvcHtmlString ActionLinkCrudEmbedded(Guid id, Guid? parentId, TypeButton typeButton, Evaluaciones.Web.Controller controller, string faIcon = null)
+        public static MvcHtmlString ActionLinkCrudEmbedded(Guid id, Guid? parentId, Evaluaciones.Helpers.TypeButton typeButton, Evaluaciones.Web.Controller controller, string faIcon = null)
         {
             if (!Evaluaciones.Helpers.ActionLinkExtension.ValidatePermission(controller, typeButton))
             {
@@ -100,11 +118,16 @@ namespace Evaluaciones.Helpers
                 t.MergeAttribute("data-parent", parentId.Value.ToString());
             }
 
+            if (!string.IsNullOrEmpty(faIcon))
+            {
+                t.InnerHtml = string.Format("<i class='{0}'></i>", faIcon);
+            }
+
             switch (typeButton)
             {
                 case Evaluaciones.Helpers.TypeButton.Add:
                     {
-                        t.AddCssClass("btn btn-success btn-xs btn-flat md-trigger");
+                        t.AddCssClass("btn btn-success btn-xs btn-flat actionLinkCrudEmbedded");
 
                         t.MergeAttribute("data-modal", "form-primary");
 
@@ -112,13 +135,16 @@ namespace Evaluaciones.Helpers
 
                         t.MergeAttribute("title", "Agregar");
 
-                        t.InnerHtml = "<i class='fa fa-plus'></i>";
+                        if (string.IsNullOrEmpty(faIcon))
+                        {
+                            t.InnerHtml = "<i class='fa fa-plus'></i>";
+                        }
 
                         break;
                     }
                 case Evaluaciones.Helpers.TypeButton.Edit:
                     {
-                        t.AddCssClass("btn btn-primary btn-xs btn-flat md-trigger");
+                        t.AddCssClass("btn btn-primary btn-xs btn-flat actionLinkCrudEmbedded");
 
                         t.MergeAttribute("data-modal", "form-primary");
 
@@ -126,17 +152,23 @@ namespace Evaluaciones.Helpers
 
                         t.MergeAttribute("title", "Editar");
 
-                        t.InnerHtml = "<i class='fa fa-pencil'></i>";
+                        if (string.IsNullOrEmpty(faIcon))
+                        {
+                            t.InnerHtml = "<i class='fa fa-pencil'></i>";
+                        }
 
                         break;
                     }
                 case Evaluaciones.Helpers.TypeButton.Delete:
                     {
-                        t.AddCssClass("btn btn-danger btn-xs");
+                        t.AddCssClass("btn btn-danger btn-xs actionLinkCrudEmbedded");
 
                         t.MergeAttribute("title", "Eliminar");
 
-                        t.InnerHtml = "<i class='fa fa-times'></i>";
+                        if (string.IsNullOrEmpty(faIcon))
+                        {
+                            t.InnerHtml = "<i class='fa fa-times'></i>";
+                        }
 
                         break;
                     }

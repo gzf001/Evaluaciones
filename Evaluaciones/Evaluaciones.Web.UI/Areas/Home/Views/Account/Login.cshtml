@@ -1,0 +1,43 @@
+﻿@model Evaluaciones.Web.UI.Areas.Home.Models.Login
+
+@{
+    ViewBag.Title = "Login";
+    Layout = "~/Areas/Home/Views/Shared/_Layout.cshtml";
+}
+
+<div id="navbar" class="navbar-collapse collapse">
+    @using (Html.BeginForm("Login", "Account", new { @rea = "Home", ReturnUrl = ViewBag.ReturnUrl }, FormMethod.Post, new { @class = "navbar-form navbar-right loginVerticalMiddleAling", role = "form" }))
+    {
+        @Html.AntiForgeryToken()
+
+        <div class="row">
+            <div class="form-group">
+                @Html.TextBoxFor(x => x.Run, new { @id = "run", @placeholder = "R.U.N.", @class = "form-control" })
+            </div>
+            <div class="form-group">
+                @Html.PasswordFor(x => x.Password, new { @placeholder = "Password", @class = "form-control" })
+            </div>
+            <div class="form-group">
+                <button type="submit" class="btn btn-success">Iniciar sesión</button>
+            </div>
+        </div>
+        <div class="row">
+            <div class="form-group">
+                <div class="checkbox rememberMe">
+                    <label>
+                        @Html.CheckBoxFor(m => m.RememberMe)
+                        @Html.LabelFor(m => m.RememberMe)
+                    </label>
+                </div>
+            </div>
+            <div class="form-group fontForgotPassword">
+                @Html.ActionLink("¿olvido su password?", "RecoveryPass", "Account", new { @area = "Home" })
+            </div>
+        </div>
+        <div class="row">
+            <div class="form-group text-danger">
+                @Html.ValidationSummary()
+            </div>
+        </div>
+    }
+</div>

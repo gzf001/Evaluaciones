@@ -10,61 +10,176 @@ namespace Evaluaciones.Web.UI.App_Start
     {
         public static void RegisterBundles(BundleCollection bundles)
         {
-            //JS
-            bundles.Add(new ScriptBundle("~/Content/js/jquery").Include("~/Content/js/jquery-3.1.1.js"));
-            bundles.Add(new ScriptBundle("~/Content/js/bootstrap").Include("~/Content/assets/bootstrap/js/bootstrap.js"));
-            bundles.Add(new ScriptBundle("~/Content/js/rut").Include("~/Content/js/jquery.Rut.js"));
-
-            bundles.Add(new ScriptBundle("~/Content/js/jquery.nanoscroller").Include("~/Content/assets/jquery.nanoscroller/javascripts/jquery.nanoscroller.js"));
-            bundles.Add(new ScriptBundle("~/Content/js/cleanzone").Include("~/Content/js/cleanzone.js"));
-            bundles.Add(new ScriptBundle("~/Content/js/voice-recognition").Include("~/Content/js/voice-recognition.js"));
-            bundles.Add(new ScriptBundle("~/Content/js/jquery.gritter").Include("~/Content/assets/jquery.gritter/js/jquery.gritter.js"));
-            bundles.Add(new ScriptBundle("~/Content/js/skycons").Include("~/Content/assets/skycons/skycons.js"));
-            bundles.Add(new ScriptBundle("~/Content/js/jquery.sparkline").Include("~/Content/assets/jquery.sparkline/jquery.sparkline.min.js"));
-            bundles.Add(new ScriptBundle("~/Content/js/jquery.easypiechart").Include("~/Content/assets/jquery.easypiechart/jquery.easypiechart.js"));
-            bundles.Add(new ScriptBundle("~/Content/js/intro.js").Include("~/Content/assets/intro.js/intro.js"));
-            bundles.Add(new ScriptBundle("~/Content/js/jquery.flot").Include("~/Content/assets/jquery.flot/jquery.flot.js"));
-            bundles.Add(new ScriptBundle("~/Content/js/jquery.flot.pie").Include("~/Content/assets/jquery.flot/jquery.flot.pie.js"));
-            bundles.Add(new ScriptBundle("~/Content/js/jquery.flot.resize").Include("~/Content/assets/jquery.flot/jquery.flot.resize.js"));
-            bundles.Add(new ScriptBundle("~/Content/js/jquery-ui").Include("~/Content/js/jquery-ui.min.js"));
-            bundles.Add(new ScriptBundle("~/Content/js/page-dashboard").Include("~/Content/js/page-dashboard.js"));
-            bundles.Add(new ScriptBundle("~/Content/js/sweetalert").Include("~/Content/assets/bootstrap.sweetalert/sweetalert.min.js"));
-            bundles.Add(new ScriptBundle("~/Content/js/jquery.datatable").Include("~/Content/assets/jquery.datatable/js/jquery.dataTables.min.js"));
-            bundles.Add(new ScriptBundle("~/Content/js/dataTables.bootstrap").Include("~/Content/assets/jquery.datatable/plugins/bootstrap/3/dataTables.bootstrap.min.js"));
-            bundles.Add(new ScriptBundle("~/Content/js/magnificPopUpJS").Include("~/Content/assets/magnific/jquery.magnific-popup.min.js"));
-            bundles.Add(new ScriptBundle("~/Content/js/jquery.niftymodals").Include("~/Content/assets/jquery.niftymodals/js/jquery.modalEffects.js"));
-            bundles.Add(new ScriptBundle("~/Content/js/jquery.validation").Include("~/Content/assets/jquery.validate/jquery.validate.min.js"));
-            bundles.Add(new ScriptBundle("~/Content/js/jquery.nestable").Include("~/Content/assets/jquery.nestable/jquery.nestable.js"));
-            bundles.Add(new ScriptBundle("~/Content/js/jquery.icheck").Include("~/Content/assets/jquery.icheck/icheck.min.js"));
-
-            bundles.Add(new ScriptBundle("~/js/Layout/layout").Include("~/js/Layout/layOut.js"));
-            bundles.Add(new ScriptBundle("~/js/Layout/menu-principal").Include("~/js/Layout/menu-principal.js"));
-
-            #region Administración
-
-            bundles.Add(new ScriptBundle("~/js/aplicacion").Include("~/js/Administracion/aplicacion.js"));
-            bundles.Add(new ScriptBundle("~/js/itemsMenu").Include("~/js/Administracion/itemsMenu.js"));
-
-            #endregion
+            #region Css
 
             //CSS
-            bundles.Add(new StyleBundle("~/Content/layout").Include("~/Content/assets/css/layout.css"));
-            bundles.Add(new StyleBundle("~/Content/bootstrap").Include("~/Content/assets/bootstrap/css/bootstrap.css"));
+            StyleBundle theme = new StyleBundle("~/Content/theme/assets");
 
-            bundles.Add(new StyleBundle("~/Content/style-jquery-ui").Include("~/Content/assets/jquery-ui/jquery-ui.min.css"));
-            bundles.Add(new StyleBundle("~/Content/font-awesome").Include("~/Content/assets/font-awesome/css/font-awesome.min.css"));
-            bundles.Add(new StyleBundle("~/Content/jquery.nanoscroller").Include("~/Content/assets/jquery.nanoscroller/css/nanoscroller.css"));
-            bundles.Add(new StyleBundle("~/Content/jquery.gritter").Include("~/Content/assets/jquery.gritter/css/jquery.gritter.css"));
-            bundles.Add(new StyleBundle("~/Content/bootstrap.switch").Include("~/Content/assets/bootstrap.switch/css/bootstrap3/bootstrap-switch.css"));
-            bundles.Add(new StyleBundle("~/Content/bootstrap.datetimepicker").Include("~/Content/assets/bootstrap.datetimepicker/css/bootstrap-datetimepicker.min.css"));
-            bundles.Add(new StyleBundle("~/Content/select2").Include("~/Content/assets/jquery.select2/select2.css"));
-            bundles.Add(new StyleBundle("~/Content/bootstrap.slider").Include("~/Content/assets/bootstrap.slider/css/bootstrap-slider.css"));
-            bundles.Add(new StyleBundle("~/Content/intro").Include("~/Content/assets/intro.js/introjs.css"));
-            bundles.Add(new StyleBundle("~/Content/style").Include("~/Content/assets/css/style.css"));
-            bundles.Add(new StyleBundle("~/Content/sweetalert").Include("~/Content/assets/bootstrap.sweetalert/sweetalert.css"));
-            bundles.Add(new StyleBundle("~/Content/bootstrap.datatable").Include("~/Content/assets/jquery.datatable/plugins/bootstrap/3/dataTables.bootstrap.css"));
-            bundles.Add(new StyleBundle("~/Content/jquery.niftymodals-css").Include("~/Content/assets/jquery.niftymodals/css/component.css"));
-            bundles.Add(new StyleBundle("~/Content/jquery.icheck-css").Include("~/Content/assets/jquery.icheck/skins/square/blue.css"));
+            StyleBundle bootstrap = new StyleBundle("~/Content/bootstrap");
+
+            StyleBundle adminTools = new StyleBundle("~/Content/assets/admin-tools");
+
+            StyleBundle sweetalert = new StyleBundle("~/Content/sweetalert");
+
+            StyleBundle layoutLogin = new StyleBundle("~/Content/css/layout");
+
+            StyleBundle dataTables_bootstrap = new StyleBundle("~/Content/css/dataTables_bootstrap");
+
+            StyleBundle dataTables_plugins = new StyleBundle("~/Content/css/dataTables_plugins");
+
+            StyleBundle glyphicons = new StyleBundle("~/Content/glyphicons-pro");
+
+            StyleBundle iconsweets2 = new StyleBundle("~/Content/iconsweets2");
+
+            StyleBundle toolTip = new StyleBundle("~/Content/tooltips");
+
+            StyleBundle magnific_popup = new StyleBundle("~/Content/magnific_popup");
+
+            StyleBundle nestable = new StyleBundle("~/Content/nestable");
+
+            StyleBundle fancytree = new StyleBundle("~/Content/fancytree");
+
+            bundles.Add(bootstrap.Include("~/Content/bootstrap/css/bootstrap.min.css"));
+
+            bundles.Add(theme.Include("~/Content/theme/assets/skin/default_skin/css/theme.min.css"));
+
+            bundles.Add(adminTools.Include("~/Content/theme/assets/admin-tools/admin-forms/css/admin-forms.min.css"));
+
+            bundles.Add(sweetalert.Include("~/Content/js/bootstrap.sweetalert/sweetalert.css"));
+
+            bundles.Add(layoutLogin.Include("~/Content/css/layout.css"));
+
+            bundles.Add(dataTables_bootstrap.Include("~/Content/theme/vendor/plugins/datatables/media/css/dataTables.bootstrap.css"));
+
+            bundles.Add(dataTables_plugins.Include("~/Content/theme/vendor/plugins/datatables/media/css/dataTables.plugins.css"));
+
+            bundles.Add(glyphicons.Include("~/Content/theme/assets/fonts/glyphicons-pro/glyphicons-pro.css"));
+
+            bundles.Add(iconsweets2.Include("~/Content/theme/assets/fonts/iconsweets/iconsweets.css"));
+
+            bundles.Add(toolTip.Include("~/Content/js/tooltipster-master/css/tooltipster.bundle.min.css"));
+
+            bundles.Add(magnific_popup.Include("~/Content/theme/vendor/plugins/magnific/magnific-popup.css"));
+
+            bundles.Add(nestable.Include("~/Content/theme/vendor/plugins/nestable/nestable.css"));
+
+            bundles.Add(fancytree.Include("~/Content/theme/vendor/plugins/fancytree/skin-win8/ui.fancytree.min.css"));
+            
+            #endregion
+
+            #region JS
+
+            //JS Vendor
+            ScriptBundle jquery = new ScriptBundle("~/Content/jquery");
+
+            ScriptBundle jqueryUI = new ScriptBundle("~/Content/jquery_ui");
+
+            ScriptBundle bootstrapJS = new ScriptBundle("~/Content/bootstrapJS");
+
+            ScriptBundle utility = new ScriptBundle("~/Content/theme/utility");
+
+            ScriptBundle demo = new ScriptBundle("~/Content/theme/demo");
+
+            ScriptBundle main = new ScriptBundle("~/Content/theme/main");
+
+            ScriptBundle sweetalertJS = new ScriptBundle("~/Content/sweetalertJS");
+
+            ScriptBundle layoutJS = new ScriptBundle("~/Content/layoutJS");
+
+            ScriptBundle monthpicker = new ScriptBundle("~/Content/monthpicker");
+
+            ScriptBundle timepicker = new ScriptBundle("~/Content/timepicker");
+
+            ScriptBundle spectrum = new ScriptBundle("~/Content/spectrum");
+
+            //Debe ser implmentado directamente en la página que lo requiera
+            ScriptBundle steps = new ScriptBundle("~/Content/steps");
+
+            ScriptBundle masks = new ScriptBundle("~/Content/Masks");
+
+            ScriptBundle dataTables = new ScriptBundle("~/Content/dataTables");
+
+            ScriptBundle tableTools = new ScriptBundle("~/Content/dataTables.tableTools");
+
+            ScriptBundle colReorder = new ScriptBundle("~/Content/dataTables.colReorder");
+
+            ScriptBundle dataTables_bootstrapJS = new ScriptBundle("~/Content/dataTables_bootstrapJS");
+
+            ScriptBundle toolTipJS = new ScriptBundle("~/Content/toolTipJS");
+
+            ScriptBundle magnific_popupJS = new ScriptBundle("~/Content/magnific_popupJS");
+
+            ScriptBundle jqueryValidate = new ScriptBundle("~/Content/jqueryValidate");
+
+            ScriptBundle jqueryNestable = new ScriptBundle("~/Content/jqueryNestable");
+
+            ScriptBundle jqueryFancyTree = new ScriptBundle("~/Content/jqueryFancyTree");
+
+            bundles.Add(jquery.Include("~/Content/js/jquery-3.2.0.min.js"));
+
+            bundles.Add(jqueryUI.Include("~/Content/js/jquery_ui/jquery-ui.min.js"));
+
+            bundles.Add(bootstrapJS.Include("~/Content/bootstrap/js/bootstrap.js"));
+
+            bundles.Add(utility.Include("~/Content/theme/assets/js/utility/utility.js"));
+
+            bundles.Add(demo.Include("~/Content/theme/assets/js/demo/demo.js"));
+
+            //ADMINS UTILITIES & INPACT CUSTOM
+            bundles.Add(main.Include("~/Content/theme/assets/js/utility/functions.js"));
+
+            bundles.Add(main.Include("~/Content/theme/assets/js/main.js"));
+
+            bundles.Add(main.Include("~/Content/theme/assets/js/custom.js"));
+
+            bundles.Add(sweetalertJS.Include("~/Content/js/bootstrap.sweetalert/sweetalert.min.js"));
+
+            bundles.Add(layoutJS.Include("~/Content/js/layout.js"));
+
+            bundles.Add(toolTipJS.Include("~/Content/js/tooltipster-master/js/tooltipster.bundle.min.js"));
+
+            bundles.Add(magnific_popupJS.Include("~/Content/theme/vendor/plugins/magnific/jquery.magnific-popup.min.js"));
+
+            bundles.Add(jqueryNestable.Include("~/Content/theme/vendor/plugins/nestable/jquery.nestable.js"));
+
+            bundles.Add(jqueryFancyTree.Include("~/Content/theme/vendor/plugins/fancytree/jquery.fancytree-all.js"));
+
+            //ADMIN FORMS JS
+            bundles.Add(monthpicker.Include("~/Content/theme/assets/admin-tools/admin-forms/js/source/jquery-ui-monthpicker.js"));
+            bundles.Add(timepicker.Include("~/Content/theme/assets/admin-tools/admin-forms/js/source/jquery-ui-timepicker.js"));
+            bundles.Add(spectrum.Include("~/Content/theme/assets/admin-tools/admin-forms/js/source/jquery.spectrum.js"));
+            bundles.Add(steps.Include("~/Content/theme/assets/admin-tools/admin-forms/js/source/jquery.steps.js"));
+            bundles.Add(jqueryValidate.Include("~/Content/theme/assets/admin-tools/admin-forms/js/jquery.validate.min.js"));
+
+            //MASKS
+            bundles.Add(masks.IncludeDirectory("~/Content/theme/assets/js/utility/masks", "*.js", true));
+            bundles.Add(masks.Include("~/Content/theme/vendor/plugins/jquerymask/jquery.maskedinput.min.js"));
+
+            //TABLES
+            bundles.Add(dataTables.Include("~/Content/theme/vendor/plugins/datatables/media/js/jquery.dataTables.js"));
+            bundles.Add(tableTools.Include("~/Content/theme/vendor/plugins/datatables/extensions/TableTools/js/dataTables.tableTools.min.js"));
+            bundles.Add(colReorder.Include("~/Content/theme/vendor/plugins/datatables/extensions/ColReorder/js/dataTables.colReorder.min.js"));
+            bundles.Add(dataTables_bootstrapJS.Include("~/Content/theme/vendor/plugins/datatables/media/js/dataTables.bootstrap.js"));
+
+            //Local JS
+
+            #region Administracion
+
+            ScriptBundle aplicacionJS = new ScriptBundle("~/js/aplicaciones");
+            ScriptBundle menuItemJS = new ScriptBundle("~/js/menuItem");
+            ScriptBundle rol = new ScriptBundle("~/js/rol");
+            ScriptBundle permiso = new ScriptBundle("~/js/permiso");
+            ScriptBundle mantenedorArbolDecisionJS = new ScriptBundle("~/js/mantenedorArbolDecision");
+
+            bundles.Add(aplicacionJS.Include("~/Content/js/admin/aplicaciones/aplicaciones.js"));
+            bundles.Add(menuItemJS.Include("~/Content/js/admin/menuItem/menuItem.js"));
+            bundles.Add(rol.Include("~/Content/js/admin/rolPermiso/roles.js"));
+            bundles.Add(permiso.Include("~/Content/js/admin/rolPermiso/permisos.js"));
+            bundles.Add(mantenedorArbolDecisionJS.Include("~/Content/js/admin/mantenedorArbolDecision/unidad.js"));
+            
+            #endregion
+
+            #endregion
         }
     }
 }

@@ -1,117 +1,299 @@
-﻿@using Evaluaciones.Helpers
+﻿@using System.Web.Optimization
+@using Evaluaciones.Helpers
+@*@using Evaluaciones.Web.UI.Extensions*@
 
 <!DOCTYPE html>
+
 <html>
 <head>
-    <meta name="viewport" content="width=device-width" />
-    <title>Insignia Evaluaciones!</title>
+    @*- Meta, title, CSS, favicons, etc. *@
+    <meta charset="utf-8">
+    <title>Evaluaciones!</title>
+    <meta name="keywords" content="Bluei AO, Admin Panel" />
+    <meta name="description" content="Bluei AO Panel">
+    <meta name="author" content="Inpact S.A">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
 
-    @Scripts.Render("~/Content/js/jquery")
-    @Scripts.Render("~/Content/js/bootstrap")
+    @*- Font CSS (Via CDN) *@
+    <link rel='stylesheet' type='text/css' href='http://fonts.googleapis.com/css?family=Open+Sans:300,400,600,700'>
 
-    @Styles.Render("~/Content/bootstrap")
-    @Styles.Render("~/Content/layout")
+    @*@Styles.Render("~/Content/bootstrap")*@
+    @Styles.Render("~/Content/assets/admin-tools")
+    @Styles.Render("~/Content/glyphicons-pro")
+    @Styles.Render("~/Content/iconsweets2")
+    @Styles.Render("~/Content/sweetalert")
+    @Styles.Render("~/Content/css/layout")
+    @Styles.Render("~/Content/css/dataTables_bootstrap")
+    @Styles.Render("~/Content/css/dataTables_plugins")
+    @Styles.Render("~/Content/magnific_popup")
+    @Styles.Render("~/Content/theme/assets")
+    @Styles.Render("~/Content/tooltips")
+
+    @Scripts.Render("~/Content/jquery")
+    @Scripts.Render("~/Content/jquery_ui")
+    @*<script src="~/Content/theme/assets/admin-tools/admin-forms/js/additional-methods.min.js"></script>*@
+
+    @*- HTML5 Shim and Respond.js IE8 support of HTML5 elements and media queries *@
+    <!--[if lt IE 9]>
+     <script src="https://oss.maxcdn.com/libs/html5shiv/3.7.0/html5shiv.js"></script>
+     <script src="https://oss.maxcdn.com/libs/respond.js/1.3.0/respond.min.js"></script>
+     <![endif]-->
 
 </head>
-<body>
-    <div>
+<body class="blank-page">
 
-        <nav class="navbar navbar-inverse navbar-fixed-top">
-            <div class="container">
-                <div class="navbar-header">
-                    <div class="row">
-                        <button type="button" class="navbar-toggle collapsed" data-toggle="collapse" data-target="#navbar" aria-expanded="false" aria-controls="navbar">
-                            <span class="sr-only"></span>
-                            <span class="icon-bar"></span>
-                            <span class="icon-bar"></span>
-                            <span class="icon-bar"></span>
-                        </button>
+    @*-------------------------------------------------------------+
+          <body> Helper Classes:
+        ---------------------------------------------------------------+
+          '.sb-l-o' - Sets Left Sidebar to "open"
+          '.sb-l-m' - Sets Left Sidebar to "minified"
+          '.sb-l-c' - Sets Left Sidebar to "closed"
+
+          '.sb-r-o' - Sets Right Sidebar to "open"
+          '.sb-r-c' - Sets Right Sidebar to "closed"
+        ---------------------------------------------------------------+
+         Example: <body class="example-page sb-l-o sb-r-c">
+         Results: Sidebar left Open, Sidebar right Closed
+        -------------------------------------------------------------*@
+
+
+    @*-- Start: Main *@
+    <div id="main">
+
+        @*-- Start: Header *@
+        <header class="navbar navbar-fixed-top">
+            <div class="navbar-branding">
+                <span class="navbar-brand">
+                    @Html.ActionImage("Index", "Administracion/Admin", "/Content/images/NetCoreIconoLogged.png")
+                </span>
+                <span id="toggle_sidemenu_l" class="ad ad-lines"></span>
+            </div>
+            <ul class="nav navbar-nav navbar-left">
+                <li>
+                    <a class="sidebar-menu-toggle" href="#">
+                        <span class="ad ad-ruby fs18"></span>
+                    </a>
+                </li>
+                <li>
+                    <a class="topbar-menu-toggle" href="#">
+                        <span class="ad ad-wand fs16"></span>
+                    </a>
+                </li>
+            </ul>
+            @Html.Partial("../Utils/_Header", new Evaluaciones.Web.UI.Models.PartialHeader(new Guid(this.User.Identity.Name)))
+        </header>
+        @*-- End: Header *@
+
+        @*-- Start: Sidebar *@
+        <aside id="sidebar_left" class="nano nano-primary">
+
+            @*-- Start: Sidebar Left Content *@
+            <div class="sidebar-left-content nano-content">
+
+                @*-- Start: Sidebar Header *@
+                <header class="sidebar-header">
+
+                    @*-- Sidebar Widget - Menu (Slidedown) *@
+                    <div class="sidebar-widget menu-widget">
+                        <div class="row text-center mbn">
+                            <div class="col-xs-4">
+                                <a href="dashboard.html" class="text-primary" data-toggle="tooltip" data-placement="top" title="Dashboard">
+                                    <span class="glyphicon glyphicon-home"></span>
+                                </a>
+                            </div>
+                            <div class="col-xs-4">
+                                <a href="pages_messages.html" class="text-info" data-toggle="tooltip" data-placement="top" title="Messages">
+                                    <span class="glyphicon glyphicon-inbox"></span>
+                                </a>
+                            </div>
+                            <div class="col-xs-4">
+                                <a href="pages_profile.html" class="text-alert" data-toggle="tooltip" data-placement="top" title="Tasks">
+                                    <span class="glyphicon glyphicon-bell"></span>
+                                </a>
+                            </div>
+                            <div class="col-xs-4">
+                                <a href="pages_timeline.html" class="text-system" data-toggle="tooltip" data-placement="top" title="Activity">
+                                    <span class="fa fa-desktop"></span>
+                                </a>
+                            </div>
+                            <div class="col-xs-4">
+                                <a href="pages_profile.html" class="text-danger" data-toggle="tooltip" data-placement="top" title="Settings">
+                                    <span class="fa fa-gears"></span>
+                                </a>
+                            </div>
+                            <div class="col-xs-4">
+                                <a href="pages_gallery.html" class="text-warning" data-toggle="tooltip" data-placement="top" title="Cron Jobs">
+                                    <span class="fa fa-flask"></span>
+                                </a>
+                            </div>
+                        </div>
                     </div>
-                    <div class="row">
-                        @Html.ActionImage("Login", "Home", "/Content/images/logo_netcore3.png")
+
+                    @*-- Sidebar Widget - Author (hidden)  *@
+                    <div class="sidebar-widget author-widget hidden">
+                        <div class="media">
+                            <a class="media-left" href="#">
+                                <img src="/Content/images/avatars/3.png" class="img-responsive">
+                            </a>
+                            <div class="media-body">
+                                <div class="media-links">
+                                    <a href="#" class="sidebar-menu-toggle">User Menu -</a> <a href="pages_login(alt).html">Logout</a>
+                                </div>
+                                <div class="media-author">Michael Richards</div>
+                            </div>
+                        </div>
                     </div>
-                    <div class="row">
-                        <p class="fuenteEvaluaciones">Evaluaciones</p>
+
+                    @*-- Sidebar Widget - Search (hidden) *@
+                    <div class="sidebar-widget search-widget hidden">
+                        <div class="input-group">
+                            <span class="input-group-addon">
+                                <i class="fa fa-search"></i>
+                            </span>
+                            <input type="text" id="sidebar-search" class="form-control" placeholder="Search...">
+                        </div>
+                    </div>
+
+                </header>
+
+                @*-- End: Sidebar Header *@
+                @Html.Menu(new Guid(this.User.Identity.Name))
+                @*-- Start: Sidebar Menu *@
+
+                @*-- End: Sidebar Menu *@
+                @*-- Start: Sidebar Collapse Button *@
+                <div class="sidebar-toggle-mini">
+                    <a href="#">
+                        <span class="fa fa-sign-out"></span>
+                    </a>
+                </div>
+                @*-- End: Sidebar Collapse Button *@
+
+            </div>
+            @*-- End: Sidebar Left Content *@
+
+        </aside>
+
+        @*-- Start: Content-Wrapper *@
+        <section id="content_wrapper">
+
+            @*-- Start: Topbar-Dropdown *@
+            <div id="topbar-dropmenu">
+                <div class="topbar-menu row">
+                    <div class="col-xs-4 col-sm-2">
+                        <a href="#" class="metro-tile">
+                            <span class="metro-icon glyphicon glyphicon-inbox"></span>
+                            <p class="metro-title">Messages</p>
+                        </a>
+                    </div>
+                    <div class="col-xs-4 col-sm-2">
+                        <a href="#" class="metro-tile">
+                            <span class="metro-icon glyphicon glyphicon-user"></span>
+                            <p class="metro-title">Users</p>
+                        </a>
+                    </div>
+                    <div class="col-xs-4 col-sm-2">
+                        <a href="#" class="metro-tile">
+                            <span class="metro-icon glyphicon glyphicon-headphones"></span>
+                            <p class="metro-title">Support</p>
+                        </a>
+                    </div>
+                    <div class="col-xs-4 col-sm-2">
+                        <a href="#" class="metro-tile">
+                            <span class="metro-icon fa fa-gears"></span>
+                            <p class="metro-title">Settings</p>
+                        </a>
+                    </div>
+                    <div class="col-xs-4 col-sm-2">
+                        <a href="#" class="metro-tile">
+                            <span class="metro-icon glyphicon glyphicon-facetime-video"></span>
+                            <p class="metro-title">Videos</p>
+                        </a>
+                    </div>
+                    <div class="col-xs-4 col-sm-2">
+                        <a href="#" class="metro-tile">
+                            <span class="metro-icon glyphicon glyphicon-picture"></span>
+                            <p class="metro-title">Pictures</p>
+                        </a>
                     </div>
                 </div>
+            </div>
+            @*-- End: Topbar-Dropdown *@
+
+            @*-- Start: Topbar *@
+            <header id="topbar" class="">
+                <div class="topbar-left">
+                    @Html.Raw(@Html.BuildBreadcrumbNavigation())
+                </div>
+                <div class="topbar-right">
+                    @*<div class="ib topbar-dropdown">
+                            <label for="topbar-multiple" class="control-label pr10 fs11 text-muted">Reporting Period</label>
+                            <select id="topbar-multiple" class="hidden">
+                                <optgroup label="Filter By:">
+                                    <option value="1-1">Last 30 Days</option>
+                                    <option value="1-2" selected="selected">Last 60 Days</option>
+                                    <option value="1-3">Last Year</option>
+                                </optgroup>
+                            </select>
+                        </div>
+                        <div class="ml15 ib va-m" id="toggle_sidemenu_r">
+                            <a href="#" class="pl5">
+                                <i class="fa fa-sign-in fs22 text-primary"></i>
+                                <span class="badge badge-hero badge-danger">3</span>
+                            </a>
+                        </div>*@
+                </div>
+            </header>
+            @*-- End: Topbar *@
+
+            @*-- Begin: Content *@
+            <section id="content" class="animated fadeIn table-layout">
                 @RenderBody()
-            </div>
-        </nav>
-        <div id="carousel" class="carousel slide marignSlider" data-ride="carousel">
-            <!-- Indicadores que estan bajo cada imagen-->
-            <ol class="carousel-indicators">
-                <li data-target="#carousel" data-slide-to="0" class="active"></li>
-                <li data-target="#carousel" data-slide-to="1"></li>
-                <li data-target="#carousel" data-slide-to="2"></li>
-            </ol>
+            </section>
+            @*-- End: Content *@
 
-            <!-- Wrapper for slides -->
-            <div class="carousel-inner" role="listbox">
-                <div class="item active">
-                    <img class="imageSlider" src="~/Content/images/slide-1.jpg" alt="#">
-                    <div class="carousel-caption fontCaptionSlider">
-                        <h3>Evaluaciones</h3>
-                        <p>El proceso de evaluación es uno de los ámbitos fundamentales del quehacer docente, sobre todo por la información relevante que entrega sobre los alcances de la enseñanza y el logro de aprendizaje alcanzados por los estudiantes.</p>
-                    </div>
-                </div>
-                <div class="item">
-                    <img class="imageSlider" src="~/Content/images/slide-2.jpg" alt="#">
-                    <div class="carousel-caption fontCaptionSlider">
-                        <h3>Instrumentos</h3>
-                        <p>Con estos instrumentos se apoya a los establecimientos a realizar la aplicación anual de una evaluación inicial, una evaluación de proceso y una final, que van acompañadas de un conjunto de estrategias y procedimientos para un seguimiento sistemático.</p>
-                    </div>
-                </div>
-                <div class="item">
-                    <img class="imageSlider" src="~/Content/images/slide-3.jpg" alt="#">
-                    <div class="carousel-caption fontCaptionSlider">
-                        <h3>Resultados</h3>
-                        <p>Los resultados se entregan vía plataforma informática después de 48 horas hábiles después de recibir las hojas de respuesta. Estos consideran la tabulación de la información por establecimiento, curso, asignatura y alumno.</p>
-                    </div>
-                </div>
-            </div>
-
-            <!-- Controls -->
-            <a class="left carousel-control" href="#carousel" role="button" data-slide="prev">
-                <span class="glyphicon glyphicon-chevron-left" aria-hidden="true"></span>
-                <span class="sr-only">Anterior</span>
-            </a>
-            <a class="right carousel-control" href="#carousel" role="button" data-slide="next">
-                <span class="glyphicon glyphicon-chevron-right" aria-hidden="true"></span>
-                <span class="sr-only">Siguiente</span>
-            </a>
-        </div>
-
-        <div id="footer" class="footer">
-            <div class="container">
-                <p class="text-muted credit fontFooter">
-                    Empresas Evaluaciones Ltda, http://www.iEvaluaciones.cl, 2005 - 2017. General Holley 2363 of. 305, Providencia, Chile. Teléfono (56-2) 2378 98 84.
-                    Consultas a: soporte@netcore.cl
-                </p>
-            </div>
-        </div>
-
+        </section>
+        @*-- End: Content-Wrapper *@
     </div>
 
+    @*-- End: Main *@
+
+    @Scripts.Render("~/Content/monthpicker")
+    @Scripts.Render("~/Content/timepicker")
+    @Scripts.Render("~/Content/spectrum")
+
+    @Scripts.Render("~/Content/dataTables")
+    @Scripts.Render("~/Content/dataTables.tableTools")
+    @Scripts.Render("~/Content/dataTables.colReorder")
+    @Scripts.Render("~/Content/dataTables_bootstrapJS")
+    @Scripts.Render("~/Content/magnific_popupJS")
+    @Scripts.Render("~/Content/jqueryValidate")
+    @Scripts.Render("~/Content/theme/utility")
+    @Scripts.Render("~/Content/theme/demo")
+    @Scripts.Render("~/Content/Masks")
+    @Scripts.Render("~/Content/theme/main")
+    @Scripts.Render("~/Content/sweetalertJS")
+    @Scripts.Render("~/Content/toolTipJS")
+    @Scripts.Render("~/Content/layoutJS")
+    @RenderSection("bottom_scripts_render", false)
+
+    @*
+        Show Messages declared to ViewBag typed by SwalAlert
+        Ex: SwalAlert message = new SwalAlert("Title", "Mensage", SwalTypeEvent.success);
+            this.ViewBag.Message = message;
+    *@
+    @Html.Partial("../Utils/_SwalAlert", new Evaluaciones.Web.UI.Models.PartialSwal(ViewBag.Message))
+
     <script type="text/javascript">
-
-        $(this).ready(
-
-            function () {
-
-                $('.carousel').carousel({
-                    interval: 4000
-                })
-
-                $('#run').Rut({
-                    on_error: function () { alert('Rut incorrecto'); }
-                });
-            }
-        );
-
+        jQuery(document).ready(function () {
+            "use strict";
+            // Init Theme Core
+            Core.init();
+        });
     </script>
+    @RenderSection("bottom_code_scripts", false)
 
-    @Scripts.Render("~/Content/js/rut")
-    @Scripts.Render("~/js/Layout/layout")
+    @*- END: PAGE SCRIPTS *@
 
 </body>
 </html>

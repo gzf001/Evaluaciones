@@ -13,6 +13,12 @@ namespace Evaluaciones.Web.UI.Areas.Administracion.Models
             set;
         }
 
+        public string Estado
+        {
+            get;
+            set;
+        }
+
         public class Roles
         {
             public List<Rol> data

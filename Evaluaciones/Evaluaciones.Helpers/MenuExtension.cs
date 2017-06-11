@@ -17,18 +17,28 @@ namespace Evaluaciones.Helpers
 
             TagBuilder t = new TagBuilder("ul");
 
-            t.Attributes.Add("id", "MenuPrincipal");
+            t.AddCssClass("nav sidebar-menu");
 
-            t.AddCssClass("cl-vnavigation");
+            t.InnerHtml += "<li class='sidebar-label pt20'>Menu</li>";
 
-            bool primero = true;
+            t.InnerHtml += "<li class='active'><a href='dashboard.html'><span class='glyphicon glyphicon-home'></span><span class='sidebar-title'>Dashboard</span></a></li>";
 
-            foreach (Evaluaciones.Membresia.Aplicacion aplicacion in Evaluaciones.Membresia.Aplicacion.GetAll(persona))
+            t.InnerHtml += "<li class='sidebar-label pt15'>Modulos</li>";
+
+            foreach (Evaluaciones.Membresia.Aplicacion aplicacion in Evaluaciones.Membresia.Aplicacion.GetAll())
             {
                 List<Evaluaciones.Membresia.MenuItem> itemPadre = Evaluaciones.Membresia.MenuItem.GetAll(Evaluaciones.Membresia.Menu.MenuPrincipal, aplicacion, aplicacion.Inicio);
 
-                t.InnerHtml += "<li><a href='#'><i class='fa fa-home'></i><span>" + aplicacion.Nombre + "</span></a>";
-                t.InnerHtml += "<ul class='sub-menu'>";
+                if (string.IsNullOrEmpty(aplicacion.Fa_Icon))
+                {
+                    t.InnerHtml += "<li><a class='accordion-toggle' href='#'><span class='sidebar-title'>" + aplicacion.Nombre + "</span><span class='caret'></span></a>";
+                }
+                else
+                {
+                    t.InnerHtml += "<li><a class='accordion-toggle' href='#'><span class='fa " + aplicacion.Fa_Icon + "'></span><span class='sidebar-title'>" + aplicacion.Nombre + "</span><span class='caret'></span></a>";
+                }
+
+                t.InnerHtml += "<ul class='nav sub-nav'>";
 
                 foreach (Evaluaciones.Membresia.MenuItem menuItem in itemPadre)
                 {
@@ -36,33 +46,16 @@ namespace Evaluaciones.Helpers
 
                     if (items.Any())
                     {
-                        if (primero)
-                        {
-                            t.InnerHtml += "<li class='active'><a href='#'><span>" + menuItem.Nombre + "</span><i class='fa fa-chevron-down'></i></a>";
-
-                            primero = false;
-                        }
-                        else
-                        {
-                            t.InnerHtml += "<li><a href='#'>" + menuItem.Nombre + "<i class='fa fa-chevron-down'></i></a>";
-                        }
-
-                        t.InnerHtml += "<ul class='sub-menu'>";
-                        t.InnerHtml += MenuExtension.MenuString(menuItem, 10);
+                        t.InnerHtml += "<li><a class='accordion-toggle menu-open' href = '#'><span class='fa fa fa-arrows-h'></span>" + menuItem.Nombre + "<span class='caret'></span></a>";
+                        t.InnerHtml += "<ul class='nav sub-nav'>";
+                        t.InnerHtml += MenuExtension.MenuString(menuItem);
                         t.InnerHtml += "</ul></li>";
                     }
                     else
                     {
-                        if (primero)
-                        {
-                            t.InnerHtml += string.Format("<li class='active'><a href='{0}'>{1}</a></li>", menuItem.Url, menuItem.Nombre);
-
-                            primero = false;
-                        }
-                        else
-                        {
-                            t.InnerHtml += string.Format("<li><a href='{0}'>{1}</a></li>", menuItem.Url, menuItem.Nombre);
-                        }
+                        t.InnerHtml += "<li>";
+                        t.InnerHtml += "<a class='accordion-toggle menu-open' href = '#'><span class='fa fa fa-arrows-h'></span>" + menuItem.Nombre + "<span class='caret'></span></a>";
+                        t.InnerHtml += "</li>";
                     }
                 }
 
@@ -72,26 +65,24 @@ namespace Evaluaciones.Helpers
             return new MvcHtmlString(t.ToString(TagRenderMode.Normal));
         }
 
-        private static string MenuString(Evaluaciones.Membresia.MenuItem menuItem, int padding)
+        private static string MenuString(Evaluaciones.Membresia.MenuItem menuItem)
         {
             string retorno = string.Empty;
 
             foreach (Evaluaciones.Membresia.MenuItem m in Evaluaciones.Membresia.MenuItem.GetAll(menuItem))
             {
-                string style = string.Format("style='padding-left: {0}px;'", padding);
-
                 List<Evaluaciones.Membresia.MenuItem> items = Evaluaciones.Membresia.MenuItem.GetAll(m);
 
                 if (items.Any())
                 {
-                    retorno += string.Format("<li><a href='{0}'><span {1}>" + m.Nombre + "</span><i class='fa fa-chevron-down parent'></i></a>", m.Url, style);
-                    retorno += "<ul class=\"sub-menu\">";
-                    retorno += MenuExtension.MenuString(m, padding + 5);
+                    retorno += string.Format("<li><a href='{0}'>" + m.Nombre + "</a>", m.Url);
+                    retorno += "<ul class='nav sub-nav'>";
+                    retorno += MenuExtension.MenuString(m);
                     retorno += "</ul></li>";
                 }
                 else
                 {
-                    retorno += string.Format("<li><a href='{0}'><span {1}>" + m.Nombre + "</span></a>", m.Url, style);
+                    retorno += string.Format("<li><a href='{0}'>" + m.Nombre + "</a>", m.Url);
                     retorno += "</li>";
                 }
             }
@@ -114,30 +105,43 @@ namespace Evaluaciones.Helpers
 
             t.InnerHtml += "<ol class='dd-list'>";
 
-            foreach (Evaluaciones.Membresia.MenuItem menuItem in Evaluaciones.Membresia.MenuItem.GetAll(Evaluaciones.Membresia.Menu.MenuPrincipal, aplicacion, aplicacion.Inicio))
+            List<Evaluaciones.Membresia.MenuItem> lista = Evaluaciones.Membresia.MenuItem.GetAll(Evaluaciones.Membresia.Menu.MenuPrincipal, aplicacion, aplicacion.Inicio);
+
+            if (lista.Any())
             {
-                t.InnerHtml += "<li class='dd-item' data-id='" + menuItem.Id.ToString() + "'>";
-
-                t.InnerHtml += string.Format("<div class='dd-handle'>{0}</div>", menuItem.Nombre);
-
-                t.InnerHtml += string.Format("<div>{0}{1}{2}</div>", Evaluaciones.Helpers.ActionLinkExtension.ActionLinkCrudEmbedded(menuItem.Id, menuItem.MenuItemId, TypeButton.Add, controller),
-                                                                     Evaluaciones.Helpers.ActionLinkExtension.ActionLinkCrudEmbedded(menuItem.Id, menuItem.MenuItemId, TypeButton.Edit, controller),
-                                                                     Evaluaciones.Helpers.ActionLinkExtension.ActionLinkCrudEmbedded(menuItem.Id, menuItem.MenuItemId, TypeButton.Delete, controller));
-
-                string html = MenuExtension.MenuOrderable(menuItem, controller);
-
-                if (string.IsNullOrEmpty(html))
+                foreach (Evaluaciones.Membresia.MenuItem menuItem in lista)
                 {
-                    t.InnerHtml += "</li>";
-                }
-                else
-                {
-                    t.InnerHtml += "<ol class='dd-list'>";
+                    t.InnerHtml += string.Format("<li class='dd-item' data-id='{0}'>", menuItem.Id);
 
-                    t.InnerHtml += html;
+                    t.InnerHtml += string.Format("<div class='dd-handle'>{0}</div>", menuItem.Nombre);
 
-                    t.InnerHtml += "</ol></li>";
+                    t.InnerHtml += string.Format("<div>{0}{1}{2}</div>", Evaluaciones.Helpers.ActionLinkExtension.ActionLinkCrudEmbedded(menuItem.Id, menuItem.MenuItemId, TypeButton.Add, controller),
+                                                                         Evaluaciones.Helpers.ActionLinkExtension.ActionLinkCrudEmbedded(menuItem.Id, menuItem.MenuItemId, TypeButton.Edit, controller),
+                                                                         Evaluaciones.Helpers.ActionLinkExtension.ActionLinkCrudEmbedded(menuItem.Id, menuItem.MenuItemId, TypeButton.Delete, controller));
+
+                    string html = MenuExtension.MenuOrderable(menuItem, controller);
+
+                    if (string.IsNullOrEmpty(html))
+                    {
+                        t.InnerHtml += "</li>";
+                    }
+                    else
+                    {
+                        t.InnerHtml += "<ol class='dd-list'>";
+
+                        t.InnerHtml += html;
+
+                        t.InnerHtml += "</ol></li>";
+                    }
                 }
+            }
+            else
+            {
+                t.InnerHtml += string.Format("<li class='dd-item' data-id='{0}'>", aplicacion.Inicio.Id);
+
+                t.InnerHtml += string.Format("<div class='dd-handle'>{0}</div>", aplicacion.Inicio.Nombre);
+
+                t.InnerHtml += string.Format("<div>{0}</div>", Evaluaciones.Helpers.ActionLinkExtension.ActionLinkCrudEmbedded(aplicacion.Inicio.Id, aplicacion.Inicio.MenuItemId, TypeButton.Add, controller));
             }
 
             t.InnerHtml += "</ol>";

@@ -2,17 +2,17 @@
 
 namespace Evaluaciones.Web.UI.Areas.Administracion
 {
-    public class AdministracionAreaRegistration : AreaRegistration
+    public class AdministracionAreaRegistration : AreaRegistration 
     {
-        public override string AreaName
+        public override string AreaName 
         {
-            get
+            get 
             {
                 return "Administracion";
             }
         }
 
-        public override void RegisterArea(AreaRegistrationContext context)
+        public override void RegisterArea(AreaRegistrationContext context) 
         {
             #region Ciudades y Comunas
 
@@ -33,16 +33,22 @@ namespace Evaluaciones.Web.UI.Areas.Administracion
             #region Aplicaciones
 
             context.MapRoute(
+               name: "Aplicaciones",
+               url: "Administracion/Admin/Aplicaciones",
+               defaults: new { area = "Administracion", controller = "Admin", action = "Aplicaciones" }
+            );
+
+            context.MapRoute(
                name: "GetAddAplicacion",
-               url: "Administracion/Admin/GetAplicacion",
+               url: "Administracion/Admin/AddAplicacion",
                defaults: new { area = "Administracion", controller = "Admin", action = "AddAplicacion" }
-           );
+            );
 
             context.MapRoute(
                name: "GetEditAplicacion",
-               url: "Administracion/Admin/GetAplicacion/{id}",
+               url: "Administracion/Admin/EditAplicacion/{id}",
                defaults: new { area = "Administracion", controller = "Admin", action = "EditAplicacion", id = "" }
-           );
+            );
 
             context.MapRoute(
                 name: "GetAplicaciones",
@@ -51,7 +57,7 @@ namespace Evaluaciones.Web.UI.Areas.Administracion
             );
 
             context.MapRoute(
-                name: "DeleteAplicacion",
+                name: "GetDeleteAplicacion",
                 url: "Administracion/Admin/DeleteAplicacion",
                 defaults: new { area = "Administracion", controller = "Admin", action = "DeleteAplicacion" }
             );
@@ -61,9 +67,15 @@ namespace Evaluaciones.Web.UI.Areas.Administracion
             #region Items de menú
 
             context.MapRoute(
-                name: "GetItemMenu",
+                name: "ItemsMenu",
+                url: "Administracion/Admin/ItemsMenu",
+                defaults: new { area = "Administracion", controller = "Admin", action = "ItemsMenu" }
+            );
+
+            context.MapRoute(
+                name: "GetEditItemMenu",
                 url: "Administracion/Admin/GetItemMenu/{aplicacionId}/{itemId}",
-                defaults: new { area = "Administracion", controller = "Admin", action = "GetItemMenu", aplicacionId = "", itemId = "" }
+                defaults: new { area = "Administracion", controller = "Admin", action = "EditItemMenu", aplicacionId = "", itemId = "" }
             );
 
             context.MapRoute(
@@ -73,7 +85,7 @@ namespace Evaluaciones.Web.UI.Areas.Administracion
             );
 
             context.MapRoute(
-                name: "DeleteItemsMenu",
+                name: "GetDeleteItemsMenu",
                 url: "Administracion/Admin/DeleteItemsMenu/{aplicacionId}/{itemId}",
                 defaults: new { area = "Administracion", controller = "Admin", action = "DeleteItemsMenu", aplicacionId = "", itemId = "" }
             );

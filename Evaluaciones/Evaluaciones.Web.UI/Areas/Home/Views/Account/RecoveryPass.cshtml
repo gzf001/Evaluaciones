@@ -1,0 +1,36 @@
+﻿@model Evaluaciones.Web.UI.Areas.Home.Models.RecoveryPass
+
+@{
+    ViewBag.Title = "RecoveryPass";
+    Layout = "~/Areas/Home/Views/Shared/_Layout.cshtml";
+}
+
+@using (Html.BeginForm("RecoveryPass", "Account", new { @area = "Home", ReturnUrl = ViewBag.ReturnUrl }, FormMethod.Post, new { @class = "navbar-form navbar-right loginVerticalMiddleAling", role = "form" }))
+{
+    @Html.AntiForgeryToken()
+
+    <div class="row">
+        <div class="form-group">
+            @Html.TextBoxFor(m => m.RUN, new { @id = "run", @placeholder = "R.U.N.", @class = "form-control" })
+        </div>
+        <div class="form-group">
+            @Html.ActionLink("Cancelar", "Login", "Home", new { @class = "btn btn-danger" })
+            <button type="submit" class="btn btn-success">Recuperar contraseña</button>
+        </div>
+    </div>
+    <div class="row">
+        <div class="form-group text-danger">
+            @Html.ValidationSummary()
+        </div>
+    </div>
+    <div class="row">
+        @{
+            if (!string.IsNullOrEmpty(this.ViewBag.Message))
+            {
+                <div class="alert alert-success">
+                    @this.ViewBag.Message
+                </div>
+            }
+        }
+    </div>
+}
