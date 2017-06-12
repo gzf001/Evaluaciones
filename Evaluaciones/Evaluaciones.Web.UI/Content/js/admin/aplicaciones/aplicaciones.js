@@ -53,12 +53,21 @@
         },
         submitHandler: function (form) {
 
+            var selectedPerfil = null;
+
+            selectedPerfil = [];
+
+            $(":checkbox:checked").each(function () {
+                selectedPerfil.push($(this).attr('value'));
+            });
+
             var obj = {
                 id: $('#aplicacionId').val(),
                 nombre: $('#nombre').val(),
                 clave: $('#clave').val(),
                 fa_Icon: $('#faIcon').val(),
-                orden: $('#orden').val()
+                orden: $('#orden').val(),
+                selectedPerfil: selectedPerfil
             };
 
             $.ajax({
@@ -92,7 +101,13 @@
             $('#clave').val(data.Clave);
             $('#faIcon').val(data.Fa_Icon);
             $('#orden').val(data.Orden);
-        });
+
+            $(":checkbox").each(function () {
+
+                $(this).prop('checked', false);
+
+            });
+        })
     })
 
     $(document).on('click', 'a[typebutton=Edit]', function () {
@@ -106,6 +121,12 @@
             $('#clave').val(data.Clave);
             $('#faIcon').val(data.Fa_Icon);
             $('#orden').val(data.Orden);
+
+            $.each(data.SelectedPerfil, function (i, item) {
+
+                $('[value=' + item + ']').prop('checked', true);
+
+            });
         });
     })
 

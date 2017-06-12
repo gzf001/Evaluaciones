@@ -382,7 +382,6 @@ namespace Evaluaciones.Web.UI.Areas.Administracion.Controllers
         [HttpGet]
         public ActionResult Roles()
         {
-
             return this.View();
         }
 
@@ -415,23 +414,20 @@ namespace Evaluaciones.Web.UI.Areas.Administracion.Controllers
 
         [Authorize]
         [HttpGet]
-        public JsonResult GetRoles(int ambitoCodigo)
+        public JsonResult GetRoles()
         {
-            Evaluaciones.Ambito ambito = Evaluaciones.Ambito.Get(ambitoCodigo);
-
             Evaluaciones.Web.UI.Areas.Administracion.Models.Rol.Roles rol = new Evaluaciones.Web.UI.Areas.Administracion.Models.Rol.Roles();
 
             rol.data = new List<Evaluaciones.Web.UI.Areas.Administracion.Models.Rol>();
 
-            foreach (Evaluaciones.Membresia.Rol r in Evaluaciones.Membresia.Rol.GetAll(ambito, true))
+            foreach (Evaluaciones.Membresia.Rol r in Evaluaciones.Membresia.Rol.GetAll())
             {
                 rol.data.Add(new Evaluaciones.Web.UI.Areas.Administracion.Models.Rol
                 {
                     Id = r.Id,
-                    AmbitoCodigo = r.AmbitoCodigo,
                     Nombre = r.Nombre,
                     Clave = r.Clave,
-                    Accion = string.Format("{0}{1}{2}", Evaluaciones.Helpers.ActionLinkExtension.ActionLink(null, null, string.Format("GetPermissions?rolId={0}", r.Id), "Admin", "Administracion", Evaluaciones.Helpers.TypeButton.Accept, r.Id, "btn btn-success btn-xs btn-flat", "fa-legal", "Configurar permisos"),
+                    Accion = string.Format("{0}{1}{2}", Evaluaciones.Helpers.ActionLinkExtension.ActionLink(null, null, string.Format("GetPermissions/{0}", r.Id), "Admin", "Administracion", Evaluaciones.Helpers.TypeButton.Accept, r.Id, "btn btn-success btn-xs btn-flat", "fa-legal", "Configurar permisos", null, this),
                                                         Evaluaciones.Helpers.ActionLinkExtension.ActionLinkCrudEmbedded(r.Id, null, Evaluaciones.Helpers.TypeButton.Edit, this),
                                                         Evaluaciones.Helpers.ActionLinkExtension.ActionLinkCrudEmbedded(r.Id, null, Evaluaciones.Helpers.TypeButton.Delete, this))
                 });
@@ -442,7 +438,22 @@ namespace Evaluaciones.Web.UI.Areas.Administracion.Controllers
 
         [Authorize]
         [HttpGet]
-        public JsonResult GetRol(Guid id)
+        [Evaluaciones.Web.Authorization(ActionType = new Evaluaciones.Web.ActionType[] { Evaluaciones.Web.ActionType.Add }, Root = "Aplicaciones", Area = Area)]
+        public ActionResult AddRol(int ambitoCodigo)
+        {
+            Evaluaciones.Ambito ambito = Evaluaciones.Ambito.Get(ambitoCodigo);
+
+            if (ambito == null)
+            {
+                throw new Exception("Código de ámbito no válido");
+            }
+
+            return this.Json(new Evaluaciones.Web.UI.Areas.Administracion.Models.Rol(), JsonRequestBehavior.AllowGet);
+        }
+
+        [Authorize]
+        [HttpGet]
+        public JsonResult EditRol(Guid id)
         {
             Evaluaciones.Membresia.Rol rol = Evaluaciones.Membresia.Rol.Get(id);
 
@@ -495,7 +506,7 @@ namespace Evaluaciones.Web.UI.Areas.Administracion.Controllers
 
         [Authorize]
         [HttpPost]
-        //[Evaluaciones.Web.Authorization(ActionType = new Evaluaciones.Web.ActionType[] { Evaluaciones.Web.ActionType.Accept }, Root = "Roles")]
+        [Evaluaciones.Web.Authorization(ActionType = new Evaluaciones.Web.ActionType[] { Evaluaciones.Web.ActionType.Accept }, Root = "Roles", Area = Area)]
         public ActionResult GetPermissions(List<Evaluaciones.Web.UI.Areas.Administracion.Models.RolAccion> model)
         {
             if (!this.ModelState.IsValid)
@@ -511,7 +522,7 @@ namespace Evaluaciones.Web.UI.Areas.Administracion.Controllers
 
             using (Evaluaciones.Membresia.Context context = new Evaluaciones.Membresia.Context())
             {
-                foreach (Evaluaciones.Membresia.RolAccion rolAccion in Evaluaciones.Membresia.RolAccion.GetAll(aplicacion, rol))
+                foreach (Evaluaciones.Membresia.RolAccion rolAccion in Evaluaciones.Membresia.RolAccion.GetAll(aplicacion, rol).Where<Evaluaciones.Membresia.RolAccion>(x => !x.MenuItem.Equals(Evaluaciones.Membresia.MenuItem.RolPermiso)))
                 {
                     new Evaluaciones.Membresia.RolAccion
                     {
@@ -538,9 +549,9 @@ namespace Evaluaciones.Web.UI.Areas.Administracion.Controllers
                         MenuItemId = rolAccion.MenuItemId,
                         AccionCodigo = rolAccion.AccionCodigo
                     }.Save(context);
-                }
+                    context.SubmitChanges();
 
-                context.SubmitChanges();
+                }
             }
 
             return this.Json("200 ok", JsonRequestBehavior.DenyGet);
@@ -573,13 +584,15 @@ namespace Evaluaciones.Web.UI.Areas.Administracion.Controllers
                         MenuItemNombre = menuItem.Nombre
                     };
 
+                    model.AccionNombre += "<div class='option-group field'>";
+
                     if (!menuItem.RootNode)
                     {
                         foreach (Evaluaciones.Membresia.Accion accion in acciones)
                         {
                             bool exists = Evaluaciones.Membresia.RolAccion.Exists(rol, menuItem, accion);
 
-                            model.AccionNombre += string.Format("<label class='checkbox-inline'><input type='checkbox' {0} name='Accion' class='icheck' data-parent={1} data-value={2}>{3}</label>", exists ? "checked= '{0}'" : string.Empty, menuItem.Id, accion.Codigo, accion.Nombre);
+                            model.AccionNombre += string.Format("<label class='option'><input type='checkbox' {0} name='Accion' data-parent={1} data-value={2}><span class='checkbox'></span>{3}</label></label>", exists ? "checked= '{0}'" : string.Empty, menuItem.Id, accion.Codigo, accion.Nombre);
 
                             model.Acciones.Add(new SelectListItem
                             {
@@ -588,6 +601,8 @@ namespace Evaluaciones.Web.UI.Areas.Administracion.Controllers
                             });
                         }
                     }
+
+                    model.AccionNombre += "</div>";
 
                     rolAcciones.data.Add(model);
                 }
@@ -598,6 +613,241 @@ namespace Evaluaciones.Web.UI.Areas.Administracion.Controllers
             {
                 return this.Json(rolAcciones, JsonRequestBehavior.AllowGet);
             }
+        }
+
+        #endregion
+
+        #region Usuarios
+
+        [Authorize]
+        [HttpGet]
+        [Evaluaciones.Web.Authorization(ActionType = new Evaluaciones.Web.ActionType[] { Evaluaciones.Web.ActionType.Access }, Root = "Usuarios", Area = Area)]
+        public ActionResult Usuarios()
+        {
+            Evaluaciones.Web.UI.Areas.Administracion.Models.Usuario usuario = new Evaluaciones.Web.UI.Areas.Administracion.Models.Usuario();
+
+            usuario.FindType = Evaluaciones.FindType.Equals;
+
+            return this.View(usuario);
+        }
+
+        [Authorize]
+        [HttpPost]
+        [Evaluaciones.Web.Authorization(ActionType = new Evaluaciones.Web.ActionType[] { Evaluaciones.Web.ActionType.Accept }, Root = "Usuarios", Area = Area)]
+        public ActionResult Usuarios(Evaluaciones.Web.UI.Areas.Administracion.Models.Usuario model)
+        {
+            if (!this.ModelState.IsValid)
+            {
+                return this.View(model);
+            }
+
+            try
+            {
+                Evaluaciones.Membresia.Usuario usuario = Evaluaciones.Membresia.Usuario.Get(model.Id);
+
+                string textoRun = model.Persona.Run.Replace(".", string.Empty).Replace("-", string.Empty);
+
+                int runCuerpo = int.Parse(textoRun.Substring(0, textoRun.Length - 1));
+                char runDigito = char.Parse(textoRun.Replace(runCuerpo.ToString(), string.Empty));
+
+                using (Evaluaciones.Membresia.Context context = new Evaluaciones.Membresia.Context())
+                {
+                    Evaluaciones.Persona persona = new Evaluaciones.Persona
+                    {
+                        Id = model.Id,
+                        RunCuerpo = runCuerpo,
+                        RunDigito = runDigito,
+                        Nombres = model.Persona.Nombres,
+                        ApellidoPaterno = model.Persona.ApellidoPaterno,
+                        ApellidoMaterno = model.Persona.ApellidoMaterno,
+                        Email = model.Persona.Email,
+                        SexoCodigo = model.Persona.SexoCodigo,
+                        FechaNacimiento = model.Persona.FechaNacimiento,
+                        NacionalidadCodigo = model.Persona.NacionalidadCodigo,
+                        EstadoCivilCodigo = model.Persona.EstadoCivilCodigo,
+                        NivelEducacionalCodigo = model.Persona.NivelEducacionalCodigo,
+                        RegionCodigo = model.Persona.RegionCodigo,
+                        CiudadCodigo = model.Persona.CiudadCodigo,
+                        ComunaCodigo = model.Persona.ComunaCodigo,
+                        VillaPoblacion = model.Persona.VillaPoblacion,
+                        Direccion = model.Persona.Direccion,
+                        Telefono = model.Persona.Telefono,
+                        Celular = model.Persona.Celular,
+                        Observaciones = default(string)
+                    };
+
+                    persona.Save(context);
+
+                    context.SubmitChanges();
+
+                    if (usuario == null)
+                    {
+                        Evaluaciones.Membresia.Account.RegisterLogin(persona);
+                    }
+                    else
+                    {
+                        new Evaluaciones.Membresia.Usuario
+                        {
+                            Id = usuario.Id,
+                            Password = usuario.Password,
+                            Aprobado = usuario.Aprobado,
+                            Bloqueado = usuario.Bloqueado,
+                            Creacion = usuario.Creacion,
+                            UltimaActividad = usuario.UltimaActividad,
+                            UltimoAcceso = usuario.UltimoAcceso,
+                            UltimoCambioPassword = usuario.UltimoCambioPassword,
+                            UltimoDesbloqueo = usuario.UltimoDesbloqueo,
+                            NumeroIntentosFallidos = usuario.NumeroIntentosFallidos,
+                            FechaIntentoFallido = usuario.FechaIntentoFallido
+                        }.Save(context);
+
+                        context.SubmitChanges();
+                    }
+                }
+
+                return this.Json("200", JsonRequestBehavior.DenyGet);
+            }
+            catch (Exception ex)
+            {
+                if (ex.Message.Contains("RunCuerpoIndex"))
+                {
+                    return this.Json("El R.U.N. se encuentra registrado con otro usuario", JsonRequestBehavior.DenyGet);
+                }
+                else
+                {
+                    return this.Json(ex.Message, JsonRequestBehavior.DenyGet);
+                }
+            }
+        }
+
+        [Authorize]
+        [HttpGet]
+        [Evaluaciones.Web.Authorization(ActionType = new Evaluaciones.Web.ActionType[] { Evaluaciones.Web.ActionType.Access }, Root = "Usuarios", Area = Area)]
+        public JsonResult GetUsuarios(Evaluaciones.FindType findType, string filter)
+        {
+            Evaluaciones.Web.UI.Areas.Administracion.Models.Usuario.Usuarios usuarios = new Evaluaciones.Web.UI.Areas.Administracion.Models.Usuario.Usuarios();
+
+            usuarios.data = new List<Evaluaciones.Web.UI.Areas.Administracion.Models.Usuario>();
+
+            foreach (Evaluaciones.Membresia.Usuario usuario in Evaluaciones.Membresia.Usuario.GetAll(findType, filter))
+            {
+                usuarios.data.Add(new Evaluaciones.Web.UI.Areas.Administracion.Models.Usuario
+                {
+                    Nombre = usuario.Persona.Nombre,
+                    Run = usuario.Persona.Run,
+                    Estado = usuario.Bloqueado ? "Bloquedo" : "Activo",
+                    UltimoLogin = usuario.UltimoAcceso.ToString(),
+                    Accion = string.Format("{0}{1}", Evaluaciones.Helpers.ActionLinkExtension.ActionLinkCrudEmbedded(usuario.Id, null, Evaluaciones.Helpers.TypeButton.Edit, this),
+                                                     Evaluaciones.Helpers.ActionLinkExtension.ActionLinkCrudEmbedded(usuario.Id, null, Evaluaciones.Helpers.TypeButton.Delete, this))
+                });
+            }
+
+            return this.Json(usuarios, JsonRequestBehavior.AllowGet);
+        }
+
+        [Authorize]
+        [HttpGet]
+        [Evaluaciones.Web.Authorization(ActionType = new Evaluaciones.Web.ActionType[] { Evaluaciones.Web.ActionType.Add }, Root = "Usuarios", Area = Area)]
+        public JsonResult AddUsuario()
+        {
+            return this.Json(new Evaluaciones.Web.UI.Areas.Administracion.Models.Usuario
+            {
+                Id = Guid.NewGuid(),
+                Password = string.Empty,
+                Aprobado = true,
+                Bloqueado = true,
+                Creacion = DateTime.Now,
+                UltimaActividad = DateTime.Now,
+                UltimoAcceso = DateTime.Now,
+                UltimoCambioPassword = default(DateTime),
+                UltimoDesbloqueo = default(DateTime),
+                NumeroIntentosFallidos = default(int),
+                FechaIntentoFallido = default(DateTime),
+                FechaNacimientoString = string.Empty,
+                Persona = new Evaluaciones.Persona()
+            }, JsonRequestBehavior.AllowGet);
+        }
+
+        [Authorize]
+        [HttpGet]
+        [Evaluaciones.Web.Authorization(ActionType = new Evaluaciones.Web.ActionType[] { Evaluaciones.Web.ActionType.Edit }, Root = "Aplicaciones", Area = Area)]
+        public JsonResult EditUsuario(Guid id)
+        {
+            Evaluaciones.Membresia.Usuario usuario = Evaluaciones.Membresia.Usuario.Get(id);
+
+            return this.Json(new Evaluaciones.Web.UI.Areas.Administracion.Models.Usuario
+            {
+                Id = usuario.Id,
+                Password = string.Empty,
+                Aprobado = usuario.Aprobado,
+                Bloqueado = usuario.Bloqueado,
+                Creacion = usuario.Creacion,
+                UltimaActividad = usuario.UltimaActividad,
+                UltimoAcceso = usuario.UltimoAcceso,
+                UltimoCambioPassword = usuario.UltimoCambioPassword,
+                UltimoDesbloqueo = usuario.UltimoDesbloqueo,
+                NumeroIntentosFallidos = usuario.NumeroIntentosFallidos,
+                FechaIntentoFallido = usuario.FechaIntentoFallido,
+                FechaNacimientoString = usuario.Persona.FechaNacimiento.HasValue ? usuario.Persona.FechaNacimiento.Value.ToShortDateString() : string.Empty,
+                Persona = usuario.Persona
+            }, JsonRequestBehavior.AllowGet);
+        }
+
+        //[Authorize]
+        [HttpGet]
+        //[Evaluaciones.Web.Authorization(ActionType = new Evaluaciones.Web.ActionType[] { Evaluaciones.Web.ActionType.Access }, Root = "Usuarios", Area = Area)]
+        public JsonResult Usuario(string run)
+        {
+            string textoRun = run.Replace(".", string.Empty).Replace("-", string.Empty);
+
+            int runCuerpo = int.Parse(textoRun.Substring(0, textoRun.Length - 1));
+            char runDigito = char.Parse(textoRun.Replace(runCuerpo.ToString(), string.Empty));
+
+            if (!Evaluaciones.Helper.ValidaRun(runCuerpo, runDigito))
+            {
+                return this.Json("500", JsonRequestBehavior.AllowGet);
+            }
+
+            Evaluaciones.Membresia.Usuario usuario = Evaluaciones.Membresia.Usuario.Get(runCuerpo, runDigito);
+
+            if (usuario == null)
+            {
+                Evaluaciones.Persona persona = Evaluaciones.Persona.Get(runCuerpo, runDigito);
+
+                if (persona == null)
+                {
+                    persona = new Evaluaciones.Persona();
+
+                    persona.RunCuerpo = runCuerpo;
+                    persona.RunDigito = runDigito;
+                    persona.Run = string.Format("{0}-{1}", runCuerpo.ToString("N0"), runDigito);
+                }
+
+                usuario = new Evaluaciones.Web.UI.Areas.Administracion.Models.Usuario
+                {
+                    FechaNacimientoString = persona.FechaNacimiento.HasValue ? persona.FechaNacimiento.Value.ToShortDateString() : string.Empty,
+                    Persona = persona
+                };
+
+                return this.Json(usuario, JsonRequestBehavior.AllowGet);
+            }
+
+            return this.Json(new Evaluaciones.Web.UI.Areas.Administracion.Models.Usuario
+            {
+                Id = usuario.Id,
+                Aprobado = usuario.Aprobado,
+                Bloqueado = usuario.Bloqueado,
+                Creacion = usuario.Creacion,
+                UltimaActividad = usuario.UltimaActividad,
+                UltimoAcceso = usuario.UltimoAcceso,
+                UltimoCambioPassword = usuario.UltimoCambioPassword,
+                UltimoDesbloqueo = usuario.UltimoDesbloqueo,
+                NumeroIntentosFallidos = usuario.NumeroIntentosFallidos,
+                FechaIntentoFallido = usuario.FechaIntentoFallido,
+                AperturaPeriodoRemuneracion = usuario.AperturaPeriodoRemuneracion,
+                FechaNacimientoString = usuario.Persona.FechaNacimiento.HasValue ? usuario.Persona.FechaNacimiento.Value.ToShortDateString() : string.Empty,
+                Persona = usuario.Persona
+            }, JsonRequestBehavior.AllowGet);
         }
 
         #endregion

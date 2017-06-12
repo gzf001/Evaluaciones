@@ -46,7 +46,7 @@ namespace Evaluaciones.Helpers
 
                     if (items.Any())
                     {
-                        t.InnerHtml += "<li><a class='accordion-toggle menu-open' href = '#'><span class='fa fa fa-arrows-h'></span>" + menuItem.Nombre + "<span class='caret'></span></a>";
+                        t.InnerHtml += string.Format("<li><a class='accordion-toggle menu-open' href = '#'><span class='fa fa fa-arrows-h'></span>{0}<span class='caret'></span></a>", menuItem.Nombre);
                         t.InnerHtml += "<ul class='nav sub-nav'>";
                         t.InnerHtml += MenuExtension.MenuString(menuItem);
                         t.InnerHtml += "</ul></li>";
@@ -54,7 +54,7 @@ namespace Evaluaciones.Helpers
                     else
                     {
                         t.InnerHtml += "<li>";
-                        t.InnerHtml += "<a class='accordion-toggle menu-open' href = '#'><span class='fa fa fa-arrows-h'></span>" + menuItem.Nombre + "<span class='caret'></span></a>";
+                        t.InnerHtml += string.Format("<li><a href='{0}'>{1}</a>", menuItem.Url, menuItem.Nombre);
                         t.InnerHtml += "</li>";
                     }
                 }
@@ -75,14 +75,14 @@ namespace Evaluaciones.Helpers
 
                 if (items.Any())
                 {
-                    retorno += string.Format("<li><a href='{0}'>" + m.Nombre + "</a>", m.Url);
+                    retorno += string.Format("<li><a href='{0}'>{1}</a>", m.Url, m.Nombre);
                     retorno += "<ul class='nav sub-nav'>";
                     retorno += MenuExtension.MenuString(m);
                     retorno += "</ul></li>";
                 }
                 else
                 {
-                    retorno += string.Format("<li><a href='{0}'>" + m.Nombre + "</a>", m.Url);
+                    retorno += string.Format("<li><a href='{0}'>{1}</a>", m.Url, m.Nombre);
                     retorno += "</li>";
                 }
             }

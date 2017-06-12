@@ -1,0 +1,66 @@
+﻿@model Evaluaciones.Web.UI.Areas.Administracion.Models.RolAccion
+
+@{
+    ViewBag.Title = "GetPermissions";
+    Layout = "~/Views/Shared/_Layout.cshtml";
+}
+
+<div id="form" class="admin-form">
+    <div class="panel">
+        <div class="panel-heading">
+            <span class="panel-title">Administración de permisos por rol</span>
+        </div>
+        <div class="form-horizontal">
+            <div class="row">
+                <div class="panel-body">
+                    <div class="form-group">
+                        @Html.LabelFor(x => x.Rol.Ambito.Nombre, new { @for = "ambitoCodigo", @class = "col-sm-2 control-label" })
+                        <div class="col-sm-8">
+                            @Html.TextBoxFor(x => x.Rol.Ambito.Nombre, new { @class = "form-control", @id = "ambitoCodigo", @disabled = "false" })
+                        </div>
+                    </div>
+                    <div class="form-group">
+                        @Html.LabelFor(x => x.Rol.Nombre, new { @for = "nombre", @class = "col-sm-2 control-label" })
+                        <div class="col-sm-8">
+                            @Html.TextBoxFor(x => x.Rol.Nombre, new { @class = "form-control", @id = "nombre", @placeholder = "Nombre", @maxLength = "´70" })
+                        </div>
+                    </div>
+                    <div class="form-group">
+                        @Html.LabelFor(x => x.Rol.Clave, new { @for = "clave", @class = "col-sm-2 control-label" })
+                        <div class="col-sm-8">
+                            @Html.TextBoxFor(x => x.Rol.Clave, new { @class = "form-control", @id = "clave", @placeholder = "Clave", @maxLength = "50" })
+                        </div>
+                    </div>
+                    <div class="form-group">
+                        @Html.LabelFor(x => x.AplicacionId, new { @for = "aplicacion", @class = "col-sm-2 control-label" })
+                        <div class="col-sm-8">
+                            @Html.DropDownListFor(x => x.AplicacionId, Evaluaciones.Membresia.Aplicacion.Aplicaciones, new { @id = "aplicacion", @class = "form-control" })
+                        </div>
+                    </div>
+                    <div class="pull-right col-sm-3">
+                        @Html.ActionLink("Cancelar", "Roles", "Admin", new { area = "Administracion" }, new { @class = "button btn-dark" })
+                        <button id="save" class="button btn-primary">Guardar</button>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+    <div class="center-block col-md-8">
+        <div class="panel panel-visible">
+            <div class="panel-body pn">
+                <table class="table table-striped table-hover" id="gridView" cellspacing="0">
+                    <thead>
+                        <tr>
+                            <th>Ítem</th>
+                            <th>Acciones</th>
+                        </tr>
+                    </thead>
+                </table>
+            </div>
+        </div>
+    </div>
+</div>
+
+@Html.HiddenFor(x => x.RolId)
+
+@Scripts.Render("~/js/permiso")

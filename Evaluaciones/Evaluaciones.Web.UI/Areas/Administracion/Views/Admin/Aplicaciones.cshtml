@@ -40,30 +40,54 @@
             <div class="panel-body">
                 <div class="section row">
                     <div class="col-md-6">
-                        @Html.LabelFor(x => x.Nombre, new { @for = "Nombre", @class = "field-label" })
-                        <label class="field select">
-                            @Html.TextBoxFor(x => x.Nombre, new { @class = "gui-input", @id = "nombre", @placeholder = "Nombre", @maxLength = "60" })
-                        </label>
+                        <div class="section row">
+                            <div class="col-md-12">
+                                @Html.LabelFor(x => x.Nombre, new { @for = "Nombre", @class = "field-label" })
+                                <label class="field select">
+                                    @Html.TextBoxFor(x => x.Nombre, new { @class = "gui-input", @id = "nombre", @placeholder = "Nombre", @maxLength = "60" })
+                                </label>
+                            </div>
+                        </div>
+                        <div class="section row">
+                            <div class="col-md-12">
+                                @Html.LabelFor(x => x.Clave, new { @for = "clave", @class = "field-label" })
+                                <label class="field select">
+                                    @Html.TextBoxFor(x => x.Clave, new { @class = "gui-input", @id = "clave", @placeholder = "Clave", @maxLength = "50" })
+                                </label>
+                            </div>
+                        </div>
+                        <div class="section row">
+                            <div class="col-md-12">
+                                @Html.LabelFor(x => x.Fa_Icon, new { @for = "FaIcon", @class = "field-label" })
+                                <label class="field select">
+                                    @Html.TextBoxFor(x => x.Fa_Icon, new { @class = "gui-input", @id = "faIcon", @placeholder = "Fa_Icon", @maxLength = "20" })
+                                </label>
+                            </div>
+                        </div>
+                        <div class="section row">
+                            <div class="col-md-12">
+                                @Html.LabelFor(x => x.Orden, new { @for = "orden", @class = "field-label" })
+                                <label class="field select">
+                                    @Html.TextBoxFor(x => x.Orden, new { @class = "gui-input", @id = "orden", @placeholder = "Orden", @maxLength = "2", @onlyNumbers = true })
+                                </label>
+                            </div>
+                        </div>
                     </div>
                     <div class="col-md-6">
-                        @Html.LabelFor(x => x.Clave, new { @for = "clave", @class = "field-label" })
-                        <label class="field select">
-                            @Html.TextBoxFor(x => x.Clave, new { @class = "gui-input", @id = "clave", @placeholder = "Clave", @maxLength = "50" })
-                        </label>
-                    </div>
-                </div>
-                <div class="section row">
-                    <div class="col-md-6">
-                        @Html.LabelFor(x => x.Fa_Icon, new { @for = "FaIcon", @class = "field-label" })
-                        <label class="field select">
-                            @Html.TextBoxFor(x => x.Fa_Icon, new { @class = "gui-input", @id = "faIcon", @placeholder = "Fa_Icon", @maxLength = "20" })
-                        </label>
-                    </div>
-                    <div class="col-md-6">
-                        @Html.LabelFor(x => x.Orden, new { @for = "orden", @class = "field-label" })
-                        <label class="field select">
-                            @Html.TextBoxFor(x => x.Orden, new { @class = "gui-input", @id = "orden", @placeholder = "Orden", @maxLength = "2", @onlyNumbers = true })
-                        </label>
+                        <div class="col-sm-12">
+                            <fieldset>
+                                <legend>Pérfil</legend>
+                                <div class="option-group field section">
+                                    @foreach (SelectListItem perfil in Model.Perfiles)
+                                    {
+                                        <label class="option block mt15">
+                                            <input type="checkbox" name="SelectedPerfil" value="@perfil.Value">
+                                            <span class="checkbox"></span>@perfil.Text
+                                        </label>
+                                    }
+                                </div>                                
+                            </fieldset>
+                        </div>
                     </div>
                 </div>
             </div>

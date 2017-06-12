@@ -8,18 +8,18 @@ namespace Evaluaciones
 	{
 		public static void SendMail(string to, string subject, string body)
 		{
-			MailMessage message = new MailMessage();
-			message.From = new MailAddress("applicationserver@iEvaluaciones.cl");
-			message.To.Add(to);
-			message.Subject = subject;
-			message.Body = body;
-			message.IsBodyHtml = false;
-			message.Priority = MailPriority.Normal;
+			//MailMessage message = new MailMessage();
+			//message.From = new MailAddress("applicationserver@iEvaluaciones.cl");
+			//message.To.Add(to);
+			//message.Subject = subject;
+			//message.Body = body;
+			//message.IsBodyHtml = false;
+			//message.Priority = MailPriority.Normal;
 
-			SmtpClient smtp = new SmtpClient("smtp.gmail.com", 587);
-			smtp.EnableSsl = true;
-			smtp.Credentials = new NetworkCredential("applicationserver@iEvaluaciones.cl", "insignia", "");
-			smtp.Send(message);
+			//SmtpClient smtp = new SmtpClient("smtp.gmail.com", 587);
+			//smtp.EnableSsl = true;
+			//smtp.Credentials = new NetworkCredential("applicationserver@iEvaluaciones.cl", "insignia", "");
+			//smtp.Send(message);
 		}
 
         #region Escritura de números en palabras

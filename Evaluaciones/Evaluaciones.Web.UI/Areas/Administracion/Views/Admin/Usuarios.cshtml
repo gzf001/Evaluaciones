@@ -1,0 +1,602 @@
+﻿@model Evaluaciones.Web.UI.Areas.Administracion.Models.Usuario
+
+@{
+    ViewBag.Title = "Usuarios";
+    Layout = "~/Views/Shared/_Layout.cshtml";
+}
+
+<div class="col-md-12">
+    <div class="row">
+        <div id="form" class="admin-form">
+            <div class="panel">
+                <div class="panel-heading">
+                    <span class="panel-title">Administración de usuarios</span>
+                </div>
+                <div class="form-horizontal">
+                    <div class="panel-body">
+                        <div class="section row">
+                            <div class="col-md-6">
+                                @Html.LabelFor(x => x.Persona.Nombres, new { @for = "nombre", @class = "field-label" })
+                                <label class="field select">
+                                    @Html.TextBoxFor(x => x.Persona.Nombres, new { @class = "gui-input", @id = "nombre", @placeholder = "Nombre", @maxLength = "60" })
+                                </label>
+                                <label for="FindType" class="field prepend-icon">
+                                    <label class="radio-inline mr10">
+                                        @Html.RadioButtonFor(x => x.FindType, Evaluaciones.FindType.Equals, new { @id = "findType" })
+                                        Igual
+                                    </label>
+                                    <label class="radio-inline mr10">
+                                        @Html.RadioButtonFor(x => x.FindType, Evaluaciones.FindType.Contains, new { @id = "findType" })
+                                        Contiene
+                                    </label>
+                                    <label class="radio-inline mr10">
+                                        @Html.RadioButtonFor(x => x.FindType, Evaluaciones.FindType.StartsWith, new { @id = "findType" })
+                                        Inicia
+                                    </label>
+                                    <label class="radio-inline mr10">
+                                        @Html.RadioButtonFor(x => x.FindType, Evaluaciones.FindType.EndsWith, new { @id = "findType" })
+                                        Termina
+                                    </label>
+                                </label>
+                            </div>
+                            <div class="col-md-6">
+                                @Html.LabelFor(x => x.Persona.Run, new { @for = "rombre", @class = "field-label" })
+                                <label class="field select">
+                                    @Html.TextBoxFor(x => x.Persona.Run, new { @class = "gui-input rut", @id = "run", @placeholder = "R.U.N.", @maxLength = "11" })
+                                </label>
+                            </div>
+                        </div>
+                        <div class="pull-left col-md-3">
+                            <a class="btn btn-success btn-xs" href="#" title="Agregar aplicación" typebutton="Add"><i class="fa fa-plus"></i></a>
+                        </div>
+                        <div class="pull-right col-md-3">
+                            <button type="button" id="cancel" class="button btn-dark">Cancelar</button>
+                            <button id="search" class="button btn-primary" typeButton="Accept">Buscar</button>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+    <div class="row">
+        <div class="panel panel-visible" id="spy2">
+            <div class="panel-heading">
+                <div class="panel-title hidden-xs">
+                    <span class="glyphicon glyphicon-tasks"></span>Buscar y Filtrar
+                </div>
+            </div>
+            <div class="panel-body pn">
+                <table class="table table-striped table-hover" id="gridView" cellspacing="0" width="100%">
+                    <thead>
+                        <tr>
+                            <th>Nombre</th>
+                            <th>R.U.N.</th>
+                            <th>Estado</th>
+                            <th>Último acceso</th>
+                            <th>Acciones</th>
+                        </tr>
+                    </thead>
+                </table>
+            </div>
+        </div>
+    </div>
+</div>
+
+<div id="modal-form" class="popup-basic admin-form mfp-with-anim mfp-hide mw800">
+    <div class="panel">
+        <div class="panel-heading">
+            <span class="panel-title">Datos personales</span>
+        </div>
+        <form id="formModalUser" method="post">
+            <div class="panel-body">
+                <div class="section row">
+                    <div class="col-md-4">
+                        @Html.LabelFor(x => x.Persona.Run, new { @for = "run", @class = "field-label" })
+                        <label for="email" class="field prepend-icon">
+                            @Html.TextBoxFor(x => x.Persona.Run, new { @class = "gui-input rut", @id = "run", @placeholder = "R.U.N.", @maxLength = "14" })
+                            <label for="email" class="field-icon">
+                                <i class="fa fa-user"></i>
+                            </label>
+                        </label>
+                    </div>
+                    <div class="col-md-4">
+                        <br />
+                        <button type="button" id="searchPerson" class="button btn-primary" typeButton="Accept">Buscar</button>
+                    </div>
+                </div>
+                <div class="section row">
+                    <div class="col-md-4">
+                        @Html.LabelFor(x => x.Persona.Nombres, new { @for = "nombres", @class = "field-label" })
+                        <label for="email" class="field prepend-icon">
+                            @Html.TextBoxFor(x => x.Persona.Nombres, new { @class = "gui-input", @id = "nombres", @placeholder = "Nombres", @maxLength = "45" })
+                            <label for="email" class="field-icon">
+                                <i class="fa fa-user"></i>
+                            </label>
+                        </label>
+                    </div>
+                    <div class="col-md-4">
+                        @Html.LabelFor(x => x.Persona.ApellidoPaterno, new { @for = "apellidoPaterno", @class = "field-label" })
+                        <label for="email" class="field prepend-icon">
+                            @Html.TextBoxFor(x => x.Persona.ApellidoPaterno, new { @class = "gui-input", @id = "apellidoPaterno", @placeholder = "Apellido paterno", @maxLength = "45" })
+                            <label for="email" class="field-icon">
+                                <i class="fa fa-user"></i>
+                            </label>
+                        </label>
+                    </div>
+                    <div class="col-md-4">
+                        @Html.LabelFor(x => x.Persona.ApellidoMaterno, new { @for = "apellidoMaterno", @class = "field-label" })
+                        @Html.TextBoxFor(x => x.Persona.ApellidoMaterno, new { @class = "gui-input", @id = "apellidoMaterno", @placeholder = "Apellido materno", @maxLength = "45" })
+                    </div>
+                </div>
+                <div class="section row">
+
+                    <div class="col-md-4">
+                        @Html.LabelFor(x => x.Persona.Email, new { @for = "email", @class = "field-label" })
+                        <label for="email" class="field prepend-icon">
+                            @Html.TextBoxFor(x => x.Persona.Email, new { @class = "gui-input", @id = "email", @placeholder = "Email", @maxLength = "70" })
+                            <label for="email" class="field-icon">
+                                <i class="fa fa-envelope"></i>
+                            </label>
+                        </label>
+                    </div>
+                    <div class="col-md-4">
+                        @Html.LabelFor(x => x.Persona.SexoCodigo, new { @for = "SexoCodigo", @class = "field-label" })
+                        <label for="SexoCodigo" class="field prepend-icon">
+                            @foreach (Evaluaciones.Sexo sexo in Evaluaciones.Sexo.GetAll())
+                            {
+                                <label class="radio-inline mr10">
+                                    @Html.RadioButtonFor(x => x.Persona.SexoCodigo, sexo.Codigo, new { @id = "sexo" })
+                                    @sexo.Nombre
+                                </label>
+                            }
+                        </label>
+                    </div>
+                </div>
+                <div class="section row">
+                    <div class="col-md-4">
+                        @Html.LabelFor(x => x.Persona.FechaNacimiento, new { @for = "fechaNacimiento", @class = "field-label" })
+                        <label for="fechaNacimiento" class="field prepend-icon">
+                            @Html.TextBoxFor(x => x.Persona.FechaNacimiento, string.Empty, new { @class = "gui-input hasDatePicker", @id = "fechaNacimiento", @placeholder = "Fecha de nacimiento", @maxLength = "10" })
+                            <label class="field-icon">
+                                <i class="fa fa-calendar-o"></i>
+                            </label>
+                        </label>
+                    </div>
+                    <div class="col-md-4">
+                        @Html.LabelFor(x => x.Persona.NacionalidadCodigo, new { @for = "nacionalidad", @class = "field-label" })
+                        <label class="field select">
+                            @Html.DropDownListFor(x => x.Persona.NacionalidadCodigo, Evaluaciones.Nacionalidad.Nacionalidades, new { @class = "", @id = "nacionalidad" })
+                            <i class="arrow"></i>
+                        </label>
+                    </div>
+                    <div class="col-md-4">
+                        @Html.LabelFor(x => x.Persona.EstadoCivilCodigo, new { @for = "estadoCivil", @class = "field-label" })
+                        <label class="field select">
+                            @Html.DropDownListFor(x => x.Persona.EstadoCivilCodigo, Evaluaciones.EstadoCivil.EstadosCiviles, new { @class = "", @id = "estadoCivil" })
+                            <i class="arrow"></i>
+                        </label>
+                    </div>
+                </div>
+                <div class="section row">
+                    <div class="col-md-4">
+                        @Html.LabelFor(x => x.Persona.NivelEducacionalCodigo, new { @for = "nivelEducacional", @class = "field-label" })
+                        <label class="field select">
+                            @Html.DropDownListFor(x => x.Persona.NivelEducacionalCodigo, Evaluaciones.NivelEducacional.NivelesEducacionales, new { @class = "", @id = "nivelEducacional" })
+                            <i class="arrow"></i>
+                        </label>
+                    </div>
+                    <div class="col-md-4">
+                        @Html.LabelFor(x => x.Persona.Telefono, new { @for = "telefono", @class = "field-label" })
+                        <label for="telefono" class="field prepend-icon">
+                            @Html.TextBoxFor(x => x.Persona.Telefono, new { @class = "gui-input", @id = "telefono", @placeholder = "Teléfono", @onlyNumbers = "true" })
+                            <label for="telefono" class="field-icon">
+                                <i class="fa fa-phone-square"></i>
+                            </label>
+                        </label>
+                    </div>
+                    <div class="col-md-4">
+                        @Html.LabelFor(x => x.Persona.Celular, new { @for = "celular", @class = "field-label" })
+                        <label for="celular" class="field prepend-icon">
+                            @Html.TextBoxFor(x => x.Persona.Celular, new { @class = "gui-input", @id = "celular", @placeholder = "Celular", @onlyNumbers = "true" })
+                            <label for="celular" class="field-icon">
+                                <i class="fa fa-phone-square"></i>
+                            </label>
+                        </label>
+                    </div>
+                </div>
+                <div class="section row">
+                    <div class="col-md-4">
+                        @Html.LabelFor(x => x.Persona.RegionCodigo, new { @for = "region", @class = "field-label" })
+                        <label class="field select">
+                            @Html.DropDownListFor(x => x.Persona.RegionCodigo, Evaluaciones.Region.Regiones, new { @class = "", @id = "region" })
+                            <i class="arrow"></i>
+                        </label>
+                    </div>
+                    <div class="col-md-4">
+                        @Html.LabelFor(x => x.Persona.CiudadCodigo, new { @for = "ciudad", @class = "field-label" })
+                        <label class="field select">
+                            @Html.DropDownListFor(x => x.Persona.CiudadCodigo, Evaluaciones.Ciudad.DefaultItem, new { @id = "ciudad" })
+                            <i class="arrow"></i>
+                        </label>
+                    </div>
+                    <div class="col-md-4">
+                        @Html.LabelFor(x => x.Persona.ComunaCodigo, new { @for = "comuna", @class = "field-label" })
+                        <label class="field select">
+                            @Html.DropDownListFor(x => x.Persona.ComunaCodigo, Evaluaciones.Ciudad.DefaultItem, new { @id = "comuna" })
+                            <i class="arrow"></i>
+                        </label>
+                    </div>
+                </div>
+                <div class="section row">
+                    <div class="col-md-6">
+                        @Html.LabelFor(x => x.Persona.Direccion, new { @for = "direccion", @class = "field-label" })
+                        <label class="field textarea-grow">
+                            @Html.TextAreaFor(x => x.Persona.Direccion, new { @class = "gui-textarea", @id = "direccion", @placeholder = "" })
+                        </label>
+                    </div>
+                    <div class="col-md-6">
+                        @Html.LabelFor(x => x.Persona.VillaPoblacion, new { @for = "villaPoblacion", @class = "field-label" })
+                        @Html.TextBoxFor(x => x.Persona.VillaPoblacion, new { @class = "gui-input", @id = "villaPoblacion", @placeholder = "Villa o población", @maxLength = "60" })
+                    </div>
+                </div>
+            </div>
+            <div class="panel-footer">
+                <button type="button" id="cancelSave" class="button btn-dark">Cancelar</button>
+                <button type="submit" id="save" class="button btn-primary">Guardar</button>
+            </div>
+        </form>
+    </div>
+</div>
+
+@Html.HiddenFor(x => x.Id, new { @id = "userId" })
+
+<script type="text/javascript">
+
+    jQuery(document).ready(function () {
+
+        $('a[title!=""]').tooltipster();
+
+        $('#search').click(function (e) {
+
+            e.preventDefault();
+
+            gridView();
+
+        })
+
+        $("div.dataTables_length").append('<br /><a class="btn btn-success btn-xs" href="#" title="Agregar nuevo usuario" typebutton="Add"><i class="fa fa-plus"></i></a>');
+
+        var validator = $('#formModalUser').validate({
+
+            errorClass: 'state-error',
+            validClass: 'state-success',
+            errorElement: 'em',
+            rules: {
+                "UserName": {
+                    required: true
+                },
+                "Persona.Nombres": {
+                    required: true
+                },
+                "Persona.Run": {
+                    required: true,
+                    maxlength: 14
+                },
+                "Persona.Email": {
+                    required: true
+                },
+                "Persona.ApellidoPaterno": {
+                    required: true
+                },
+                "Persona.SexoCodigo": {
+                    required: true
+                }
+            },
+            messages: {
+                "UserName": {
+                    required: 'El nombre de usuario es requerido'
+                },
+                "Persona.Nombres": {
+                    required: 'Los nombres de la persona son requeridos'
+                },
+                "Persona.Run": {
+                    required: 'El R.U.N. es requerido',
+                    maxlength: "La máxima cantidad de caracteres es de 14"
+                },
+                "Persona.Email": {
+                    required: 'El correo electrónico es requerido'
+                },
+                "Persona.ApellidoPaterno": {
+                    required: 'El apellido paterno es requerido'
+                },
+                "Persona.SexoCodigo": {
+                    required: 'Seleccione el sexo de la persona'
+                }
+            },
+            highlight: function (element, errorClass, validClass) {
+                $(element).closest('.field').addClass(errorClass).removeClass(validClass);
+            },
+            unhighlight: function (element, errorClass, validClass) {
+                $(element).closest('.field').removeClass(errorClass).addClass(validClass);
+            },
+            errorPlacement: function (error, element) {
+                error.insertAfter(element.parent());
+            },
+            submitHandler: function (form) {
+
+                var sexo = $("input[name='Persona.SexoCodigo']:checked");
+
+                var obj = {
+                    id: $('#userId').val(),
+                    userName: $('#user').val(),
+                    password: 'string',
+                    persona: {
+                        id: $('#userId').val(),
+                        run: $('#run').val(),
+                        nombres: $('#nombres').val(),
+                        apellidoPaterno: $('#apellidoPaterno').val(),
+                        apellidoMaterno: $('#apellidoMaterno').val(),
+                        email: $('#email').val(),
+                        sexoCodigo: $(sexo).val(),
+                        fechaNacimiento: $('#fechaNacimiento').val(),
+                        nacionalidadCodigo: $('#nacionalidad').val(),
+                        estadoCivilCodigo: $('#estadoCivil').val(),
+                        nivelEducacionalCodigo: $('#nivelEducacional').val(),
+                        regionCodigo: $('#region').val(),
+                        ciudadCodigo: $('#ciudad').val(),
+                        comunaCodigo: $('#comuna').val(),
+                        villaPoblacion: $('#villaPoblacion').val(),
+                        direccion: $('#direccion').val(),
+                        telefono: $('#telefono').val(),
+                        celular: $('#celular').val()
+                    }
+                };
+
+                $.ajax({
+                    type: "POST",
+                    url: "/Administracion/Admin/Usuarios",
+                    data: obj,
+                    success: function (data) {
+
+                        if (data == "200") {
+
+                            $.magnificPopup.close();
+
+                            gridView();
+
+                            swal("Listo!", "Su información fue guardada correctamente", "success");
+                        }
+                        else {
+
+                            swal("Error!", data, "error");
+                        }
+                    },
+                    error: function (data) {
+
+                        swal("Error!", "Se ha producido un error al registrar la información", "error");
+                    }
+                })
+            }
+        })
+
+        $('a[typebutton=Add]').click(function () {
+
+            $.getJSON('/Administracion/Admin/GetUsuario', function (data) {
+
+                popUp();
+
+                loadData(data, true);
+
+            });
+        })
+
+        $('#searchPerson').click(function () {
+
+            var run = $('#run').val();
+
+            run = run.replace(/\./g, '').replace('-', '');
+
+            $.getJSON('/Administracion/Admin/Usuario/' + run, function (data) {
+
+                if (data == '500') {
+
+                    $('#userId').val('');
+                    $('#nombres').val('');
+                    $('#apellidoPaterno').val('');
+                    $('#apellidoMaterno').val('');
+                    $('#email').val('');
+
+                    var masculino = $("input[name='Persona.SexoCodigo'][value=1]");
+                    var femenino = $("input[name='Persona.SexoCodigo'][value=2]");
+
+                    $(masculino).attr('checked', false);
+                    $(femenino).attr('checked', false);
+
+                    $('#fechaNacimiento').val('');
+                    $('#nacionalidad').val('');
+                    $('#estadoCivil').val('');
+                    $('#nivelEducacional').val('');
+                    $('#telefono').val('');
+                    $('#celular').val('');
+
+                    $('#region').val('');
+                    $('#ciudad').val('');
+                    $('#comuna').val('');
+
+                    $('#direccion').val('');
+                    $('#villaPoblacion').val('');
+
+                    disabled(true);
+                }
+                else {
+
+                    loadData(data, false);
+                }
+            })
+        })
+
+        $(document).on('click', 'a[typebutton=Edit]', function () {
+
+            $.getJSON('/Administracion/Admin/GetUsuario/' + $(this).attr('data-value'), function (data) {
+
+                popUp();
+
+                $.getJSON('/Administracion/Admin/Ciudades/' + data.Persona.RegionCodigo, function (ciudad) {
+
+                    loadSelect($('#ciudad'), ciudad, data.Persona.CiudadCodigo);
+                });
+
+                $.getJSON('/Administracion/Admin/Comunas/' + data.Persona.RegionCodigo + '/' + data.Persona.CiudadCodigo, function (comuna) {
+
+                    loadSelect($('#comuna'), comuna, data.Persona.ComunaCodigo);
+                });
+
+                loadData(data);
+            });
+        })
+
+        $('#cancelSave').click(function (e) {
+
+            e.preventDefault();
+
+            $.magnificPopup.close();
+        })
+    })
+
+    function loadData(data, enabled) {
+
+        $('#userId').val(data.Id);
+        $('#nombres').val(data.Persona.Nombres);
+        $('#apellidoPaterno').val(data.Persona.ApellidoPaterno);
+        $('#apellidoMaterno').val(data.Persona.ApellidoMaterno);
+        $('#run').val(data.Persona.Run);
+        $('#email').val(data.Persona.Email);
+
+        var sexo = $("input[name='Persona.SexoCodigo'][value=" + data.Persona.SexoCodigo + "]");
+
+        $(sexo).attr('checked', true);
+
+        $('#fechaNacimiento').val(data.FechaNacimientoString);
+        $('#nacionalidad').val(data.Persona.NacionalidadCodigo);
+        $('#estadoCivil').val(data.Persona.EstadoCivilCodigo);
+        $('#nivelEducacional').val(data.Persona.NivelEducacionalCodigo);
+        $('#telefono').val(data.Persona.Telefono);
+        $('#celular').val(data.Persona.Celular);
+
+        $('#region').val(data.Persona.RegionCodigo);
+        $('#ciudad').val(data.Persona.CiudadCodigo);
+        $('#comuna').val(data.Persona.ComunaCodigo);
+
+        $('#direccion').val(data.Persona.Direccion);
+        $('#villaPoblacion').val(data.Persona.VillaPoblacion);
+
+        disabled(enabled);
+    }
+
+    function disabled(enabled) {
+
+        $('#nombres').prop('disabled', enabled);
+        $('#apellidoPaterno').prop('disabled', enabled);
+        $('#apellidoMaterno').prop('disabled', enabled);
+        $('#email').prop('disabled', enabled);
+
+        $(sexo).prop('disabled', enabled);
+
+        $('#fechaNacimiento').prop('disabled', enabled);
+        $('#nacionalidad').prop('disabled', enabled);
+        $('#estadoCivil').prop('disabled', enabled);
+        $('#nivelEducacional').prop('disabled', enabled);
+        $('#telefono').prop('disabled', enabled);
+        $('#celular').prop('disabled', enabled);
+
+        $('#region').prop('disabled', enabled);
+        $('#ciudad').prop('disabled', enabled);
+        $('#comuna').prop('disabled', enabled);
+
+        $('#direccion').prop('disabled', enabled);
+        $('#villaPoblacion').prop('disabled', enabled);
+    }
+
+    function loadSelect(control, data, value) {
+
+        control.find("option[value='-1']").remove();
+
+        $.each(data, function (key, value) {
+
+            var option = $(document.createElement('option'));
+
+            option.html(value.Text);
+
+            option.val(value.Value);
+
+            $(control).append(option);
+
+        });
+
+        control.val(value);
+    }
+
+    function gridView() {
+
+        var filter = $('#nombre').val();
+        var findType = $("input[name=FindType]:checked");
+        var run = $('#run').val();
+
+        if (filter != '') {
+
+            $('#gridView').DataTable({
+                "ajax": "/Administracion/Admin/GetUsuarios/" + findType.val() + "/" + filter,
+                "destroy": true,
+                "columns": [
+                    { "data": "Nombre" },
+                    { "data": "Run" },
+                    { "data": "Estado" },
+                    { "data": "UltimoLogin" },
+                    { "data": "Accion" }
+                ],
+                "order": [[0, "asc"]],
+                "columnDefs": [
+                    {
+                        "targets": [0],
+                        "searchable": false,
+                        "sortable": false
+                    }
+                ],
+                "iDisplayLength": 15,
+                "aLengthMenu": [
+                    [15, 20, 25, 30, -1],
+                    [15, 20, 25, 30, "All"]
+                ],
+                "sDom": '<"dt-panelmenu clearfix"lfr>t<"dt-panelfooter clearfix"ip>'
+            });
+        }
+        else if (run != '') {
+
+        }
+        else {
+        }
+    }
+
+    function popUp() {
+
+        var form = $('#formModalUser');
+
+        form.find(".state-error").removeClass("state-error");
+        form.find(".state-success").removeClass("state-success");
+        form.find("em").remove();
+
+        $.magnificPopup.open({
+            removalDelay: 500,
+            items: {
+                src: "#modal-form"
+            },
+            callbacks: {
+                beforeOpen: function (e) {
+
+                    this.st.mainClass = "mfp-flipInX";
+                }
+            },
+            midClick: true
+        });
+    }
+</script>

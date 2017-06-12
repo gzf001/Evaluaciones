@@ -188,7 +188,7 @@ function carga() {
         $('#menuItems').html(data);
 
         menu();
-    });
+    })
 }
 
 function menu() {
@@ -224,6 +224,8 @@ function menu() {
     }).on('change', updateOutput);
 
     updateOutput($('#menu').data('output', $('#menuJson')));
+
+    $('a[title!=""]').tooltipster();
 }
 
 function popUp() {

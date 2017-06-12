@@ -151,6 +151,7 @@
     <Compile Include="Areas\Administracion\Models\Persona.cs" />
     <Compile Include="Areas\Administracion\Models\Rol.cs" />
     <Compile Include="Areas\Administracion\Models\RolAccion.cs" />
+    <Compile Include="Areas\Administracion\Models\Usuario.cs" />
     <Compile Include="Areas\Home\Controllers\AccountController.cs" />
     <Compile Include="Areas\Home\HomeAreaRegistration.cs" />
     <Compile Include="Areas\Home\Models\Login.cs" />
@@ -3317,6 +3318,15 @@
   </ItemGroup>
   <ItemGroup>
     <Content Include="Areas\Administracion\Views\Admin\Roles.cshtml" />
+  </ItemGroup>
+  <ItemGroup>
+    <Content Include="Areas\Administracion\Views\Admin\GetPermissions.cshtml" />
+  </ItemGroup>
+  <ItemGroup>
+    <Content Include="Views\Utils\Error.cshtml" />
+  </ItemGroup>
+  <ItemGroup>
+    <Content Include="Areas\Administracion\Views\Admin\Usuarios.cshtml" />
   </ItemGroup>
   <PropertyGroup>
     <VisualStudioVersion Condition="'$(VisualStudioVersion)' == ''">10.0</VisualStudioVersion>

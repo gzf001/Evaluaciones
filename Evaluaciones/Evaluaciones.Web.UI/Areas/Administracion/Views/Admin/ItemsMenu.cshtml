@@ -104,9 +104,11 @@
                             </div>
                         </div>
                         <div class="col-md-12">
-                            <div class="form-group">
-                                @Html.CheckBoxFor(x => x.Visible, new { @id = "visible" })
-                                @Html.LabelFor(x => x.Visible, new { @for = "visible" })
+                            <div class="option-group field section">
+                                <label class="option block mt15">
+                                    <input type="checkbox" id="visible" name="Visible" />
+                                    <span class="checkbox"></span>Visible
+                                </label>
                             </div>
                         </div>
                     </div>

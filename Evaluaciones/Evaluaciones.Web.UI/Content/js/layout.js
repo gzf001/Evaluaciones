@@ -5,6 +5,7 @@
         $('.table').on('draw.dt', function () {
 
             $('a[title!=""]').tooltipster();
+
         });
 
         $('input:text').focus(function () {

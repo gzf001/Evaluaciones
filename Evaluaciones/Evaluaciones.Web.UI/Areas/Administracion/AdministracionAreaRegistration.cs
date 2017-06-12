@@ -2,17 +2,17 @@
 
 namespace Evaluaciones.Web.UI.Areas.Administracion
 {
-    public class AdministracionAreaRegistration : AreaRegistration 
+    public class AdministracionAreaRegistration : AreaRegistration
     {
-        public override string AreaName 
+        public override string AreaName
         {
-            get 
+            get
             {
                 return "Administracion";
             }
         }
 
-        public override void RegisterArea(AreaRegistrationContext context) 
+        public override void RegisterArea(AreaRegistrationContext context)
         {
             #region Ciudades y Comunas
 
@@ -101,9 +101,15 @@ namespace Evaluaciones.Web.UI.Areas.Administracion
             #region Roles
 
             context.MapRoute(
-                name: "GetRol",
-                url: "Administracion/Admin/GetRol/{id}",
-                defaults: new { area = "Administracion", controller = "Admin", action = "GetRol", id = "" }
+                name: "GetAddRol",
+                url: "Administracion/Admin/AddRol/{ambitoCodigo}",
+                defaults: new { area = "Administracion", controller = "Admin", action = "AddRol", ambitoCodigo = "" }
+            );
+
+            context.MapRoute(
+                name: "GetEditRol",
+                url: "Administracion/Admin/EditRol/{id}",
+                defaults: new { area = "Administracion", controller = "Admin", action = "EditRol", id = "" }
             );
 
             context.MapRoute(
@@ -120,14 +126,42 @@ namespace Evaluaciones.Web.UI.Areas.Administracion
 
             context.MapRoute(
                 name: "GetPermissions",
-                url: "Administracion/Admin/GetPermissions/{id}",
-                defaults: new { area = "Administracion", controller = "Admin", action = "GetPermissions", id = "" }
+                url: "Administracion/Admin/GetPermissions/{rolId}",
+                defaults: new { area = "Administracion", controller = "Admin", action = "GetPermissions", rolId = "" }
             );
 
             context.MapRoute(
                 name: "GetRolAccion",
                 url: "Administracion/Admin/GetRolAccion/{rolId}/{aplicacionId}",
                 defaults: new { area = "Administracion", controller = "Admin", action = "GetRolAccion", rolId = "", aplicacionId = "" }
+            );
+
+            #endregion
+
+            #region Usuarios
+
+            context.MapRoute(
+                name: "GetUsuarios",
+                url: "Administracion/Admin/GetUsuarios/{findType}/{filter}",
+                defaults: new { area = "Administracion", controller = "Admin", action = "GetUsuarios", findType = "", filter = "" }
+            );
+
+            context.MapRoute(
+               name: "GetAddUsuario",
+               url: "Administracion/Admin/GetUsuario",
+               defaults: new { area = "Administracion", controller = "Admin", action = "AddUsuario" }
+            );
+
+            context.MapRoute(
+               name: "GetEditUsuario",
+               url: "Administracion/Admin/GetUsuario/{id}",
+               defaults: new { area = "Administracion", controller = "Admin", action = "EditUsuario", id = "" }
+            );
+
+            context.MapRoute(
+               name: "Usuario",
+               url: "Administracion/Admin/Usuario/{run}",
+               defaults: new { area = "Administracion", controller = "Admin", action = "Usuario", run = "" }
             );
 
             #endregion

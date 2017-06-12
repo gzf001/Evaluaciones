@@ -1,7 +1,5 @@
 ﻿jQuery(document).ready(function () {
 
-    $(document).tooltip();
-
     var table;
 
     $('#aplicacion').change(function () {

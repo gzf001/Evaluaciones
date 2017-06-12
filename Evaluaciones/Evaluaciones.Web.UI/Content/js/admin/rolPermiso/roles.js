@@ -1,17 +1,15 @@
-﻿$(document).ready(function () {
-
-    $(document).tooltip();
+﻿jQuery(document).ready(function () {
 
     var table;
 
     var validator = $('#formModal').validate({
 
-        errorClass: 'errorText',
-        validClass: 'validText',
+        errorClass: 'state-error',
+        validClass: 'state-success',
         errorElement: 'em',
         rules: {
             Nombre: {
-                required: true
+                required: true,
             }
         },
         messages: {
@@ -20,10 +18,10 @@
             }
         },
         highlight: function (element, errorClass, validClass) {
-            $(element).closest('.form-control').addClass(errorClass).removeClass(validClass);
+            $(element).closest('.field').addClass(errorClass).removeClass(validClass);
         },
         unhighlight: function (element, errorClass, validClass) {
-            $(element).closest('.form-control').removeClass(errorClass).addClass(validClass);
+            $(element).closest('.field').removeClass(errorClass).addClass(validClass);
         },
         errorPlacement: function (error, element) {
             error.insertAfter(element.parent());
@@ -55,7 +53,7 @@
                 }
             });
         }
-    });
+    })
 
     $('#ambito').change(function () {
 
@@ -66,24 +64,7 @@
 
     $(document).on('click', 'a[typebutton=Add]', function () {
 
-        if ($('#ambito').val() == '-1') {
-
-            $('#modalForm').hide();
-
-            swal("Error!", "Primero seleccione el ámbito", "error");
-
-        }
-        else {
-
-            popUp();
-
-            $('#rolId').val(generateId());
-        }
-    })
-
-    $(document).on('click', 'a[typebutton=Edit]', function () {
-
-        $.getJSON('/Administracion/Admin/GetRol/' + $(this).attr('data-value'), function (data) {
+        $.getJSON('/Administracion/Admin/AddRol/' + $('#ambito').val(), function (data) {
 
             popUp();
 
@@ -91,7 +72,24 @@
             $('#nombre').val(data.Nombre);
             $('#clave').val(data.Clave);
 
-        });
+        }).fail(function () {
+
+            swal("Error!", "Primero seleccione el ámbito", "error");
+
+        })
+    })
+
+    $(document).on('click', 'a[typebutton=Edit]', function () {
+
+        $.getJSON('/Administracion/Admin/EditRol/' + $(this).attr('data-value'), function (data) {
+
+            popUp();
+
+            $('#rolId').val(data.Id);
+            $('#nombre').val(data.Nombre);
+            $('#clave').val(data.Clave);
+
+        })
     })
 
     $(document).on('click', 'a[typebutton=Delete]', function () {
@@ -126,27 +124,26 @@
                 });
             });
     })
+})
 
-    $('#cancel').click(function (e) {
+$('#cancel').click(function (e) {
 
-        e.preventDefault();
+    e.preventDefault();
 
-        $.magnificPopup.close();
-    })
-});
+    $.magnificPopup.close();
+})
 
 function gridView() {
 
     var table = $('#gridView').DataTable({
-
         "ajax": "/Administracion/Admin/GetRoles/" + $('#ambito').val(),
-        "destroy": true,
         "columns": [
             { "data": "Nombre" },
             { "data": "Clave" },
             { "data": "Accion" }
         ],
-        "order": [[0, "asc"]],
+        "destroy": true,
+        "order": [[1, "asc"]],
         "columnDefs": [
             {
                 "targets": [2],
@@ -158,7 +155,8 @@ function gridView() {
         "aLengthMenu": [
             [15, 20, 25, 30, -1],
             [15, 20, 25, 30, "All"]
-        ]
+        ],
+        "sDom": '<"dt-panelmenu clearfix"lfr>t<"dt-panelfooter clearfix"ip>'
     });
 
     return table;
@@ -166,15 +164,12 @@ function gridView() {
 
 function popUp() {
 
-    var form = $('#modalForm');
+    var form = $('#modal-form');
 
     $('#ambitoCodigo').val($('#ambito option:selected').text());
 
-    $('#nombre').val("");
-    $('#clave').val("");
-
-    form.find(".errorText").removeClass("errorText");
-    form.find(".validText").removeClass("validText");
+    form.find(".state-error").removeClass("state-error");
+    form.find(".state-success").removeClass("state-success");
     form.find("em").remove();
 
     $.magnificPopup.open({

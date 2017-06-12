@@ -91,26 +91,22 @@ div#logo {
     border-color: #DE888A;
 }
 
-.form-group + em {
-    background: #FFFFFF;
-    margin-top: 6px;
-    padding: 0 3px;
-    font-family: Arial, Helvetica, sans-serif;
-    font-style: normal;
-    line-height: normal;
-    font-size: 0.85em;
-    color: #FF0000;
+.error-title {
+    font-size: 140px;
+    color: #4a89dc;
+    font-weight: 800;
+    text-align: center;
+    padding-top: 60px;
+    margin-bottom: 60px;
+    line-height: 120px;
+    text-align: center;
 }
 
-[class^="col-sm-"] + em {
-    background: #FFFFFF;
-    margin-top: 6px;
-    padding: 0 3px;
-    font-family: Arial, Helvetica, sans-serif;
-    font-style: normal;
-    line-height: normal;
-    font-size: 0.85em;
-    color: #FF0000;
+.error-subtitle {
+    font-size: 20px;
+    color: #000000;
+    text-align: center;
+    text-align: center;
 }
 
 .scrollDivMenu {
