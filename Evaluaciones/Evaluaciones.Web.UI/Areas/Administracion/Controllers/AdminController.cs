@@ -21,17 +21,24 @@ namespace Evaluaciones.Web.UI.Areas.Administracion.Controllers
         [HttpGet]
         public JsonResult Ciudades(string regionCodigo)
         {
-            Evaluaciones.Region region = Evaluaciones.Region.Get(short.Parse(regionCodigo));
-
-            List<Evaluaciones.Ciudad> ciudades = Evaluaciones.Ciudad.GetAll(region);
-
-            SelectList selectList = new SelectList(ciudades, "Codigo", "Nombre");
-
             IEnumerable<SelectListItem> defaultItem = Enumerable.Repeat(new SelectListItem
             {
                 Value = "-1",
                 Text = "[Seleccione]"
             }, count: 1);
+
+            short codigo;
+
+            if (!short.TryParse(regionCodigo, out codigo))
+            {
+                return this.Json(defaultItem, JsonRequestBehavior.AllowGet);
+            }
+
+            Evaluaciones.Region region = Evaluaciones.Region.Get(codigo);
+
+            List<Evaluaciones.Ciudad> ciudades = Evaluaciones.Ciudad.GetAll(region);
+
+            SelectList selectList = new SelectList(ciudades, "Codigo", "Nombre");
 
             return this.Json(defaultItem.Concat(selectList), JsonRequestBehavior.AllowGet);
         }
@@ -40,17 +47,24 @@ namespace Evaluaciones.Web.UI.Areas.Administracion.Controllers
         [HttpGet]
         public JsonResult Comunas(string regionCodigo, string ciudadCodigo)
         {
-            Evaluaciones.Ciudad ciudad = Evaluaciones.Ciudad.Get(short.Parse(regionCodigo), short.Parse(ciudadCodigo));
-
-            List<Evaluaciones.Comuna> comunas = Evaluaciones.Comuna.GetAll(ciudad);
-
-            SelectList selectList = new SelectList(comunas, "Codigo", "Nombre");
-
             IEnumerable<SelectListItem> defaultItem = Enumerable.Repeat(new SelectListItem
             {
                 Value = "-1",
                 Text = "[Seleccione]"
             }, count: 1);
+
+            short codigo;
+
+            if (!short.TryParse(ciudadCodigo, out codigo))
+            {
+                return this.Json(defaultItem, JsonRequestBehavior.AllowGet);
+            }
+
+            Evaluaciones.Ciudad ciudad = Evaluaciones.Ciudad.Get(short.Parse(regionCodigo), codigo);
+
+            List<Evaluaciones.Comuna> comunas = Evaluaciones.Comuna.GetAll(ciudad);
+
+            SelectList selectList = new SelectList(comunas, "Codigo", "Nombre");
 
             return this.Json(defaultItem.Concat(selectList), JsonRequestBehavior.AllowGet);
         }
@@ -722,8 +736,8 @@ namespace Evaluaciones.Web.UI.Areas.Administracion.Controllers
 
         [Authorize]
         [HttpGet]
-        [Evaluaciones.Web.Authorization(ActionType = new Evaluaciones.Web.ActionType[] { Evaluaciones.Web.ActionType.Access }, Root = "Usuarios", Area = Area)]
-        public JsonResult GetUsuarios(Evaluaciones.FindType findType, string filter)
+        //[Evaluaciones.Web.Authorization(ActionType = new Evaluaciones.Web.ActionType[] { Evaluaciones.Web.ActionType.Access }, Root = "Usuarios", Area = Area)]
+        public JsonResult GetAllUsuarios(Evaluaciones.FindType findType, string filter)
         {
             Evaluaciones.Web.UI.Areas.Administracion.Models.Usuario.Usuarios usuarios = new Evaluaciones.Web.UI.Areas.Administracion.Models.Usuario.Usuarios();
 
@@ -737,10 +751,45 @@ namespace Evaluaciones.Web.UI.Areas.Administracion.Controllers
                     Run = usuario.Persona.Run,
                     Estado = usuario.Bloqueado ? "Bloquedo" : "Activo",
                     UltimoLogin = usuario.UltimoAcceso.ToString(),
-                    Accion = string.Format("{0}{1}", Evaluaciones.Helpers.ActionLinkExtension.ActionLinkCrudEmbedded(usuario.Id, null, Evaluaciones.Helpers.TypeButton.Edit, this),
-                                                     Evaluaciones.Helpers.ActionLinkExtension.ActionLinkCrudEmbedded(usuario.Id, null, Evaluaciones.Helpers.TypeButton.Delete, this))
+                    Accion = string.Format("{0}{1}{2}", Evaluaciones.Helpers.ActionLinkExtension.ActionLinkCrudEmbedded(usuario.Id, null, Evaluaciones.Helpers.TypeButton.Edit, this),
+                                                        Evaluaciones.Helpers.ActionLinkExtension.ActionLinkCrudEmbedded(usuario.Id, null, Evaluaciones.Helpers.TypeButton.Delete, this),
+                                                        Evaluaciones.Helpers.ActionLinkExtension.ActionLinkCrudEmbedded(usuario.Id, null, Evaluaciones.Helpers.TypeButton.OtherAction, this, "fa-key", "Establecer contraseña", "changePass"))
                 });
             }
+
+            return this.Json(usuarios, JsonRequestBehavior.AllowGet);
+        }
+
+        [Authorize]
+        [HttpGet]
+        [Evaluaciones.Web.Authorization(ActionType = new Evaluaciones.Web.ActionType[] { Evaluaciones.Web.ActionType.Access }, Root = "Usuarios", Area = Area)]
+        public JsonResult GetUsuarios(string run)
+        {
+            Evaluaciones.Web.UI.Areas.Administracion.Models.Usuario.Usuarios usuarios = new Evaluaciones.Web.UI.Areas.Administracion.Models.Usuario.Usuarios();
+
+            usuarios.data = new List<Evaluaciones.Web.UI.Areas.Administracion.Models.Usuario>();
+
+            string textoRun = run.Replace(".", string.Empty).Replace("-", string.Empty);
+
+            int runCuerpo = int.Parse(textoRun.Substring(0, textoRun.Length - 1));
+            char runDigito = char.Parse(textoRun.Replace(runCuerpo.ToString(), string.Empty));
+
+            if (!Evaluaciones.Helper.ValidaRun(runCuerpo, runDigito))
+            {
+                return this.Json("500", JsonRequestBehavior.AllowGet);
+            }
+
+            Evaluaciones.Membresia.Usuario usuario = Evaluaciones.Membresia.Usuario.Get(runCuerpo, runDigito);
+
+            usuarios.data.Add(new Evaluaciones.Web.UI.Areas.Administracion.Models.Usuario
+            {
+                Nombre = usuario.Persona.Nombre,
+                Run = usuario.Persona.Run,
+                Estado = usuario.Bloqueado ? "Bloquedo" : "Activo",
+                UltimoLogin = usuario.UltimoAcceso.ToString(),
+                Accion = string.Format("{0}{1}", Evaluaciones.Helpers.ActionLinkExtension.ActionLinkCrudEmbedded(usuario.Id, null, Evaluaciones.Helpers.TypeButton.Edit, this),
+                                                 Evaluaciones.Helpers.ActionLinkExtension.ActionLinkCrudEmbedded(usuario.Id, null, Evaluaciones.Helpers.TypeButton.Delete, this))
+            });
 
             return this.Json(usuarios, JsonRequestBehavior.AllowGet);
         }
@@ -793,9 +842,9 @@ namespace Evaluaciones.Web.UI.Areas.Administracion.Controllers
             }, JsonRequestBehavior.AllowGet);
         }
 
-        //[Authorize]
+        [Authorize]
         [HttpGet]
-        //[Evaluaciones.Web.Authorization(ActionType = new Evaluaciones.Web.ActionType[] { Evaluaciones.Web.ActionType.Access }, Root = "Usuarios", Area = Area)]
+        [Evaluaciones.Web.Authorization(ActionType = new Evaluaciones.Web.ActionType[] { Evaluaciones.Web.ActionType.Access }, Root = "Usuarios", Area = Area)]
         public JsonResult Usuario(string run)
         {
             string textoRun = run.Replace(".", string.Empty).Replace("-", string.Empty);
@@ -850,6 +899,29 @@ namespace Evaluaciones.Web.UI.Areas.Administracion.Controllers
             }, JsonRequestBehavior.AllowGet);
         }
 
+        [Authorize]
+        [HttpPost]
+        //[Evaluaciones.Web.Authorization(ActionType = new Evaluaciones.Web.ActionType[] { Evaluaciones.Web.ActionType.Accept }, Root = "Usuarios", Area = Area)]
+        public ActionResult ChangePass(Evaluaciones.Web.UI.Areas.Administracion.Models.Usuario model)
+        {
+            if (!this.ModelState.IsValid)
+            {
+                return this.View(model);
+            }
+
+            try
+            {
+                Evaluaciones.Membresia.Usuario usuario = Evaluaciones.Membresia.Usuario.Get(model.Id);
+
+                Evaluaciones.Membresia.Account.DoChangePassword(usuario, model.ChangePass.Password1, model.ChangePass.Password2);
+
+                return this.Json("200", JsonRequestBehavior.DenyGet);
+            }
+            catch (Exception ex)
+            {
+                return this.Json(ex.Message, JsonRequestBehavior.DenyGet);
+            }
+        }
         #endregion
     }
 }

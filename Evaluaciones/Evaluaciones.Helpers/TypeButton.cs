@@ -6,6 +6,7 @@
         Add,
         Edit,
         Delete,
-        Back
+        Back,
+        OtherAction
     }
 }

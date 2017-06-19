@@ -102,7 +102,7 @@ namespace Evaluaciones.Helpers
             return new MvcHtmlString(t.ToString(TagRenderMode.Normal));
         }
 
-        public static MvcHtmlString ActionLinkCrudEmbedded(Guid id, Guid? parentId, Evaluaciones.Helpers.TypeButton typeButton, Evaluaciones.Web.Controller controller, string faIcon = null)
+        public static MvcHtmlString ActionLinkCrudEmbedded(Guid id, Guid? parentId, Evaluaciones.Helpers.TypeButton typeButton, Evaluaciones.Web.Controller controller, string faIcon = null, string tooltip = null, string nameId = null)
         {
             if (!Evaluaciones.Helpers.ActionLinkExtension.ValidatePermission(controller, typeButton))
             {
@@ -120,7 +120,17 @@ namespace Evaluaciones.Helpers
 
             if (!string.IsNullOrEmpty(faIcon))
             {
-                t.InnerHtml = string.Format("<i class='{0}'></i>", faIcon);
+                t.InnerHtml = string.Format("<i class='fa {0}'></i>", faIcon);
+            }
+
+            if (!string.IsNullOrEmpty(tooltip))
+            {
+                t.MergeAttribute("title", tooltip);
+            }
+
+            if (!string.IsNullOrEmpty(nameId))
+            {
+                t.MergeAttribute("id", nameId);
             }
 
             switch (typeButton)
@@ -133,7 +143,10 @@ namespace Evaluaciones.Helpers
 
                         t.MergeAttribute("href", "#");
 
-                        t.MergeAttribute("title", "Agregar");
+                        if (string.IsNullOrEmpty(tooltip))
+                        {
+                            t.MergeAttribute("title", "Agregar");
+                        }
 
                         if (string.IsNullOrEmpty(faIcon))
                         {
@@ -149,8 +162,11 @@ namespace Evaluaciones.Helpers
                         t.MergeAttribute("data-modal", "form-primary");
 
                         t.MergeAttribute("href", "#");
-
-                        t.MergeAttribute("title", "Editar");
+                        
+                        if (string.IsNullOrEmpty(tooltip))
+                        {
+                            t.MergeAttribute("title", "Editar");
+                        }
 
                         if (string.IsNullOrEmpty(faIcon))
                         {
@@ -163,12 +179,21 @@ namespace Evaluaciones.Helpers
                     {
                         t.AddCssClass("btn btn-danger btn-xs actionLinkCrudEmbedded");
 
-                        t.MergeAttribute("title", "Eliminar");
+                        if (string.IsNullOrEmpty(tooltip))
+                        {
+                            t.MergeAttribute("title", "Eliminar");
+                        }
 
                         if (string.IsNullOrEmpty(faIcon))
                         {
                             t.InnerHtml = "<i class='fa fa-times'></i>";
                         }
+
+                        break;
+                    }
+                case Evaluaciones.Helpers.TypeButton.OtherAction:
+                    {
+                        t.AddCssClass("btn btn-primary btn-xs btn-flat actionLinkCrudEmbedded");
 
                         break;
                     }

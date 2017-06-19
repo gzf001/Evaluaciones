@@ -142,8 +142,14 @@ namespace Evaluaciones.Web.UI.Areas.Administracion
 
             context.MapRoute(
                 name: "GetUsuarios",
-                url: "Administracion/Admin/GetUsuarios/{findType}/{filter}",
-                defaults: new { area = "Administracion", controller = "Admin", action = "GetUsuarios", findType = "", filter = "" }
+                url: "Administracion/Admin/GetAllUsuarios/{findType}/{filter}",
+                defaults: new { area = "Administracion", controller = "Admin", action = "GetAllUsuarios", findType = "", filter = "" }
+            );
+
+            context.MapRoute(
+                name: "GetUsuario",
+                url: "Administracion/Admin/GetUsuarios/{run}",
+                defaults: new { area = "Administracion", controller = "Admin", action = "GetUsuarios", run = "" }
             );
 
             context.MapRoute(
@@ -163,7 +169,6 @@ namespace Evaluaciones.Web.UI.Areas.Administracion
                url: "Administracion/Admin/Usuario/{run}",
                defaults: new { area = "Administracion", controller = "Admin", action = "Usuario", run = "" }
             );
-
             #endregion
 
             context.MapRoute(
