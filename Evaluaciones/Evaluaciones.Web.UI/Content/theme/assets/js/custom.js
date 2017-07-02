@@ -29,9 +29,11 @@
     enableValidationRut();
 
     $("#region").change(function () {
+
         $("#ciudad").html("<option value='-1'>[Seleccione]</option>");
         $("#comuna").html("<option value='-1'>[Seleccione]</option>");
-        $.getJSON('/Administracion/Admin/Ciudades/' + $('#region').val(), function (data) {
+
+        $.getJSON('/Evaluaciones/Ciudades?regionCodigo=' + $('#region').val(), function (data) {
             var items = "";
 
             $.each(data, function (i, ciudad) {
@@ -43,8 +45,10 @@
     });
 
     $("#ciudad").change(function () {
+
         $("#comuna").html("<option value='-1'>[Seleccione]</option>");
-        $.getJSON('/Administracion/Admin/Comunas/' + $('#region').val() + '/' + $('#ciudad').val(), function (data) {
+
+        $.getJSON('/Evaluaciones/Comunas/' + $('#region').val() + '/' + $('#ciudad').val(), function (data) {
 
             var items = "";
             $.each(data, function (i, comuna) {

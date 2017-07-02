@@ -82,7 +82,7 @@
     </div>
 </div>
 
-<div id="modal-form" class="popup-basic admin-form mfp-with-anim mfp-hide mw800">
+<div id="modal-form-principal" class="popup-basic admin-form mfp-with-anim mfp-hide mw800">
     <div class="panel">
         <div class="panel-heading">
             <span class="panel-title">Datos personales</span>
@@ -148,10 +148,10 @@
                         <label for="SexoCodigo" class="field prepend-icon">
                             @foreach (Evaluaciones.Sexo sexo in Evaluaciones.Sexo.GetAll())
                             {
-                            <label class="radio-inline mr10">
-                                @Html.RadioButtonFor(x => x.Persona.SexoCodigo, sexo.Codigo, new { @id = "sexo" })
-                                @sexo.Nombre
-                            </label>
+                                <label class="radio-inline mr10">
+                                    @Html.RadioButtonFor(x => x.Persona.SexoCodigo, sexo.Codigo, new { @id = "sexo" })
+                                    @sexo.Nombre
+                                </label>
                             }
                         </label>
                     </div>
@@ -312,9 +312,84 @@
     </div>
 </div>
 
+<div id="modal-form-rol" class="popup-basic admin-form mfp-with-anim mfp-hide mw800">
+    <div class="panel">
+        <div class="panel-heading">
+            <span class="panel-title">Roles</span>
+        </div>
+        <form id="formModalRol" method="post">
+            <div class="panel-body">
+                <div class="section row">
+                    <div class="col-md-6">
+                        @Html.LabelFor(x => x.Persona.Run, new { @class = "field-label", @for = "runRol" })
+                        <label class="field prepend-icon">
+                            @Html.TextBoxFor(x => x.Persona.Run, new { @class = "textBoxDisabled", @id = "runRol", @disabled = false })
+                            <label class="field-icon">
+                                <i class="fa fa-user"></i>
+                            </label>
+                        </label>
+                    </div>
+                    <div class="col-md-6">
+                        @Html.LabelFor(x => x.Persona.Nombres, new { @class = "field-label", @for = "nombreRol" })
+                        <label class="field prepend-icon">
+                            @Html.TextBoxFor(x => x.Persona.Nombres, new { @class = "textBoxDisabled", @id = "nombreRol", @disabled = false })
+                            <label class="field-icon">
+                                <i class="fa fa-user"></i>
+                            </label>
+                        </label>
+                    </div>
+                </div>
+                <div class="section row">
+                    <div class="col-md-12">
+                        @Html.LabelFor(x => x.Role.AmbitoCodigo, new { @class = "field-label", @for = "ambitoRol" })
+                        <label class="field prepend-icon">
+                            @Html.DropDownListFor(x => x.Role.AmbitoCodigo, Evaluaciones.Ambito.Ambitos, new { @id = "ambitoRol", @class = "form-control" })
+                            <i class="arrow"></i>
+                        </label>
+                    </div>
+                </div>
+                <div id="empresaRolDiv" class="section row">
+                    <div class="col-md-12">
+                        <label id="empresaRolLabel" class="field-label" for="empresaRol">Empresa:</label>
+                        <label class="field prepend-icon">
+                            @Html.DropDownListFor(x => x.Business.RazonSocial, Evaluaciones.Empresa.Empresas, new { @id = "empresaRol", @class = "form-control" })
+                            <i class="arrow"></i>
+                        </label>
+                    </div>
+                </div>
+                <div id="centroCostoRolDiv" class="section row">
+                    <div class="col-md-12">
+                        <label id="centroCostoRolLabel" class="field-label" for="centroCostoRol">Centro de costo:</label>
+                        <label class="field prepend-icon">
+                            @Html.DropDownListFor(x => x.CostCenter.Nombre, Evaluaciones.CentroCosto.DefaultItem, new { @id = "centroCostoRol", @class = "form-control" })
+                            <i class="arrow"></i>
+                        </label>
+                    </div>
+                </div>
+            </div>
+            <div class="panel-footer">
+                <button type="button" id="cancelRoleAssignment" class="button btn-dark" typeButton="Cancel">Cancelar</button>
+                <button type="submit" id="saveRoleAssignment" class="button btn-primary">Guardar</button>
+            </div>
+            <div class="panel-body pn">
+                <table class="table table-striped table-hover" id="gridViewRol" cellspacing="0" width="100%">
+                    <thead>
+                        <tr>
+                            <th>Nombre</th>
+                            <th>Asignación</th>
+                        </tr>
+                    </thead>
+                </table>
+            </div>
+        </form>
+    </div>
+</div>
+
 @Html.HiddenFor(x => x.Id, new { @id = "userId" })
 
 <script type="text/javascript">
+
+    var rol = [];
 
     jQuery(document).ready(function () {
 
@@ -525,7 +600,7 @@
 
             $.getJSON('/Administracion/Admin/GetUsuario', function (data) {
 
-                popUp($('#formModalUser'), 'modal-form');
+                popUp($('#formModalUser'), 'modal-form-principal');
 
                 loadData(data, true);
 
@@ -583,14 +658,14 @@
 
             $.getJSON('/Administracion/Admin/GetUsuario/' + $(this).attr('data-value'), function (data) {
 
-                popUp($('#formModalUser'), 'modal-form');
+                popUp($('#formModalUser'), 'modal-form-principal');
 
-                $.getJSON('/Administracion/Admin/Ciudades/' + data.Persona.RegionCodigo, function (ciudad) {
+                $.getJSON('/Evaluaciones/Ciudades?regionCodigo=' + data.Persona.RegionCodigo, function (ciudad) {
 
                     loadSelect($('#ciudad'), ciudad, data.Persona.CiudadCodigo);
                 });
 
-                $.getJSON('/Administracion/Admin/Comunas/' + data.Persona.RegionCodigo + '/' + data.Persona.CiudadCodigo, function (comuna) {
+                $.getJSON('/Evaluaciones/Comunas/' + data.Persona.RegionCodigo + '/' + data.Persona.CiudadCodigo, function (comuna) {
 
                     loadSelect($('#comuna'), comuna, data.Persona.ComunaCodigo);
                 });
@@ -603,7 +678,7 @@
 
             $.getJSON('/Administracion/Admin/GetUsuario/' + $(this).attr('data-value'), function (data) {
 
-                popUp($('#formModalUserChangePass'), 'modal-form-changePass')
+                popUp($('#formModalUserChangePass'), 'modal-form-changePass');
 
                 $('#userId').val(data.Id);
                 $('#runChangePass').val(data.Persona.Run);
@@ -611,6 +686,245 @@
                 $('#password1').val('');
                 $('#password2').val('');
             });
+        })
+
+        $(document).on('click', 'a[id=assignRole]', function () {
+
+            $.getJSON('/Administracion/Admin/GetUsuario/' + $(this).attr('data-value'), function (data) {
+
+                popUp($('#formModalRol'), 'modal-form-rol');
+
+                $('#userId').val(data.Id);
+                $('#runRol').val(data.Persona.Run);
+                $('#nombreRol').val(data.Persona.Nombre);
+
+                $('#ambitoRol').val('-1');
+
+                $('#empresaRol').val('-1');
+
+                $('#centroCostoRol').val('-1');
+
+                $('#empresaRolDiv').hide();
+
+                $('#centroCostoRolDiv').hide();
+
+                rol.length = 0;
+
+                loadGridViewRol();
+            });
+        })
+
+        $('#ambitoRol').change(function () {
+
+            var ambitoCodigo = $('#ambitoRol').val();
+
+            switch (ambitoCodigo) {
+
+                case '1': {
+
+                    $('#empresaRolDiv').hide();
+                    $('#centroCostoRolDiv').hide();
+
+                    break;
+                }
+                case '2': {
+
+                    $('#empresaRolDiv').show();
+                    $('#centroCostoRolDiv').hide();
+
+                    break;
+                }
+                case '3': {
+
+                    $('#empresaRolDiv').show();
+                    $('#centroCostoRolDiv').show();
+
+                    break;
+                }
+                default: {
+
+                    $('#empresaRolDiv').hide();
+                    $('#centroCostoRolDiv').hide();
+
+                    break;
+                }
+            }
+
+            loadGridViewRol();
+        })
+
+        $('#empresaRol').change(function () {
+
+            var ambitoCodigo = $('#ambitoRol').val();
+            var empresaId = $('#empresaRol').val();
+
+            $.getJSON('/Evaluaciones/CentrosCosto?empresaId=' + $('#empresaRol').val(), function (data) {
+
+                var items = "";
+
+                $.each(data, function (i, centroCosto) {
+                    items += "<option value='" + centroCosto.Value + "'>" + centroCosto.Text + "</option>";
+                });
+
+                $("#centroCostoRol").html(items);
+
+                if (ambitoCodigo == 2 && empresaId != '-1') {
+
+                    loadGridViewRol();
+                }
+                //else {
+
+                //    $('#gridViewRol').empty();
+                //}
+            });
+        })
+
+        $('#centroCostoRol').change(function () {
+
+            var ambitoCodigo = $('#ambitoRol').val();
+            var centroCostoId = $('#centroCostoRol').val();
+
+            if (ambitoCodigo == 3 && centroCostoId != '-1') {
+
+                loadGridViewRol();
+            }
+            //else {
+
+            //    $('#gridViewRol').empty();
+            //}
+        })
+
+        jQuery.validator.addMethod("notEqual", function (value, element, param) {
+
+            var notEqual = true;
+
+            if (value == '-1') {
+
+                notEqual = false;
+            }
+
+            return notEqual;
+        })
+
+        $('#formModalRol').validate({
+
+            errorClass: 'state-error',
+            validClass: 'state-success',
+            errorElement: 'em',
+            rules: {
+                'Role.AmbitoCodigo': {
+                    notEqual: '-1'
+                },
+                'Business.RazonSocial': {
+                    notEqual: '-1'
+                },
+                'CostCenter.Nombre': {
+                    notEqual: '-1'
+                }
+            },
+            messages: {
+                'Role.AmbitoCodigo': {
+                    notEqual: 'Debe seleccionar el ámbito'
+                },
+                'Business.RazonSocial': {
+                    notEqual: 'Debe seleccionar la empresa'
+                },
+                'CostCenter.Nombre': {
+                    notEqual: 'Debe seleccionar el centro de costo'
+                }
+            },
+            highlight: function (element, errorClass, validClass) {
+                $(element).closest('.field').addClass(errorClass).removeClass(validClass);
+            },
+            unhighlight: function (element, errorClass, validClass) {
+                $(element).closest('.field').removeClass(errorClass).addClass(validClass);
+            },
+            errorPlacement: function (error, element) {
+                error.insertAfter(element.parent());
+            },
+            submitHandler: function (form) {
+
+                var objs = [];
+
+                if (rol.length > 0) {
+
+                    var userId = $('#userId').val();
+                    var ambitoCodigo = $('#ambitoRol').val();
+                    var empresaId = $("#empresaRol").is(":visible") ? $('#empresaRol').val() == '-1' ? null : $('#empresaRol').val() : null;
+                    var centroCostoId = $("#centroCostoRol").is(":visible") ? $('#centroCostoRol').val() == '-1' ? null : $('#centroCostoRol').val() : null;
+
+                    $(rol).each(function (i) {
+
+                        objs.push({
+                            ambitoCodigo: ambitoCodigo,
+                            rolId: rol[i],
+                            personaId: userId,
+                            empresaId: empresaId == '-1' ? null : empresaId,
+                            centroCostoId: centroCostoId == '-1' ? null : centroCostoId
+                        })
+                    });
+
+                    $.ajax({
+                        type: "POST",
+                        url: "/Administracion/Admin/UsuarioRol/",
+                        data: { 'model': objs },
+                        success: function (data) {
+
+                            switch (data) {
+
+                                case "501": {
+
+                                    swal("Error!", "Los roles no pudieron ser asignados", "error");
+
+                                    break;
+                                }
+                                case "500": {
+
+                                    swal("Error!", "Error interno", "error");
+
+                                    break;
+                                }
+                                default: {
+
+                                    $.magnificPopup.close();
+
+                                    swal("Listo!", "Los roles fueron asignados correctamente", "success");
+
+                                    break;
+                                }
+                            }
+                        },
+                        error: function () {
+
+                            swal("Error!", "Se ha producido un error al asignar los roles", "error");
+                        }
+                    })
+                }
+                else {
+
+                    swal('Error!', 'Debe seleccionar al menos un rol para asignar', 'warning');
+                }
+            }
+        })
+
+        $(document).on('change', '#gridViewRol tbody tr td input[type=checkbox]', function (e) {
+
+            e.preventDefault();
+
+            var rolId = $(this).attr('data-value');
+
+            var index = jQuery.inArray(rolId, rol);
+
+            if ($(this).is(':checked')) {
+
+                if (index == -1) {
+
+                    rol.push(rolId);
+                }
+            } else {
+
+                rol.splice(index, 1);
+            }
         })
 
         $('button[typebutton=Cancel]').click(function (e) {
@@ -743,6 +1057,62 @@
                 [15, 20, 25, 30, -1],
                 [15, 20, 25, 30, "All"]
             ],
+            "sDom": '<"dt-panelmenu clearfix"lfr>t<"dt-panelfooter clearfix"ip>'
+        });
+    }
+
+    function loadGridViewRol() {
+
+        var ambitoCodigo = $('#ambitoRol').val();
+        var empresaId = $("#empresaRol").is(":visible") ? $('#empresaRol').val() == '-1' ? null : $('#empresaRol').val() : null;
+        var centroCostoId = $("#centroCostoRol").is(":visible") ? $('#centroCostoRol').val() == '-1' ? null : $('#centroCostoRol').val() : null;
+
+        if (ambitoCodigo == '-1') {
+
+            $('#gridViewRol').empty();
+        }
+        else if (ambitoCodigo == 2 && empresaId == '-1') {
+
+            $('#gridViewRol').empty();
+        }
+        else if (ambitoCodigo == 3 && centroCostoId == '-1') {
+
+            $('#gridViewRol').empty();
+        }
+
+        $('#gridViewRol').DataTable({
+            "ajax": "/Administracion/Admin/UsuarioRol/" + $("#userId").val() + "/" + $("#ambitoRol").val() + "/" + empresaId + "/" + centroCostoId,
+            "columns": [
+                { "data": "Accion" },
+                { "data": "Nombre" }
+            ],
+            "destroy": true,
+            "order": [[1, "asc"]],
+            "columnDefs": [
+                {
+                    "targets": [0],
+                    "searchable": false,
+                    "sortable": false
+                }
+            ],
+            "iDisplayLength": 4,
+            "aLengthMenu": [
+                [4, 8, 12, 16, -1],
+                [4, 8, 12, 16, "All"]
+            ],
+            "fnCreatedRow": function (nRow, aData, iDataIndex) {
+
+                if (rol != null) {
+                    var chekBox = nRow.childNodes[0].childNodes[0].childNodes[0];
+
+                    if ($(chekBox).is(':checked')) {
+
+                        var rolId = $(chekBox).attr('data-value');
+
+                        rol.push(rolId);
+                    }
+                }
+            },
             "sDom": '<"dt-panelmenu clearfix"lfr>t<"dt-panelfooter clearfix"ip>'
         });
     }

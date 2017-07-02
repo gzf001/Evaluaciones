@@ -21,7 +21,7 @@ namespace Evaluaciones.Web.UI
 
             routes.MapRoute(
                name: "Login",
-               url: "{area}/{controller}/{action}",
+               url: "Home/Account/Login",
                defaults: new { area = "Home", controller = "Account", action = "Login" }
             );
 
@@ -31,6 +31,32 @@ namespace Evaluaciones.Web.UI
                 name: "Utils",
                 url: "{controller}/{action}",
                 defaults: new { controller = "Utils", action = "GenerateId" }
+            );
+
+            #endregion
+
+            #region Ciudades y Comunas
+
+            routes.MapRoute(
+                name: "Ciudades",
+                url: "Evaluaciones/Ciudades/{regionCodigo}",
+                defaults: new { controller = "Evaluaciones", action = "Ciudades", regionCodigo = "" }
+            );
+
+            routes.MapRoute(
+                name: "Comunas",
+                url: "Evaluaciones/Comunas/{regionCodigo}/{ciudadCodigo}",
+                defaults: new { controller = "Evaluaciones", action = "Comunas", regionCodigo = "", ciudadCodigo = "" }
+            );
+
+            #endregion
+
+            #region Centros de costo
+
+            routes.MapRoute(
+                name: "CentrosCosto",
+                url: "Evaluaciones/CentrosCosto/{empresaId}",
+                defaults: new { controller = "Evaluaciones", action = "CentrosCosto", empresaId = "" }
             );
 
             #endregion

@@ -240,6 +240,14 @@ namespace Evaluaciones.Helpers
 
                         #endregion
                     }
+                case Evaluaciones.Helpers.TypeButton.OtherAction:
+                    {
+                        #region Editar
+
+                        return Evaluaciones.Membresia.RolAccion.Exists(controller.CurrentEmpresa, controller.CurrentCentroCosto, controller.CurrentPersona, controller.CurrentMenuItem, Evaluaciones.Membresia.Accion.Editar);
+
+                        #endregion
+                    }
             }
 
             return true;

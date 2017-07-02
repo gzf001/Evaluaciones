@@ -17,58 +17,6 @@ namespace Evaluaciones.Web.UI.Areas.Administracion.Controllers
             return this.View();
         }
 
-        [Authorize]
-        [HttpGet]
-        public JsonResult Ciudades(string regionCodigo)
-        {
-            IEnumerable<SelectListItem> defaultItem = Enumerable.Repeat(new SelectListItem
-            {
-                Value = "-1",
-                Text = "[Seleccione]"
-            }, count: 1);
-
-            short codigo;
-
-            if (!short.TryParse(regionCodigo, out codigo))
-            {
-                return this.Json(defaultItem, JsonRequestBehavior.AllowGet);
-            }
-
-            Evaluaciones.Region region = Evaluaciones.Region.Get(codigo);
-
-            List<Evaluaciones.Ciudad> ciudades = Evaluaciones.Ciudad.GetAll(region);
-
-            SelectList selectList = new SelectList(ciudades, "Codigo", "Nombre");
-
-            return this.Json(defaultItem.Concat(selectList), JsonRequestBehavior.AllowGet);
-        }
-
-        [Authorize]
-        [HttpGet]
-        public JsonResult Comunas(string regionCodigo, string ciudadCodigo)
-        {
-            IEnumerable<SelectListItem> defaultItem = Enumerable.Repeat(new SelectListItem
-            {
-                Value = "-1",
-                Text = "[Seleccione]"
-            }, count: 1);
-
-            short codigo;
-
-            if (!short.TryParse(ciudadCodigo, out codigo))
-            {
-                return this.Json(defaultItem, JsonRequestBehavior.AllowGet);
-            }
-
-            Evaluaciones.Ciudad ciudad = Evaluaciones.Ciudad.Get(short.Parse(regionCodigo), codigo);
-
-            List<Evaluaciones.Comuna> comunas = Evaluaciones.Comuna.GetAll(ciudad);
-
-            SelectList selectList = new SelectList(comunas, "Codigo", "Nombre");
-
-            return this.Json(defaultItem.Concat(selectList), JsonRequestBehavior.AllowGet);
-        }
-
         #region Aplicacion
 
         [Authorize]
@@ -751,9 +699,10 @@ namespace Evaluaciones.Web.UI.Areas.Administracion.Controllers
                     Run = usuario.Persona.Run,
                     Estado = usuario.Bloqueado ? "Bloquedo" : "Activo",
                     UltimoLogin = usuario.UltimoAcceso.ToString(),
-                    Accion = string.Format("{0}{1}{2}", Evaluaciones.Helpers.ActionLinkExtension.ActionLinkCrudEmbedded(usuario.Id, null, Evaluaciones.Helpers.TypeButton.Edit, this),
-                                                        Evaluaciones.Helpers.ActionLinkExtension.ActionLinkCrudEmbedded(usuario.Id, null, Evaluaciones.Helpers.TypeButton.Delete, this),
-                                                        Evaluaciones.Helpers.ActionLinkExtension.ActionLinkCrudEmbedded(usuario.Id, null, Evaluaciones.Helpers.TypeButton.OtherAction, this, "fa-key", "Establecer contraseña", "changePass"))
+                    Accion = string.Format("{0}{1}{2}{3}", Evaluaciones.Helpers.ActionLinkExtension.ActionLinkCrudEmbedded(usuario.Id, null, Evaluaciones.Helpers.TypeButton.Edit, this),
+                                                           Evaluaciones.Helpers.ActionLinkExtension.ActionLinkCrudEmbedded(usuario.Id, null, Evaluaciones.Helpers.TypeButton.Delete, this),
+                                                           Evaluaciones.Helpers.ActionLinkExtension.ActionLinkCrudEmbedded(usuario.Id, null, Evaluaciones.Helpers.TypeButton.OtherAction, this, "fa-key", "Establecer contraseña", "changePass"),
+                                                           Evaluaciones.Helpers.ActionLinkExtension.ActionLinkCrudEmbedded(usuario.Id, null, Evaluaciones.Helpers.TypeButton.OtherAction, this, "fa-wrench", "Asignar roles", "assignRole"))
                 });
             }
 
@@ -922,6 +871,90 @@ namespace Evaluaciones.Web.UI.Areas.Administracion.Controllers
                 return this.Json(ex.Message, JsonRequestBehavior.DenyGet);
             }
         }
+
+        [Authorize]
+        [HttpGet]
+        public JsonResult UsuarioRol(Guid personaId, int ambitoCodigo, Guid? empresaId, Guid? centroCostoId)
+        {
+            Evaluaciones.Persona persona = Evaluaciones.Persona.Get(personaId);
+
+            Evaluaciones.Empresa empresa = new Evaluaciones.Empresa();
+
+            Evaluaciones.CentroCosto centroCosto = new Evaluaciones.CentroCosto();
+
+            Evaluaciones.Ambito ambito = Evaluaciones.Ambito.Get(ambitoCodigo);
+
+            if (empresaId.HasValue)
+            {
+                empresa = Evaluaciones.Empresa.Get(empresaId.Value);
+            }
+            else
+            {
+                empresa = null;
+            }
+
+            if (centroCostoId.HasValue)
+            {
+                centroCosto = Evaluaciones.CentroCosto.Get(empresaId.Value, centroCostoId.Value);
+            }
+            else
+            {
+                centroCosto = null;
+            }
+
+            Evaluaciones.Web.UI.Areas.Administracion.Models.Rol.Roles rol = new Evaluaciones.Web.UI.Areas.Administracion.Models.Rol.Roles();
+
+            rol.data = new List<Evaluaciones.Web.UI.Areas.Administracion.Models.Rol>();
+
+            foreach (Evaluaciones.Membresia.Rol r in Evaluaciones.Membresia.Rol.GetAll(ambito, false))
+            {
+                bool exists = false;
+
+                if (ambito.Equals(Evaluaciones.Ambito.Aplicacion))
+                {
+                    exists = Evaluaciones.Membresia.RolPersona.Exists(persona, r);
+                }
+                else if (ambito.Equals(Evaluaciones.Ambito.Empresa))
+                {
+                    exists = Evaluaciones.Membresia.RolPersonaEmpresa.Exists(r, persona, empresa);
+                }
+                else
+                {
+                    exists = Evaluaciones.Membresia.RolPersonaCentroCosto.Exists(r, persona, centroCosto);
+                }
+
+                rol.data.Add(new Evaluaciones.Web.UI.Areas.Administracion.Models.Rol
+                {
+                    Nombre = r.Nombre,
+                    Accion = string.Format("<label class='option'><input type='checkbox' {0} name='asignacion' data-value={1}><span class='checkbox'></span></label>", exists ? "checked" : string.Empty, r.Id)
+                });
+            }
+
+            return this.Json(rol, JsonRequestBehavior.AllowGet);
+        }
+
+        [Authorize]
+        [HttpPost]
+        public JsonResult UsuarioRol(List<Evaluaciones.Web.UI.Areas.Administracion.Models.Usuario.RolPersona> model)
+        {
+            if (!this.ModelState.IsValid)
+            {
+                return this.Json("501", JsonRequestBehavior.AllowGet);
+            }
+
+            List<Evaluaciones.Membresia.Account.Rol> roles = (from m in model
+                                                              select new Evaluaciones.Membresia.Account.Rol
+                                                              {
+                                                                  PersonaId = m.PersonaId,
+                                                                  AmbitoCodigo = m.AmbitoCodigo,
+                                                                  RolId = m.RolId,
+                                                                  EmpresaId = m.EmpresaId,
+                                                                  CentroCostoId = m.CentroCostoId
+                                                              }).ToList<Evaluaciones.Membresia.Account.Rol>();
+
+            return this.Json(Evaluaciones.Membresia.Account.Rol.Asignar(roles), JsonRequestBehavior.DenyGet);
+        }
+
         #endregion
     }
 }

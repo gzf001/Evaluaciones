@@ -14,22 +14,6 @@ namespace Evaluaciones.Web.UI.Areas.Administracion
 
         public override void RegisterArea(AreaRegistrationContext context)
         {
-            #region Ciudades y Comunas
-
-            context.MapRoute(
-                name: "Ciudades",
-                url: "Administracion/Admin/Ciudades/{regionCodigo}",
-                defaults: new { area = "Administracion", controller = "Admin", action = "Ciudades", regionCodigo = "" }
-            );
-
-            context.MapRoute(
-                name: "Comunas",
-                url: "Administracion/Admin/Comunas/{regionCodigo}/{ciudadCodigo}",
-                defaults: new { area = "Administracion", controller = "Admin", action = "Comunas", regionCodigo = "", ciudadCodigo = "" }
-            );
-
-            #endregion
-
             #region Aplicaciones
 
             context.MapRoute(
@@ -168,6 +152,12 @@ namespace Evaluaciones.Web.UI.Areas.Administracion
                name: "Usuario",
                url: "Administracion/Admin/Usuario/{run}",
                defaults: new { area = "Administracion", controller = "Admin", action = "Usuario", run = "" }
+            );
+
+            context.MapRoute(
+               name: "UsuarioRol",
+               url: "Administracion/Admin/UsuarioRol/{personaId}/{ambitoCodigo}/{empresaId}/{centroCostoId}",
+               defaults: new { area = "Administracion", controller = "Admin", action = "UsuarioRol", personaId = "", ambitoCodigo = "", empresaId = "", centroCostoId = "" }
             );
             #endregion
 

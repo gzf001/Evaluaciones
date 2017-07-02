@@ -56,6 +56,30 @@ namespace Evaluaciones.Web.UI.Areas.Administracion.Models
             set;
         }
 
+        public Rol Role
+        {
+            get;
+            set;
+        }
+
+        public RolPersona AssignedRole
+        {
+            get;
+            set;
+        }
+
+        public Empresa Business
+        {
+            get;
+            set;
+        }
+
+        public CentroCosto CostCenter
+        {
+            get;
+            set;
+        }
+
         public class Usuarios
         {
             public List<Usuario> data
@@ -87,6 +111,35 @@ namespace Evaluaciones.Web.UI.Areas.Administracion.Models
                 get;
                 set;
             }
+        }
+
+        public class RolPersona : Evaluaciones.Membresia.RolPersona
+        {
+            public int AmbitoCodigo
+            {
+                get;
+                set;
+            }
+
+            public Guid? EmpresaId
+            {
+                get;
+                set;
+            }
+
+            public Guid? CentroCostoId
+            {
+                get;
+                set;
+            }
+        }
+
+        public class Empresa : Evaluaciones.Empresa
+        {
+        }
+
+        public class CentroCosto : Evaluaciones.CentroCosto
+        {
         }
     }
 }

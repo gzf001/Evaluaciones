@@ -156,6 +156,7 @@
     <Compile Include="Areas\Home\HomeAreaRegistration.cs" />
     <Compile Include="Areas\Home\Models\Login.cs" />
     <Compile Include="Areas\Home\Models\RecoveryPass.cs" />
+    <Compile Include="Controllers\EvaluacionesController.cs" />
     <Compile Include="Controllers\UtilsController.cs" />
     <Compile Include="Global.asax.cs">
       <DependentUpon>Global.asax</DependentUpon>
@@ -3260,6 +3261,7 @@
     <Folder Include="Content\theme\vendor\plugins\pnotify\" />
     <Folder Include="Content\theme\vendor\plugins\sparkline\" />
     <Folder Include="Content\theme\vendor\plugins\xeditable\js\" />
+    <Folder Include="Views\Evaluaciones\" />
   </ItemGroup>
   <ItemGroup>
     <Content Include="packages.config" />

@@ -6,7 +6,7 @@ using System.Web.Mvc;
 
 namespace Evaluaciones.Web.UI.Controllers
 {
-    public class UtilsController : Controller
+    public class UtilsController : Evaluaciones.Web.Controller
     {
         [Authorize]
         [HttpGet]

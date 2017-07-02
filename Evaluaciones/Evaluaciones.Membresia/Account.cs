@@ -1,4 +1,5 @@
 ﻿using System;
+using System.Collections.Generic;
 using System.IO;
 using System.Linq;
 using System.Security.Cryptography;
@@ -54,7 +55,7 @@ namespace Evaluaciones.Membresia
 
         public static PasswordRecoveryStatus DoPasswordRecovery(int cuerpo, char digito)
         {
-            Persona persona = Persona.Get(cuerpo, digito);            
+            Persona persona = Persona.Get(cuerpo, digito);
 
             if (persona == null)
             {
@@ -360,6 +361,206 @@ namespace Evaluaciones.Membresia
             String plainText = Encoding.UTF8.GetString(plainTextBytes, 0, decryptedByteCount);
 
             return plainText;
+        }
+
+        public class Rol
+        {
+            public Guid PersonaId
+            {
+                get;
+                set;
+            }
+
+            public int AmbitoCodigo
+            {
+                get;
+                set;
+            }
+
+            public Guid RolId
+            {
+                get;
+                set;
+            }
+
+            public Guid? EmpresaId
+            {
+                get;
+                set;
+            }
+
+            public Guid? CentroCostoId
+            {
+                get;
+                set;
+            }
+
+            public static string Asignar(List<Evaluaciones.Membresia.Account.Rol> model)
+            {
+                try
+                {
+                    Guid personaId = model.Select<Evaluaciones.Membresia.Account.Rol, Guid>(x => x.PersonaId).Distinct().Single();
+
+                    IEnumerable<Evaluaciones.Membresia.Account.Rol> queryEmpresa = model.Where<Evaluaciones.Membresia.Account.Rol>(x => x.EmpresaId.HasValue);
+                    IEnumerable<Evaluaciones.Membresia.Account.Rol> queryCentroCosto = model.Where<Evaluaciones.Membresia.Account.Rol>(x => x.CentroCostoId.HasValue);
+
+                    Guid? empresaId;
+                    Guid? centroCostoId;
+
+                    Evaluaciones.Persona persona = Evaluaciones.Persona.Get(personaId);
+
+                    int ambitoCodigo = model.Select<Evaluaciones.Membresia.Account.Rol, int>(x => x.AmbitoCodigo).Distinct().Single();
+
+                    if (queryEmpresa.Any<Evaluaciones.Membresia.Account.Rol>())
+                    {
+                        empresaId = queryEmpresa.Select<Evaluaciones.Membresia.Account.Rol, Guid>(x => x.EmpresaId.Value).Distinct().Single();
+                    }
+                    else
+                    {
+                        empresaId = null;
+                    }
+
+                    if (queryCentroCosto.Any<Evaluaciones.Membresia.Account.Rol>())
+                    {
+                        centroCostoId = queryEmpresa.Select<Evaluaciones.Membresia.Account.Rol, Guid>(x => x.CentroCostoId.Value).Distinct().Single();
+                    }
+                    else
+                    {
+                        centroCostoId = null;
+                    }
+
+                    Evaluaciones.Ambito ambito = Evaluaciones.Ambito.Get(ambitoCodigo);
+
+                    if (ambito.Equals(Evaluaciones.Ambito.Empresa))
+                    {
+                        #region Empresa
+
+                        if (!empresaId.HasValue)
+                        {
+                            throw new Exception("Debe seleccionar una empresa");
+                        }
+
+                        Evaluaciones.Empresa empresa = Evaluaciones.Empresa.Get(empresaId.Value);
+
+                        using (Evaluaciones.Membresia.Context context = new Evaluaciones.Membresia.Context())
+                        {
+                            foreach (Evaluaciones.Membresia.RolPersonaEmpresa rolPersonaEmpresa in Evaluaciones.Membresia.RolPersonaEmpresa.GetAll(persona, empresa))
+                            {
+                                new Evaluaciones.Membresia.RolPersonaEmpresa
+                                {
+                                    RolId = rolPersonaEmpresa.RolId,
+                                    PersonaId = rolPersonaEmpresa.PersonaId,
+                                    EmpresaId = rolPersonaEmpresa.EmpresaId
+                                }.Delete(context);
+                            }
+
+                            context.SubmitChanges();
+                        }
+
+                        using (Evaluaciones.Membresia.Context context = new Evaluaciones.Membresia.Context())
+                        {
+                            foreach (Evaluaciones.Membresia.Account.Rol rolPersona in model)
+                            {
+                                new Evaluaciones.Membresia.RolPersonaEmpresa
+                                {
+                                    RolId = rolPersona.RolId,
+                                    PersonaId = rolPersona.PersonaId,
+                                    EmpresaId = rolPersona.EmpresaId.Value
+                                }.Save(context);
+                            }
+
+                            context.SubmitChanges();
+                        }
+
+                        #endregion
+                    }
+                    else if (ambito.Equals(Evaluaciones.Ambito.CentroCosto))
+                    {
+                        #region CentroCosto
+
+                        if (!empresaId.HasValue)
+                        {
+                            throw new Exception("Debe seleccionar una empresa y centro de costo");
+                        }
+
+                        Evaluaciones.CentroCosto centroCosto = Evaluaciones.CentroCosto.Get(empresaId.Value, centroCostoId.Value);
+
+                        using (Evaluaciones.Membresia.Context context = new Evaluaciones.Membresia.Context())
+                        {
+                            foreach (Evaluaciones.Membresia.RolPersonaCentroCosto rolPersonaCentroCosto in Evaluaciones.Membresia.RolPersonaCentroCosto.GetAll(persona, centroCosto))
+                            {
+                                new Evaluaciones.Membresia.RolPersonaCentroCosto
+                                {
+                                    RolId = rolPersonaCentroCosto.RolId,
+                                    PersonaId = rolPersonaCentroCosto.PersonaId,
+                                    EmpresaId = rolPersonaCentroCosto.EmpresaId,
+                                    CentroCostoId = rolPersonaCentroCosto.CentroCostoId
+                                }.Delete(context);
+                            }
+
+                            context.SubmitChanges();
+                        }
+
+                        using (Evaluaciones.Membresia.Context context = new Evaluaciones.Membresia.Context())
+                        {
+                            foreach (Evaluaciones.Membresia.Account.Rol rolPersona in model)
+                            {
+                                new Evaluaciones.Membresia.RolPersonaCentroCosto
+                                {
+                                    RolId = rolPersona.RolId,
+                                    PersonaId = rolPersona.PersonaId,
+                                    EmpresaId = rolPersona.EmpresaId.Value,
+                                    CentroCostoId = rolPersona.CentroCostoId.Value
+                                }.Save(context);
+                            }
+
+                            context.SubmitChanges();
+                        }
+
+                        #endregion
+                    }
+                    else
+                    {
+                        #region Aplicacion
+
+                        using (Evaluaciones.Membresia.Context context = new Evaluaciones.Membresia.Context())
+                        {
+                            foreach (Evaluaciones.Membresia.RolPersona rolPersona in Evaluaciones.Membresia.RolPersona.GetAll(persona))
+                            {
+                                new Evaluaciones.Membresia.RolPersona
+                                {
+                                    RolId = rolPersona.RolId,
+                                    PersonaId = rolPersona.PersonaId
+                                }.Delete(context);
+                            }
+
+                            context.SubmitChanges();
+                        }
+
+                        using (Evaluaciones.Membresia.Context context = new Evaluaciones.Membresia.Context())
+                        {
+                            foreach (Evaluaciones.Membresia.Account.Rol rolPersona in model)
+                            {
+                                new Evaluaciones.Membresia.RolPersona
+                                {
+                                    RolId = rolPersona.RolId,
+                                    PersonaId = rolPersona.PersonaId
+                                }.Save(context);
+                            }
+
+                            context.SubmitChanges();
+                        }
+
+                        #endregion
+                    }
+
+                    return "200";
+                }
+                catch
+                {
+                    return "500";
+                }
+            }
         }
     }
 }
