@@ -179,6 +179,40 @@ namespace Evaluaciones.Web.UI.Areas.Administracion
             );
             #endregion
 
+            #region Empresas
+
+            context.MapRoute(
+               name: "GetEmpresas",
+               url: "Administracion/Admin/GetAllEmpresas/{findType}/{filter}",
+               defaults: new { area = "Administracion", controller = "Admin", action = "GetAllEmpresas", findType = "", filter = "" }
+           );
+
+            context.MapRoute(
+                name: "GetEmpresa",
+                url: "Administracion/Admin/GetEmpresas/{rut}",
+                defaults: new { area = "Administracion", controller = "Admin", action = "GetEmpresas", rut = "" }
+            );
+
+            context.MapRoute(
+               name: "GetAddEmpresa",
+               url: "Administracion/Admin/AddEmpresa",
+               defaults: new { area = "Administracion", controller = "Admin", action = "AddEmpresa" }
+            );
+
+            context.MapRoute(
+               name: "GetEditEmpresa",
+               url: "Administracion/Admin/GetEmpresa/{id}",
+               defaults: new { area = "Administracion", controller = "Admin", action = "EditEmpresa", id = "" }
+            );
+
+            context.MapRoute(
+               name: "Empresa",
+               url: "Administracion/Admin/Empresa/{rut}",
+               defaults: new { area = "Administracion", controller = "Admin", action = "Empresa", rut = "" }
+            );
+
+            #endregion
+
             context.MapRoute(
                 "Administracion_default",
                 "Administracion/{controller}/{action}/{id}",

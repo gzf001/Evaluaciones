@@ -147,6 +147,7 @@
     <Compile Include="Areas\Administracion\Controllers\UserController.cs" />
     <Compile Include="Areas\Administracion\Models\Aplicacion.cs" />
     <Compile Include="Areas\Administracion\Models\ChangePassword.cs" />
+    <Compile Include="Areas\Administracion\Models\Empresa.cs" />
     <Compile Include="Areas\Administracion\Models\MenuItem.cs" />
     <Compile Include="Areas\Administracion\Models\Persona.cs" />
     <Compile Include="Areas\Administracion\Models\Rol.cs" />
@@ -186,6 +187,7 @@
     <Content Include="Content\images\slide-2.jpg" />
     <Content Include="Content\images\slide-3.jpg" />
     <Content Include="Content\js\admin\aplicaciones\aplicaciones.js" />
+    <Content Include="Content\js\admin\empresas\empresas.js" />
     <Content Include="Content\js\admin\menuItem\menuItem.js" />
     <Content Include="Content\js\admin\rolPermiso\permisos.js" />
     <Content Include="Content\js\admin\rolPermiso\roles.js" />
@@ -3330,6 +3332,9 @@
   </ItemGroup>
   <ItemGroup>
     <Content Include="Areas\Administracion\Views\Admin\Usuarios.cshtml" />
+  </ItemGroup>
+  <ItemGroup>
+    <Content Include="Areas\Administracion\Views\Admin\Empresas.cshtml" />
   </ItemGroup>
   <PropertyGroup>
     <VisualStudioVersion Condition="'$(VisualStudioVersion)' == ''">10.0</VisualStudioVersion>

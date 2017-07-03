@@ -170,13 +170,15 @@ namespace Evaluaciones.Web.UI.App_Start
             ScriptBundle rol = new ScriptBundle("~/js/rol");
             ScriptBundle permiso = new ScriptBundle("~/js/permiso");
             ScriptBundle usuario = new ScriptBundle("~/js/usuarios");
+            ScriptBundle empresa = new ScriptBundle("~/js/empresas");
 
             bundles.Add(aplicacion.Include("~/Content/js/admin/aplicaciones/aplicaciones.js"));
             bundles.Add(menuItem.Include("~/Content/js/admin/menuItem/menuItem.js"));
             bundles.Add(rol.Include("~/Content/js/admin/rolPermiso/roles.js"));
             bundles.Add(permiso.Include("~/Content/js/admin/rolPermiso/permisos.js"));
             bundles.Add(usuario.Include("~/Content/js/admin/usuarios/usuarios.js"));
-            
+            bundles.Add(empresa.Include("~/Content/js/admin/empresas/empresas.js"));
+
             #endregion
 
             #endregion

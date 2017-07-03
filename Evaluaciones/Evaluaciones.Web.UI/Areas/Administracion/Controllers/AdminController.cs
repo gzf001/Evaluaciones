@@ -737,7 +737,7 @@ namespace Evaluaciones.Web.UI.Areas.Administracion.Controllers
 
         [Authorize]
         [HttpGet]
-        [Evaluaciones.Web.Authorization(ActionType = new Evaluaciones.Web.ActionType[] { Evaluaciones.Web.ActionType.Edit }, Root = "Aplicaciones", Area = Area)]
+        [Evaluaciones.Web.Authorization(ActionType = new Evaluaciones.Web.ActionType[] { Evaluaciones.Web.ActionType.Edit }, Root = "Usuarios", Area = Area)]
         public JsonResult EditUsuario(Guid id)
         {
             Evaluaciones.Membresia.Usuario usuario = Evaluaciones.Membresia.Usuario.Get(id);
@@ -762,7 +762,7 @@ namespace Evaluaciones.Web.UI.Areas.Administracion.Controllers
 
         [Authorize]
         [HttpGet]
-        [Evaluaciones.Web.Authorization(ActionType = new Evaluaciones.Web.ActionType[] { Evaluaciones.Web.ActionType.Delete }, Root = "Aplicaciones", Area = Area)]
+        [Evaluaciones.Web.Authorization(ActionType = new Evaluaciones.Web.ActionType[] { Evaluaciones.Web.ActionType.Delete }, Root = "Usuarios", Area = Area)]
         public JsonResult DeleteUsuario(Guid id)
         {
             try
@@ -1034,6 +1034,241 @@ namespace Evaluaciones.Web.UI.Areas.Administracion.Controllers
             return usuarios;
         }
 
+        #endregion
+
+        #region Empresas
+
+        [Authorize]
+        [HttpGet]
+        [Evaluaciones.Web.Authorization(ActionType = new Evaluaciones.Web.ActionType[] { Evaluaciones.Web.ActionType.Access }, Root = "Empresas", Area = Area)]
+        public ActionResult Empresas()
+        {
+            Evaluaciones.Web.UI.Areas.Administracion.Models.Empresa empresa = new Evaluaciones.Web.UI.Areas.Administracion.Models.Empresa();
+
+            empresa.FindType = Evaluaciones.FindType.Equals;
+
+            return this.View(empresa);
+        }
+
+        [Authorize]
+        [HttpPost]
+        [Evaluaciones.Web.Authorization(ActionType = new Evaluaciones.Web.ActionType[] { Evaluaciones.Web.ActionType.Accept }, Root = "Empresas", Area = Area)]
+        public ActionResult Empresas(Evaluaciones.Web.UI.Areas.Administracion.Models.Empresa model)
+        {
+            if (!this.ModelState.IsValid)
+            {
+                return this.View(model);
+            }
+
+            try
+            {
+                Evaluaciones.Empresa empresa = Evaluaciones.Empresa.Get(model.Id);
+
+                string textoRun = model.Rut.Replace(".", string.Empty).Replace("-", string.Empty);
+
+                int rutCuerpo = int.Parse(textoRun.Substring(0, textoRun.Length - 1));
+                char rutDigito = char.Parse(textoRun.Replace(rutCuerpo.ToString(), string.Empty));
+
+                using (Evaluaciones.Context context = new Evaluaciones.Context())
+                {
+                    new Evaluaciones.Empresa
+                    {
+                        Id = model.Id,
+                        RutCuerpo = model.RutCuerpo,
+                        RutDigito = model.RutDigito,
+                        RazonSocial = model.RazonSocial,
+                        RegionCodigo = model.RegionCodigo,
+                        CiudadCodigo = model.CiudadCodigo,
+                        ComunaCodigo = model.ComunaCodigo,
+                        Direccion = model.Direccion,
+                        Email = model.Email,
+                        PaginaWeb = model.PaginaWeb,
+                        Telefono1 = model.Telefono1,
+                        Telefono2 = model.Telefono2,
+                        Fax = model.Fax,
+                        Celular = model.Celular,
+                        Bloqueada = model.Bloqueada
+                    }.Save(context);
+
+                    context.SubmitChanges();
+                }
+
+                return this.Json("200", JsonRequestBehavior.DenyGet);
+            }
+            catch (Exception ex)
+            {
+                if (ex.Message.Contains("RutCuerpoIndex"))
+                {
+                    return this.Json("El R.U.T. se encuentra registrado con otra empresa", JsonRequestBehavior.DenyGet);
+                }
+                else
+                {
+                    return this.Json(ex.Message, JsonRequestBehavior.DenyGet);
+                }
+            }
+        }
+
+        [Authorize]
+        [HttpGet]
+        //[Evaluaciones.Web.Authorization(ActionType = new Evaluaciones.Web.ActionType[] { Evaluaciones.Web.ActionType.Access }, Root = "Empresas", Area = Area)]
+        public JsonResult GetAllEmpresas(Evaluaciones.FindType findType, string filter)
+        {
+            Evaluaciones.Web.UI.Areas.Administracion.Models.Empresa.Empresas empresas = this.EmpresaGridView(findType, filter);
+
+            return this.Json(empresas, JsonRequestBehavior.AllowGet);
+        }
+
+        [Authorize]
+        [HttpGet]
+        [Evaluaciones.Web.Authorization(ActionType = new Evaluaciones.Web.ActionType[] { Evaluaciones.Web.ActionType.Access }, Root = "Empresas", Area = Area)]
+        public JsonResult GetEmpresas(string rut)
+        {
+            string textoRun = rut.Replace(".", string.Empty).Replace("-", string.Empty);
+
+            int rutCuerpo = int.Parse(textoRun.Substring(0, textoRun.Length - 1));
+            char rutDigito = char.Parse(textoRun.Replace(rutCuerpo.ToString(), string.Empty));
+
+            if (!Evaluaciones.Helper.ValidaRun(rutCuerpo, rutDigito))
+            {
+                return this.Json("500", JsonRequestBehavior.AllowGet);
+            }
+
+            Evaluaciones.Web.UI.Areas.Administracion.Models.Empresa.Empresas empresas = this.EmpresaGridView(null, null, rutCuerpo, rutDigito);
+
+            return this.Json(empresas, JsonRequestBehavior.AllowGet);
+        }
+
+        [Authorize]
+        [HttpGet]
+        [Evaluaciones.Web.Authorization(ActionType = new Evaluaciones.Web.ActionType[] { Evaluaciones.Web.ActionType.Add }, Root = "Empresas", Area = Area)]
+        public JsonResult AddEmpresa()
+        {
+            return this.Json(new Evaluaciones.Web.UI.Areas.Administracion.Models.Empresa(), JsonRequestBehavior.AllowGet);
+        }
+
+        [Authorize]
+        [HttpGet]
+        [Evaluaciones.Web.Authorization(ActionType = new Evaluaciones.Web.ActionType[] { Evaluaciones.Web.ActionType.Edit }, Root = "Empresas", Area = Area)]
+        public JsonResult EditEmpresa(Guid id)
+        {
+            Evaluaciones.Empresa empresa = Evaluaciones.Empresa.Get(id);
+
+            return this.Json(new Evaluaciones.Web.UI.Areas.Administracion.Models.Empresa
+            {
+                Id = empresa.Id,
+                Rut = empresa.Rut,
+                RutCuerpo = empresa.RutCuerpo,
+                RutDigito = empresa.RutDigito,
+                RazonSocial = empresa.RazonSocial,
+                RegionCodigo = empresa.RegionCodigo,
+                CiudadCodigo = empresa.CiudadCodigo,
+                ComunaCodigo = empresa.ComunaCodigo,
+                Direccion = empresa.Direccion,
+                Email = empresa.Email,
+                PaginaWeb = empresa.PaginaWeb,
+                Telefono1 = empresa.Telefono1,
+                Telefono2 = empresa.Telefono2,
+                Fax = empresa.Fax,
+                Celular = empresa.Celular,
+                Bloqueada = empresa.Bloqueada
+            }, JsonRequestBehavior.AllowGet);
+        }
+
+        [Authorize]
+        [HttpGet]
+        [Evaluaciones.Web.Authorization(ActionType = new Evaluaciones.Web.ActionType[] { Evaluaciones.Web.ActionType.Access }, Root = "Empresas", Area = Area)]
+        public JsonResult Empresa(string rut)
+        {
+            string textoRun = rut.Replace(".", string.Empty).Replace("-", string.Empty);
+
+            int rutCuerpo = int.Parse(textoRun.Substring(0, textoRun.Length - 1));
+            char rutDigito = char.Parse(textoRun.Replace(rutCuerpo.ToString(), string.Empty));
+
+            if (!Evaluaciones.Helper.ValidaRun(rutCuerpo, rutDigito))
+            {
+                return this.Json("500", JsonRequestBehavior.AllowGet);
+            }
+
+            Evaluaciones.Empresa empresa = Evaluaciones.Empresa.Get(rutCuerpo, rutDigito);
+
+            if (empresa == null)
+            {
+                empresa = new Evaluaciones.Empresa();
+
+                empresa.RutCuerpo = rutCuerpo;
+                empresa.RutDigito = rutDigito;
+                empresa.Rut = string.Format("{0}-{1}", rutCuerpo.ToString("N0"), rutDigito);
+
+                return this.Json(empresa, JsonRequestBehavior.AllowGet);
+            }
+
+            return this.Json(new Evaluaciones.Web.UI.Areas.Administracion.Models.Empresa
+            {
+                Id = empresa.Id,
+                RutCuerpo = empresa.RutCuerpo,
+                RutDigito = empresa.RutDigito,
+                RazonSocial = empresa.RazonSocial,
+                RegionCodigo = empresa.RegionCodigo,
+                CiudadCodigo = empresa.CiudadCodigo,
+                ComunaCodigo = empresa.ComunaCodigo,
+                Direccion = empresa.Direccion,
+                Email = empresa.Email,
+                PaginaWeb = empresa.PaginaWeb,
+                Telefono1 = empresa.Telefono1,
+                Telefono2 = empresa.Telefono2,
+                Fax = empresa.Fax,
+                Celular = empresa.Celular,
+                Bloqueada = empresa.Bloqueada
+            }, JsonRequestBehavior.AllowGet);
+        }
+
+        private Evaluaciones.Web.UI.Areas.Administracion.Models.Empresa.Empresas EmpresaGridView(Evaluaciones.FindType? findType, string filter, int? rutCuerpo = null, char? rutDigito = null)
+        {
+            Evaluaciones.Web.UI.Areas.Administracion.Models.Empresa.Empresas empresas = new Evaluaciones.Web.UI.Areas.Administracion.Models.Empresa.Empresas();
+
+            empresas.data = new List<Evaluaciones.Web.UI.Areas.Administracion.Models.Empresa>();
+
+            List<Evaluaciones.Empresa> lista = new List<Evaluaciones.Empresa>();
+
+            if (rutCuerpo.HasValue && rutDigito.HasValue)
+            {
+                Evaluaciones.Empresa empresa = Evaluaciones.Empresa.Get(rutCuerpo.Value, rutDigito.Value);
+
+                if (empresa != null)
+                {
+                    lista.Add(empresa);
+                }
+            }
+            else
+            {
+                lista = Evaluaciones.Empresa.GetAll(findType.Value, filter);
+            }
+
+            foreach (Evaluaciones.Empresa empresa in lista)
+            {
+                MvcHtmlString botonHabilitado;
+
+                if (empresa.Bloqueada)
+                {
+                    botonHabilitado = Evaluaciones.Helpers.ActionLinkExtension.ActionLinkCrudEmbedded(empresa.Id, null, Evaluaciones.Helpers.TypeButton.OtherAction, this, "fa-unlock", "Desbloquear empresa", "enableEnterprise");
+                }
+                else
+                {
+                    botonHabilitado = Evaluaciones.Helpers.ActionLinkExtension.ActionLinkCrudEmbedded(empresa.Id, null, Evaluaciones.Helpers.TypeButton.OtherAction, this, "fa-lock", "Bloquear empresa", "disableEnterprise");
+                }
+
+                empresas.data.Add(new Evaluaciones.Web.UI.Areas.Administracion.Models.Empresa
+                {
+                    RazonSocial = empresa.RazonSocial,
+                    Rut = empresa.Rut,
+                    Estado = empresa.Bloqueada ? "Bloqueda" : "Activa",
+                    Accion = string.Format("{0}{1}", Evaluaciones.Helpers.ActionLinkExtension.ActionLinkCrudEmbedded(empresa.Id, null, Evaluaciones.Helpers.TypeButton.Edit, this),
+                                                     botonHabilitado)
+                });
+            }
+
+            return empresas;
+        }
         #endregion
     }
 }

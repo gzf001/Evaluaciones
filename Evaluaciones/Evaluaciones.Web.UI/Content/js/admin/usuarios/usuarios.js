@@ -19,9 +19,6 @@ jQuery(document).ready(function () {
         validClass: 'state-success',
         errorElement: 'em',
         rules: {
-            "UserName": {
-                required: true
-            },
             "Persona.Nombres": {
                 required: true
             },
@@ -40,9 +37,6 @@ jQuery(document).ready(function () {
             }
         },
         messages: {
-            "UserName": {
-                required: 'El nombre de usuario es requerido'
-            },
             "Persona.Nombres": {
                 required: 'Los nombres de la persona son requeridos'
             },
