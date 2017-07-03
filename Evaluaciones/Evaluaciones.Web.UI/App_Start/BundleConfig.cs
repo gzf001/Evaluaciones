@@ -165,17 +165,17 @@ namespace Evaluaciones.Web.UI.App_Start
 
             #region Administracion
 
-            ScriptBundle aplicacionJS = new ScriptBundle("~/js/aplicaciones");
-            ScriptBundle menuItemJS = new ScriptBundle("~/js/menuItem");
+            ScriptBundle aplicacion = new ScriptBundle("~/js/aplicaciones");
+            ScriptBundle menuItem = new ScriptBundle("~/js/menuItem");
             ScriptBundle rol = new ScriptBundle("~/js/rol");
             ScriptBundle permiso = new ScriptBundle("~/js/permiso");
-            ScriptBundle mantenedorArbolDecisionJS = new ScriptBundle("~/js/mantenedorArbolDecision");
+            ScriptBundle usuario = new ScriptBundle("~/js/usuarios");
 
-            bundles.Add(aplicacionJS.Include("~/Content/js/admin/aplicaciones/aplicaciones.js"));
-            bundles.Add(menuItemJS.Include("~/Content/js/admin/menuItem/menuItem.js"));
+            bundles.Add(aplicacion.Include("~/Content/js/admin/aplicaciones/aplicaciones.js"));
+            bundles.Add(menuItem.Include("~/Content/js/admin/menuItem/menuItem.js"));
             bundles.Add(rol.Include("~/Content/js/admin/rolPermiso/roles.js"));
             bundles.Add(permiso.Include("~/Content/js/admin/rolPermiso/permisos.js"));
-            bundles.Add(mantenedorArbolDecisionJS.Include("~/Content/js/admin/mantenedorArbolDecision/unidad.js"));
+            bundles.Add(usuario.Include("~/Content/js/admin/usuarios/usuarios.js"));
             
             #endregion
 

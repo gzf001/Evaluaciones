@@ -189,6 +189,7 @@
     <Content Include="Content\js\admin\menuItem\menuItem.js" />
     <Content Include="Content\js\admin\rolPermiso\permisos.js" />
     <Content Include="Content\js\admin\rolPermiso\roles.js" />
+    <Content Include="Content\js\admin\usuarios\usuarios.js" />
     <Content Include="Content\js\bootstrap.sweetalert\sweetalert.css" />
     <Content Include="Content\js\bootstrap.sweetalert\sweetalert.js" />
     <Content Include="Content\js\bootstrap.sweetalert\sweetalert.min.js" />

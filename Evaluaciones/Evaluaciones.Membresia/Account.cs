@@ -164,8 +164,7 @@ namespace Evaluaciones.Membresia
                     UltimoCambioPassword = null,
                     UltimoDesbloqueo = null,
                     NumeroIntentosFallidos = 0,
-                    FechaIntentoFallido = null,
-                    AperturaPeriodoRemuneracion = false
+                    FechaIntentoFallido = null
                 };
 
                 usuario.Save(context);

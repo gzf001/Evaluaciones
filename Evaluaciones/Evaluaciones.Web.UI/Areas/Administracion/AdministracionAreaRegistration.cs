@@ -149,6 +149,12 @@ namespace Evaluaciones.Web.UI.Areas.Administracion
             );
 
             context.MapRoute(
+               name: "DeleteUsuario",
+               url: "Administracion/Admin/DeleteUsuario/{id}",
+               defaults: new { area = "Administracion", controller = "Admin", action = "DeleteUsuario", id = "" }
+            );
+
+            context.MapRoute(
                name: "Usuario",
                url: "Administracion/Admin/Usuario/{run}",
                defaults: new { area = "Administracion", controller = "Admin", action = "Usuario", run = "" }
@@ -158,6 +164,18 @@ namespace Evaluaciones.Web.UI.Areas.Administracion
                name: "UsuarioRol",
                url: "Administracion/Admin/UsuarioRol/{personaId}/{ambitoCodigo}/{empresaId}/{centroCostoId}",
                defaults: new { area = "Administracion", controller = "Admin", action = "UsuarioRol", personaId = "", ambitoCodigo = "", empresaId = "", centroCostoId = "" }
+            );
+
+            context.MapRoute(
+               name: "DeshabilitarUsuario",
+               url: "Administracion/Admin/DeshabilitarUsuario/{usuarioId}",
+               defaults: new { area = "Administracion", controller = "Admin", action = "DeshabilitarUsuario", usuarioId = "" }
+            );
+
+            context.MapRoute(
+               name: "HabilitarUsuario",
+               url: "Administracion/Admin/HabilitarUsuario/{usuarioId}",
+               defaults: new { area = "Administracion", controller = "Admin", action = "HabilitarUsuario", usuarioId = "" }
             );
             #endregion
 

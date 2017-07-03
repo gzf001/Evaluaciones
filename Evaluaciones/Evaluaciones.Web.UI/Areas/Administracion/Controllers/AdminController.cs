@@ -687,24 +687,7 @@ namespace Evaluaciones.Web.UI.Areas.Administracion.Controllers
         //[Evaluaciones.Web.Authorization(ActionType = new Evaluaciones.Web.ActionType[] { Evaluaciones.Web.ActionType.Access }, Root = "Usuarios", Area = Area)]
         public JsonResult GetAllUsuarios(Evaluaciones.FindType findType, string filter)
         {
-            Evaluaciones.Web.UI.Areas.Administracion.Models.Usuario.Usuarios usuarios = new Evaluaciones.Web.UI.Areas.Administracion.Models.Usuario.Usuarios();
-
-            usuarios.data = new List<Evaluaciones.Web.UI.Areas.Administracion.Models.Usuario>();
-
-            foreach (Evaluaciones.Membresia.Usuario usuario in Evaluaciones.Membresia.Usuario.GetAll(findType, filter))
-            {
-                usuarios.data.Add(new Evaluaciones.Web.UI.Areas.Administracion.Models.Usuario
-                {
-                    Nombre = usuario.Persona.Nombre,
-                    Run = usuario.Persona.Run,
-                    Estado = usuario.Bloqueado ? "Bloquedo" : "Activo",
-                    UltimoLogin = usuario.UltimoAcceso.ToString(),
-                    Accion = string.Format("{0}{1}{2}{3}", Evaluaciones.Helpers.ActionLinkExtension.ActionLinkCrudEmbedded(usuario.Id, null, Evaluaciones.Helpers.TypeButton.Edit, this),
-                                                           Evaluaciones.Helpers.ActionLinkExtension.ActionLinkCrudEmbedded(usuario.Id, null, Evaluaciones.Helpers.TypeButton.Delete, this),
-                                                           Evaluaciones.Helpers.ActionLinkExtension.ActionLinkCrudEmbedded(usuario.Id, null, Evaluaciones.Helpers.TypeButton.OtherAction, this, "fa-key", "Establecer contraseña", "changePass"),
-                                                           Evaluaciones.Helpers.ActionLinkExtension.ActionLinkCrudEmbedded(usuario.Id, null, Evaluaciones.Helpers.TypeButton.OtherAction, this, "fa-wrench", "Asignar roles", "assignRole"))
-                });
-            }
+            Evaluaciones.Web.UI.Areas.Administracion.Models.Usuario.Usuarios usuarios = this.UsuarioGridView(findType, filter);
 
             return this.Json(usuarios, JsonRequestBehavior.AllowGet);
         }
@@ -714,10 +697,6 @@ namespace Evaluaciones.Web.UI.Areas.Administracion.Controllers
         [Evaluaciones.Web.Authorization(ActionType = new Evaluaciones.Web.ActionType[] { Evaluaciones.Web.ActionType.Access }, Root = "Usuarios", Area = Area)]
         public JsonResult GetUsuarios(string run)
         {
-            Evaluaciones.Web.UI.Areas.Administracion.Models.Usuario.Usuarios usuarios = new Evaluaciones.Web.UI.Areas.Administracion.Models.Usuario.Usuarios();
-
-            usuarios.data = new List<Evaluaciones.Web.UI.Areas.Administracion.Models.Usuario>();
-
             string textoRun = run.Replace(".", string.Empty).Replace("-", string.Empty);
 
             int runCuerpo = int.Parse(textoRun.Substring(0, textoRun.Length - 1));
@@ -728,17 +707,7 @@ namespace Evaluaciones.Web.UI.Areas.Administracion.Controllers
                 return this.Json("500", JsonRequestBehavior.AllowGet);
             }
 
-            Evaluaciones.Membresia.Usuario usuario = Evaluaciones.Membresia.Usuario.Get(runCuerpo, runDigito);
-
-            usuarios.data.Add(new Evaluaciones.Web.UI.Areas.Administracion.Models.Usuario
-            {
-                Nombre = usuario.Persona.Nombre,
-                Run = usuario.Persona.Run,
-                Estado = usuario.Bloqueado ? "Bloquedo" : "Activo",
-                UltimoLogin = usuario.UltimoAcceso.ToString(),
-                Accion = string.Format("{0}{1}", Evaluaciones.Helpers.ActionLinkExtension.ActionLinkCrudEmbedded(usuario.Id, null, Evaluaciones.Helpers.TypeButton.Edit, this),
-                                                 Evaluaciones.Helpers.ActionLinkExtension.ActionLinkCrudEmbedded(usuario.Id, null, Evaluaciones.Helpers.TypeButton.Delete, this))
-            });
+            Evaluaciones.Web.UI.Areas.Administracion.Models.Usuario.Usuarios usuarios = this.UsuarioGridView(null, null, runCuerpo, runDigito);
 
             return this.Json(usuarios, JsonRequestBehavior.AllowGet);
         }
@@ -793,6 +762,43 @@ namespace Evaluaciones.Web.UI.Areas.Administracion.Controllers
 
         [Authorize]
         [HttpGet]
+        [Evaluaciones.Web.Authorization(ActionType = new Evaluaciones.Web.ActionType[] { Evaluaciones.Web.ActionType.Delete }, Root = "Aplicaciones", Area = Area)]
+        public JsonResult DeleteUsuario(Guid id)
+        {
+            try
+            {
+                Evaluaciones.Membresia.Usuario usuario = Evaluaciones.Membresia.Usuario.Get(id);
+
+                using (Evaluaciones.Membresia.Context context = new Evaluaciones.Membresia.Context())
+                {
+                    new Evaluaciones.Membresia.Usuario
+                    {
+                        Id = usuario.Id,
+                        Password = usuario.Password,
+                        Aprobado = usuario.Aprobado,
+                        Bloqueado = usuario.Bloqueado,
+                        Creacion = usuario.Creacion,
+                        UltimaActividad = usuario.UltimaActividad,
+                        UltimoAcceso = usuario.UltimoAcceso,
+                        UltimoCambioPassword = usuario.UltimoCambioPassword,
+                        UltimoDesbloqueo = usuario.UltimoDesbloqueo,
+                        NumeroIntentosFallidos = usuario.NumeroIntentosFallidos,
+                        FechaIntentoFallido = usuario.FechaIntentoFallido
+                    }.Delete(context);
+
+                    context.SubmitChanges();
+                }
+
+                return this.Json("200", JsonRequestBehavior.AllowGet);
+            }
+            catch (Exception ex)
+            {
+                return this.Json(ex.Message, JsonRequestBehavior.AllowGet);
+            }
+        }
+
+        [Authorize]
+        [HttpGet]
         [Evaluaciones.Web.Authorization(ActionType = new Evaluaciones.Web.ActionType[] { Evaluaciones.Web.ActionType.Access }, Root = "Usuarios", Area = Area)]
         public JsonResult Usuario(string run)
         {
@@ -842,7 +848,6 @@ namespace Evaluaciones.Web.UI.Areas.Administracion.Controllers
                 UltimoDesbloqueo = usuario.UltimoDesbloqueo,
                 NumeroIntentosFallidos = usuario.NumeroIntentosFallidos,
                 FechaIntentoFallido = usuario.FechaIntentoFallido,
-                AperturaPeriodoRemuneracion = usuario.AperturaPeriodoRemuneracion,
                 FechaNacimientoString = usuario.Persona.FechaNacimiento.HasValue ? usuario.Persona.FechaNacimiento.Value.ToShortDateString() : string.Empty,
                 Persona = usuario.Persona
             }, JsonRequestBehavior.AllowGet);
@@ -953,6 +958,80 @@ namespace Evaluaciones.Web.UI.Areas.Administracion.Controllers
                                                               }).ToList<Evaluaciones.Membresia.Account.Rol>();
 
             return this.Json(Evaluaciones.Membresia.Account.Rol.Asignar(roles), JsonRequestBehavior.DenyGet);
+        }
+
+        [Authorize]
+        [HttpGet]
+        public JsonResult DeshabilitarUsuario(Guid usuarioId)
+        {
+            Evaluaciones.Membresia.Usuario usuario = Evaluaciones.Membresia.Usuario.Get(usuarioId);
+
+            Evaluaciones.Membresia.Account.Lock(usuario);
+
+            return this.Json("200", JsonRequestBehavior.AllowGet);
+        }
+
+        [Authorize]
+        [HttpGet]
+        public JsonResult HabilitarUsuario(Guid usuarioId)
+        {
+            Evaluaciones.Membresia.Usuario usuario = Evaluaciones.Membresia.Usuario.Get(usuarioId);
+
+            Evaluaciones.Membresia.Account.UnLock(usuario);
+
+            return this.Json("200", JsonRequestBehavior.AllowGet);
+        }
+
+        private Evaluaciones.Web.UI.Areas.Administracion.Models.Usuario.Usuarios UsuarioGridView(Evaluaciones.FindType? findType, string filter, int? runCuerpo = null, char? runDigito = null)
+        {
+            Evaluaciones.Web.UI.Areas.Administracion.Models.Usuario.Usuarios usuarios = new Evaluaciones.Web.UI.Areas.Administracion.Models.Usuario.Usuarios();
+
+            usuarios.data = new List<Evaluaciones.Web.UI.Areas.Administracion.Models.Usuario>();
+
+            List<Evaluaciones.Membresia.Usuario> lista = new List<Evaluaciones.Membresia.Usuario>();
+
+            if (runCuerpo.HasValue && runDigito.HasValue)
+            {
+                Evaluaciones.Membresia.Usuario usuario = Evaluaciones.Membresia.Usuario.Get(runCuerpo.Value, runDigito.Value);
+
+                if (usuario != null)
+                {
+                    lista.Add(usuario);
+                }
+            }
+            else
+            {
+                lista = Evaluaciones.Membresia.Usuario.GetAll(findType.Value, filter);
+            }
+
+            foreach (Evaluaciones.Membresia.Usuario usuario in lista)
+            {
+                MvcHtmlString botonHabilitado;
+
+                if (usuario.Bloqueado)
+                {
+                    botonHabilitado = Evaluaciones.Helpers.ActionLinkExtension.ActionLinkCrudEmbedded(usuario.Id, null, Evaluaciones.Helpers.TypeButton.OtherAction, this, "fa-unlock", "Habilitar cuenta", "enableAccount");
+                }
+                else
+                {
+                    botonHabilitado = Evaluaciones.Helpers.ActionLinkExtension.ActionLinkCrudEmbedded(usuario.Id, null, Evaluaciones.Helpers.TypeButton.OtherAction, this, "fa-lock", "Deshabilitar cuenta", "disableAccount");
+                }
+
+                usuarios.data.Add(new Evaluaciones.Web.UI.Areas.Administracion.Models.Usuario
+                {
+                    Nombre = usuario.Persona.Nombre,
+                    Run = usuario.Persona.Run,
+                    Estado = usuario.Bloqueado ? "Bloquedo" : "Activo",
+                    UltimoLogin = usuario.UltimoAcceso.ToString(),
+                    Accion = string.Format("{0}{1}{2}{3}{4}", Evaluaciones.Helpers.ActionLinkExtension.ActionLinkCrudEmbedded(usuario.Id, null, Evaluaciones.Helpers.TypeButton.Edit, this),
+                                                              Evaluaciones.Helpers.ActionLinkExtension.ActionLinkCrudEmbedded(usuario.Id, null, Evaluaciones.Helpers.TypeButton.Delete, this),
+                                                              Evaluaciones.Helpers.ActionLinkExtension.ActionLinkCrudEmbedded(usuario.Id, null, Evaluaciones.Helpers.TypeButton.OtherAction, this, "fa-key", "Establecer contraseña", "changePass"),
+                                                              Evaluaciones.Helpers.ActionLinkExtension.ActionLinkCrudEmbedded(usuario.Id, null, Evaluaciones.Helpers.TypeButton.OtherAction, this, "fa-wrench", "Asignar roles", "assignRole"),
+                                                              botonHabilitado)
+                });
+            }
+
+            return usuarios;
         }
 
         #endregion
