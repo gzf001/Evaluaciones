@@ -146,6 +146,7 @@
     <Compile Include="Areas\Administracion\Controllers\AdminController.cs" />
     <Compile Include="Areas\Administracion\Controllers\UserController.cs" />
     <Compile Include="Areas\Administracion\Models\Aplicacion.cs" />
+    <Compile Include="Areas\Administracion\Models\CentroCosto.cs" />
     <Compile Include="Areas\Administracion\Models\ChangePassword.cs" />
     <Compile Include="Areas\Administracion\Models\Empresa.cs" />
     <Compile Include="Areas\Administracion\Models\MenuItem.cs" />
@@ -153,6 +154,7 @@
     <Compile Include="Areas\Administracion\Models\Rol.cs" />
     <Compile Include="Areas\Administracion\Models\RolAccion.cs" />
     <Compile Include="Areas\Administracion\Models\Usuario.cs" />
+    <Compile Include="Areas\Administracion\Models\UsuariosConectados.cs" />
     <Compile Include="Areas\Home\Controllers\AccountController.cs" />
     <Compile Include="Areas\Home\HomeAreaRegistration.cs" />
     <Compile Include="Areas\Home\Models\Login.cs" />
@@ -187,10 +189,12 @@
     <Content Include="Content\images\slide-2.jpg" />
     <Content Include="Content\images\slide-3.jpg" />
     <Content Include="Content\js\admin\aplicaciones\aplicaciones.js" />
+    <Content Include="Content\js\admin\centrosCosto\centrosCosto.js" />
     <Content Include="Content\js\admin\empresas\empresas.js" />
     <Content Include="Content\js\admin\menuItem\menuItem.js" />
     <Content Include="Content\js\admin\rolPermiso\permisos.js" />
     <Content Include="Content\js\admin\rolPermiso\roles.js" />
+    <Content Include="Content\js\admin\usuariosConectados\usuariosConectados.js" />
     <Content Include="Content\js\admin\usuarios\usuarios.js" />
     <Content Include="Content\js\bootstrap.sweetalert\sweetalert.css" />
     <Content Include="Content\js\bootstrap.sweetalert\sweetalert.js" />
@@ -3335,6 +3339,12 @@
   </ItemGroup>
   <ItemGroup>
     <Content Include="Areas\Administracion\Views\Admin\Empresas.cshtml" />
+  </ItemGroup>
+  <ItemGroup>
+    <Content Include="Areas\Administracion\Views\Admin\CentrosCosto.cshtml" />
+  </ItemGroup>
+  <ItemGroup>
+    <Content Include="Areas\Administracion\Views\Admin\UsuarioConectados.cshtml" />
   </ItemGroup>
   <PropertyGroup>
     <VisualStudioVersion Condition="'$(VisualStudioVersion)' == ''">10.0</VisualStudioVersion>

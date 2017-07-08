@@ -90,7 +90,9 @@ jQuery(document).ready(function () {
 
         $('#searchEnterprise').show();
 
-        $.getJSON('/Administracion/Admin/GetUsuario', function (data) {
+        $('#rut').val('');
+
+        $.getJSON('/Administracion/Admin/GetAddEmpresa', function (data) {
 
             popUp($('#formModalUser'), 'modal-form-principal');
 
@@ -149,21 +151,23 @@ jQuery(document).ready(function () {
                 loadSelect($('#comuna'), comuna, data.ComunaCodigo);
             });
 
+            $('#rut').val(data.Rut);
+
             loadData(data, false);
         });
     })
 
-    $(document).on('click', 'a[id=disableAccount]', function () {
+    $(document).on('click', 'a[id=disableEnterprise]', function () {
 
-        $.getJSON('/Administracion/Admin/DeshabilitarUsuario/' + $(this).attr('data-value'), function (data) {
+        $.getJSON('/Administracion/Admin/DeshabilitarEmpresa/' + $(this).attr('data-value'), function (data) {
 
             loadGridView();
         });
     })
 
-    $(document).on('click', 'a[id=enableAccount]', function () {
+    $(document).on('click', 'a[id=enableEnterprise]', function () {
 
-        $.getJSON('/Administracion/Admin/HabilitarUsuario/' + $(this).attr('data-value'), function (data) {
+        $.getJSON('/Administracion/Admin/HabilitarEmpresa/' + $(this).attr('data-value'), function (data) {
 
             loadGridView();
         });
@@ -177,10 +181,28 @@ jQuery(document).ready(function () {
     })
 })
 
+function loadSelect(control, data, value) {
+
+    control.find("option[value='-1']").remove();
+
+    $.each(data, function (key, value) {
+
+        var option = $(document.createElement('option'));
+
+        option.html(value.Text);
+
+        option.val(value.Value);
+
+        $(control).append(option);
+
+    });
+
+    control.val(value);
+}
+
 function loadData(data, enabled) {
 
     $('#empresaId').val(data.Id);
-    $('#rut').val(data.Rut);
     $('#razonSocial').val(data.RazonSocial);
     $('#region').val(data.RegionCodigo);
     $('#ciudad').val(data.CiudadCodigo);
@@ -209,25 +231,6 @@ function disabled(enabled) {
     $('#telefono2').prop('disabled', enabled);
     $('#fax').prop('disabled', enabled);
     $('#celular').prop('disabled', enabled);
-}
-
-function loadSelect(control, data, value) {
-
-    control.find("option[value='-1']").remove();
-
-    $.each(data, function (key, value) {
-
-        var option = $(document.createElement('option'));
-
-        option.html(value.Text);
-
-        option.val(value.Value);
-
-        $(control).append(option);
-
-    });
-
-    control.val(value);
 }
 
 function loadGridView() {
@@ -278,62 +281,6 @@ function loadGridView() {
             [15, 20, 25, 30, -1],
             [15, 20, 25, 30, "All"]
         ],
-        "sDom": '<"dt-panelmenu clearfix"lfr>t<"dt-panelfooter clearfix"ip>'
-    });
-}
-
-function loadGridViewRol() {
-
-    var ambitoCodigo = $('#ambitoRol').val();
-    var empresaId = $("#empresaRol").is(":visible") ? $('#empresaRol').val() == '-1' ? null : $('#empresaRol').val() : null;
-    var centroCostoId = $("#centroCostoRol").is(":visible") ? $('#centroCostoRol').val() == '-1' ? null : $('#centroCostoRol').val() : null;
-
-    if (ambitoCodigo == '-1') {
-
-        $('#gridViewRol').empty();
-    }
-    else if (ambitoCodigo == 2 && empresaId == '-1') {
-
-        $('#gridViewRol').empty();
-    }
-    else if (ambitoCodigo == 3 && centroCostoId == '-1') {
-
-        $('#gridViewRol').empty();
-    }
-
-    $('#gridViewRol').DataTable({
-        "ajax": "/Administracion/Admin/UsuarioRol/" + $("#userId").val() + "/" + $("#ambitoRol").val() + "/" + empresaId + "/" + centroCostoId,
-        "columns": [
-            { "data": "Accion" },
-            { "data": "Nombre" }
-        ],
-        "destroy": true,
-        "order": [[1, "asc"]],
-        "columnDefs": [
-            {
-                "targets": [0],
-                "searchable": false,
-                "sortable": false
-            }
-        ],
-        "iDisplayLength": 4,
-        "aLengthMenu": [
-            [4, 8, 12, 16, -1],
-            [4, 8, 12, 16, "All"]
-        ],
-        "fnCreatedRow": function (nRow, aData, iDataIndex) {
-
-            if (rol != null) {
-                var chekBox = nRow.childNodes[0].childNodes[0].childNodes[0];
-
-                if ($(chekBox).is(':checked')) {
-
-                    var rolId = $(chekBox).attr('data-value');
-
-                    rol.push(rolId);
-                }
-            }
-        },
         "sDom": '<"dt-panelmenu clearfix"lfr>t<"dt-panelfooter clearfix"ip>'
     });
 }

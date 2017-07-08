@@ -190,6 +190,33 @@ namespace Evaluaciones.Membresia
             }
         }
 
+        public static void UnLock(Evaluaciones.Empresa empresa)
+        {
+            using (Context context = new Context())
+            {
+                new Evaluaciones.Empresa
+                {
+                    Id = empresa.Id,
+                    RutCuerpo = empresa.RutCuerpo,
+                    RutDigito = empresa.RutDigito,
+                    RazonSocial = empresa.RazonSocial,
+                    RegionCodigo = empresa.RegionCodigo,
+                    CiudadCodigo = empresa.CiudadCodigo,
+                    ComunaCodigo = empresa.ComunaCodigo,
+                    Direccion = empresa.Direccion,
+                    Email = empresa.Email,
+                    PaginaWeb = empresa.PaginaWeb,
+                    Telefono1 = empresa.Telefono1,
+                    Telefono2 = empresa.Telefono2,
+                    Fax = empresa.Fax,
+                    Celular = empresa.Celular,
+                    Bloqueada = false
+                }.Save(context);
+
+                context.SubmitChanges();
+            }
+        }
+
         public static void UnLock(Usuario usuario)
         {
             if (usuario.Bloqueado && !string.IsNullOrEmpty(usuario.Persona.Email))
@@ -242,6 +269,33 @@ namespace Evaluaciones.Membresia
                 u.FechaIntentoFallido = DateTime.Now;
 
                 u.Save(context);
+
+                context.SubmitChanges();
+            }
+        }
+
+        public static void Lock(Evaluaciones.Empresa empresa)
+        {
+            using (Context context = new Context())
+            {
+                new Evaluaciones.Empresa
+                {
+                    Id = empresa.Id,
+                    RutCuerpo = empresa.RutCuerpo,
+                    RutDigito = empresa.RutDigito,
+                    RazonSocial = empresa.RazonSocial,
+                    RegionCodigo = empresa.RegionCodigo,
+                    CiudadCodigo = empresa.CiudadCodigo,
+                    ComunaCodigo = empresa.ComunaCodigo,
+                    Direccion = empresa.Direccion,
+                    Email = empresa.Email,
+                    PaginaWeb = empresa.PaginaWeb,
+                    Telefono1 = empresa.Telefono1,
+                    Telefono2 = empresa.Telefono2,
+                    Fax = empresa.Fax,
+                    Celular = empresa.Celular,
+                    Bloqueada = true
+                }.Save(context);
 
                 context.SubmitChanges();
             }

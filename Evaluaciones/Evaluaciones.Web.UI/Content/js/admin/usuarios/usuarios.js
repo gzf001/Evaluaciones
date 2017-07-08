@@ -205,7 +205,6 @@ jQuery(document).ready(function () {
             popUp($('#formModalUser'), 'modal-form-principal');
 
             loadData(data, true);
-
         });
     })
 

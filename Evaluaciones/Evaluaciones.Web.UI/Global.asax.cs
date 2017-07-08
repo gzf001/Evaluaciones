@@ -17,6 +17,18 @@ namespace Evaluaciones.Web.UI
             FilterConfig.RegisterGlobalFilters(GlobalFilters.Filters);
             RouteConfig.RegisterRoutes(RouteTable.Routes);
             BundleConfig.RegisterBundles(BundleTable.Bundles);
+
+            this.Application["NumberUsers"] = 0;
+        }
+
+        protected void Session_Start(object sender, EventArgs e)
+        {
+            this.Application["NumberUsers"] = ((int)this.Application["NumberUsers"]) + 1;
+        }
+
+        void Session_End(object sender, EventArgs e)
+        {
+            this.Application["NumberUsers"] = ((int)this.Application["NumberUsers"]) - 1;
         }
 
         protected void Application_Error(object sender, EventArgs e)

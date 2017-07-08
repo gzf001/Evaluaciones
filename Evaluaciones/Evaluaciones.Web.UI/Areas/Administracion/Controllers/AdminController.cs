@@ -400,7 +400,7 @@ namespace Evaluaciones.Web.UI.Areas.Administracion.Controllers
 
         [Authorize]
         [HttpGet]
-        [Evaluaciones.Web.Authorization(ActionType = new Evaluaciones.Web.ActionType[] { Evaluaciones.Web.ActionType.Add }, Root = "Aplicaciones", Area = Area)]
+        [Evaluaciones.Web.Authorization(ActionType = new Evaluaciones.Web.ActionType[] { Evaluaciones.Web.ActionType.Add }, Root = "Roles", Area = Area)]
         public ActionResult AddRol(int ambitoCodigo)
         {
             Evaluaciones.Ambito ambito = Evaluaciones.Ambito.Get(ambitoCodigo);
@@ -1036,6 +1036,29 @@ namespace Evaluaciones.Web.UI.Areas.Administracion.Controllers
 
         #endregion
 
+        #region Usuarios conectados
+
+        [Authorize]
+        [HttpGet]
+        [Evaluaciones.Web.Authorization(ActionType = new Evaluaciones.Web.ActionType[] { Evaluaciones.Web.ActionType.Access }, Root = "UsuarioConectados", Area = Area)]
+        public ActionResult UsuarioConectados()
+        {
+            Evaluaciones.Web.UI.Areas.Administracion.Models.UsuariosConectados usuariosConectados = new Evaluaciones.Web.UI.Areas.Administracion.Models.UsuariosConectados();
+
+            usuariosConectados.NumeroUsuarios = (int)System.Web.HttpContext.Current.Application["NumberUsers"];
+
+            return this.View(usuariosConectados);
+        }
+
+        [Authorize]
+        [HttpGet]
+        public JsonResult CountUsuarioConectados()
+        {
+            return this.Json((int)System.Web.HttpContext.Current.Application["NumberUsers"], JsonRequestBehavior.AllowGet);
+        }
+
+        #endregion
+
         #region Empresas
 
         [Authorize]
@@ -1062,8 +1085,6 @@ namespace Evaluaciones.Web.UI.Areas.Administracion.Controllers
 
             try
             {
-                Evaluaciones.Empresa empresa = Evaluaciones.Empresa.Get(model.Id);
-
                 string textoRun = model.Rut.Replace(".", string.Empty).Replace("-", string.Empty);
 
                 int rutCuerpo = int.Parse(textoRun.Substring(0, textoRun.Length - 1));
@@ -1074,8 +1095,8 @@ namespace Evaluaciones.Web.UI.Areas.Administracion.Controllers
                     new Evaluaciones.Empresa
                     {
                         Id = model.Id,
-                        RutCuerpo = model.RutCuerpo,
-                        RutDigito = model.RutDigito,
+                        RutCuerpo = rutCuerpo,
+                        RutDigito = rutDigito,
                         RazonSocial = model.RazonSocial,
                         RegionCodigo = model.RegionCodigo,
                         CiudadCodigo = model.CiudadCodigo,
@@ -1222,6 +1243,28 @@ namespace Evaluaciones.Web.UI.Areas.Administracion.Controllers
             }, JsonRequestBehavior.AllowGet);
         }
 
+        [Authorize]
+        [HttpGet]
+        public JsonResult DeshabilitarEmpresa(Guid empresaId)
+        {
+            Evaluaciones.Empresa empresa = Evaluaciones.Empresa.Get(empresaId);
+
+            Evaluaciones.Membresia.Account.Lock(empresa);
+
+            return this.Json("200", JsonRequestBehavior.AllowGet);
+        }
+
+        [Authorize]
+        [HttpGet]
+        public JsonResult HabilitarEmpresa(Guid empresaId)
+        {
+            Evaluaciones.Empresa empresa = Evaluaciones.Empresa.Get(empresaId);
+
+            Evaluaciones.Membresia.Account.UnLock(empresa);
+
+            return this.Json("200", JsonRequestBehavior.AllowGet);
+        }
+
         private Evaluaciones.Web.UI.Areas.Administracion.Models.Empresa.Empresas EmpresaGridView(Evaluaciones.FindType? findType, string filter, int? rutCuerpo = null, char? rutDigito = null)
         {
             Evaluaciones.Web.UI.Areas.Administracion.Models.Empresa.Empresas empresas = new Evaluaciones.Web.UI.Areas.Administracion.Models.Empresa.Empresas();
@@ -1269,6 +1312,210 @@ namespace Evaluaciones.Web.UI.Areas.Administracion.Controllers
 
             return empresas;
         }
+
+        #endregion
+
+        #region Centro de costo
+
+        [Authorize]
+        [HttpGet]
+        [Evaluaciones.Web.Authorization(ActionType = new Evaluaciones.Web.ActionType[] { Evaluaciones.Web.ActionType.Access }, Root = "CentrosCosto", Area = Area)]
+        public ActionResult CentrosCosto()
+        {
+            return this.View();
+        }
+
+        [Authorize]
+        [HttpPost]
+        [Evaluaciones.Web.Authorization(ActionType = new Evaluaciones.Web.ActionType[] { Evaluaciones.Web.ActionType.Accept }, Root = "CentrosCosto", Area = Area)]
+        public ActionResult CentrosCosto(Evaluaciones.Web.UI.Areas.Administracion.Models.CentroCosto model)
+        {
+            if (!this.ModelState.IsValid)
+            {
+                return this.View(model);
+            }
+
+            try
+            {
+                string textoRbd = model.Rbd.Replace(".", string.Empty).Replace("-", string.Empty);
+
+                int rbdCuerpo = int.Parse(textoRbd.Substring(0, textoRbd.Length - 1));
+                int rbdDigito = int.Parse(textoRbd.Replace(rbdCuerpo.ToString(), string.Empty));
+
+                using (Evaluaciones.Context context = new Evaluaciones.Context())
+                {
+                    new Evaluaciones.CentroCosto
+                    {
+                        EmpresaId = model.EmpresaId,
+                        Id = model.Id,
+                        Nombre = model.Nombre,
+                        RbdCuerpo = rbdCuerpo,
+                        RbdDigito = rbdDigito,
+                        Sigla = model.Sigla,
+                        AreaGeograficaCodigo = model.AreaGeograficaCodigo,
+                        RegionCodigo = model.RegionCodigo,
+                        CiudadCodigo = model.CiudadCodigo,
+                        ComunaCodigo = model.ComunaCodigo,
+                        Email = model.Email,
+                        Direccion = model.Direccion,
+                        Telefono1 = model.Telefono1,
+                        Telefono2 = model.Telefono2,
+                        Fax = model.Fax,
+                        Celular = model.Celular,
+                        AutorizacionNumero = model.AutorizacionNumero,
+                        AutorizacionFecha = model.AutorizacionFecha
+                    }.Save(context);
+
+                    context.SubmitChanges();
+                }
+
+                return this.Json("200", JsonRequestBehavior.DenyGet);
+            }
+            catch (Exception ex)
+            {
+                if (ex.Message.Contains("Rbd_Index"))
+                {
+                    return this.Json("El R.B.D. se encuentra registrado en otro establecimiento", JsonRequestBehavior.DenyGet);
+                }
+                else
+                {
+                    return this.Json(ex.Message, JsonRequestBehavior.DenyGet);
+                }
+            }
+        }
+
+        [Authorize]
+        [HttpGet]
+        [Evaluaciones.Web.Authorization(ActionType = new Evaluaciones.Web.ActionType[] { Evaluaciones.Web.ActionType.Access }, Root = "CentrosCosto", Area = Area)]
+        public JsonResult GetCentrosCosto(string empresaId)
+        {
+            Evaluaciones.Web.UI.Areas.Administracion.Models.CentroCosto.CentrosCosto centroCosto = new Evaluaciones.Web.UI.Areas.Administracion.Models.CentroCosto.CentrosCosto();
+
+            centroCosto.data = new List<Evaluaciones.Web.UI.Areas.Administracion.Models.CentroCosto>();
+
+            Guid id;
+
+            if (Guid.TryParse(empresaId, out id))
+            {
+                Evaluaciones.Empresa empresa = Evaluaciones.Empresa.Get(id);
+
+                foreach (Evaluaciones.CentroCosto c in Evaluaciones.CentroCosto.GetAll(empresa))
+                {
+                    centroCosto.data.Add(new Evaluaciones.Web.UI.Areas.Administracion.Models.CentroCosto
+                    {
+                        Id = c.Id,
+                        Nombre = c.Nombre,
+                        AreaGeograficaNombre = c.AreaGeografica.Nombre,
+                        Accion = string.Format("{0}", Evaluaciones.Helpers.ActionLinkExtension.ActionLinkCrudEmbedded(c.Id, null, Evaluaciones.Helpers.TypeButton.Edit, this))
+                    });
+                }
+
+                return this.Json(centroCosto, JsonRequestBehavior.AllowGet);
+            }
+
+            return this.Json(centroCosto, JsonRequestBehavior.AllowGet);
+        }
+
+        [Authorize]
+        [HttpGet]
+        [Evaluaciones.Web.Authorization(ActionType = new Evaluaciones.Web.ActionType[] { Evaluaciones.Web.ActionType.Add }, Root = "CentrosCosto", Area = Area)]
+        public JsonResult AddCentroCosto(Guid empresaId)
+        {
+            Evaluaciones.Empresa empresa = Evaluaciones.Empresa.Get(empresaId);
+
+            return this.Json(new Evaluaciones.Web.UI.Areas.Administracion.Models.CentroCosto { Empresa = empresa }, JsonRequestBehavior.AllowGet);
+        }
+
+        [Authorize]
+        [HttpGet]
+        [Evaluaciones.Web.Authorization(ActionType = new Evaluaciones.Web.ActionType[] { Evaluaciones.Web.ActionType.Edit }, Root = "CentrosCosto", Area = Area)]
+        public JsonResult EditCentrosCosto(Guid empresaId, Guid centroCostoId)
+        {
+            Evaluaciones.CentroCosto centroCosto = Evaluaciones.CentroCosto.Get(empresaId, centroCostoId);
+
+            return this.Json(new Evaluaciones.Web.UI.Areas.Administracion.Models.CentroCosto
+            {
+                EmpresaId = centroCosto.EmpresaId,
+                Empresa = centroCosto.Empresa,
+                Id = centroCosto.Id,
+                Nombre = centroCosto.Nombre,
+                Rbd = centroCosto.Rbd,
+                RbdCuerpo = centroCosto.RbdCuerpo,
+                RbdDigito = centroCosto.RbdDigito,
+                Sigla = centroCosto.Sigla,
+                AreaGeograficaCodigo = centroCosto.AreaGeograficaCodigo,
+                RegionCodigo = centroCosto.RegionCodigo,
+                CiudadCodigo = centroCosto.CiudadCodigo,
+                ComunaCodigo = centroCosto.ComunaCodigo,
+                Email = centroCosto.Email,
+                Direccion = centroCosto.Direccion,
+                Telefono1 = centroCosto.Telefono1,
+                Telefono2 = centroCosto.Telefono2,
+                Fax = centroCosto.Fax,
+                Celular = centroCosto.Celular,
+                AutorizacionNumero = centroCosto.AutorizacionNumero,
+                AutorizacionFecha = centroCosto.AutorizacionFecha,
+                FechaAutorizacionString = centroCosto.AutorizacionFecha.ToShortDateString()
+            }, JsonRequestBehavior.AllowGet);
+        }
+
+        [Authorize]
+        [HttpGet]
+        [Evaluaciones.Web.Authorization(ActionType = new Evaluaciones.Web.ActionType[] { Evaluaciones.Web.ActionType.Access }, Root = "CentrosCosto", Area = Area)]
+        public JsonResult CentroCosto(Guid empresaId, string rbd)
+        {
+            string textoRun = rbd.Replace(".", string.Empty).Replace("-", string.Empty);
+
+            int rbdCuerpo = int.Parse(textoRun.Substring(0, textoRun.Length - 1));
+            char rbdDigito = char.Parse(textoRun.Replace(rbdCuerpo.ToString(), string.Empty));
+
+            if (!Evaluaciones.Helper.ValidaRun(rbdCuerpo, rbdDigito))
+            {
+                return this.Json("500", JsonRequestBehavior.AllowGet);
+            }
+
+            Evaluaciones.Empresa empresa = Evaluaciones.Empresa.Get(empresaId);
+
+            Evaluaciones.CentroCosto centroCosto = Evaluaciones.CentroCosto.Get(rbdCuerpo, int.Parse(rbdDigito.ToString()));
+
+            if (centroCosto == null)
+            {
+                centroCosto = new Evaluaciones.CentroCosto();
+
+                centroCosto.Empresa = empresa;
+                centroCosto.RbdCuerpo = rbdCuerpo;
+                centroCosto.RbdDigito = rbdDigito;
+                centroCosto.Rbd = string.Format("{0}-{1}", rbdCuerpo.ToString("N0"), rbdDigito);
+
+                return this.Json(centroCosto, JsonRequestBehavior.AllowGet);
+            }
+
+            return this.Json(new Evaluaciones.Web.UI.Areas.Administracion.Models.CentroCosto
+            {
+                EmpresaId = centroCosto.EmpresaId,
+                Empresa = centroCosto.Empresa,
+                Id = centroCosto.Id,
+                Nombre = centroCosto.Nombre,
+                Rbd = centroCosto.Rbd,
+                RbdCuerpo = centroCosto.RbdCuerpo,
+                RbdDigito = centroCosto.RbdDigito,
+                Sigla = centroCosto.Sigla,
+                AreaGeograficaCodigo = centroCosto.AreaGeograficaCodigo,
+                RegionCodigo = centroCosto.RegionCodigo,
+                CiudadCodigo = centroCosto.CiudadCodigo,
+                ComunaCodigo = centroCosto.ComunaCodigo,
+                Email = centroCosto.Email,
+                Direccion = centroCosto.Direccion,
+                Telefono1 = centroCosto.Telefono1,
+                Telefono2 = centroCosto.Telefono2,
+                Fax = centroCosto.Fax,
+                Celular = centroCosto.Celular,
+                AutorizacionNumero = centroCosto.AutorizacionNumero,
+                AutorizacionFecha = centroCosto.AutorizacionFecha,
+                FechaAutorizacionString = centroCosto.AutorizacionFecha.ToShortDateString()
+            }, JsonRequestBehavior.AllowGet);
+        }
+
         #endregion
     }
 }

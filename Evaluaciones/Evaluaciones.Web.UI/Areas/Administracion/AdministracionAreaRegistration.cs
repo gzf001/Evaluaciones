@@ -179,13 +179,23 @@ namespace Evaluaciones.Web.UI.Areas.Administracion
             );
             #endregion
 
+            #region Usuarios conectados
+
+            context.MapRoute(
+               name: "UsuarioConectados",
+               url: "Administracion/Admin/CountUsuarioConectados",
+               defaults: new { area = "Administracion", controller = "Admin", action = "CountUsuarioConectados" }
+            );
+
+            #endregion
+
             #region Empresas
 
             context.MapRoute(
                name: "GetEmpresas",
                url: "Administracion/Admin/GetAllEmpresas/{findType}/{filter}",
                defaults: new { area = "Administracion", controller = "Admin", action = "GetAllEmpresas", findType = "", filter = "" }
-           );
+            );
 
             context.MapRoute(
                 name: "GetEmpresa",
@@ -209,6 +219,45 @@ namespace Evaluaciones.Web.UI.Areas.Administracion
                name: "Empresa",
                url: "Administracion/Admin/Empresa/{rut}",
                defaults: new { area = "Administracion", controller = "Admin", action = "Empresa", rut = "" }
+            );
+
+            context.MapRoute(
+               name: "DeshabilitarEmpresa",
+               url: "Administracion/Admin/DeshabilitarEmpresa/{empresaId}",
+               defaults: new { area = "Administracion", controller = "Admin", action = "DeshabilitarEmpresa", empresaId = "" }
+            );
+
+            context.MapRoute(
+               name: "HabilitarEmpresa",
+               url: "Administracion/Admin/HabilitarEmpresa/{empresaId}",
+               defaults: new { area = "Administracion", controller = "Admin", action = "HabilitarEmpresa", empresaId = "" }
+            );
+            #endregion
+
+            #region CentroCosto
+
+            context.MapRoute(
+               name: "GetCentrosCosto",
+               url: "Administracion/Admin/GetCentrosCosto/{empresaId}",
+               defaults: new { area = "Administracion", controller = "Admin", action = "GetCentrosCosto", empresaId = "" }
+            );
+
+            context.MapRoute(
+                name: "GetCentroCosto",
+                url: "Administracion/Admin/CentroCosto/{empresaId}/{rbd}",
+                defaults: new { area = "Administracion", controller = "Admin", action = "CentroCosto", empresaId = "", rbd = "" }
+            );
+
+            context.MapRoute(
+               name: "GetEditCentroCosto",
+               url: "Administracion/Admin/GetCentroCosto/{empresaId}/{centroCostoid}",
+               defaults: new { area = "Administracion", controller = "Admin", action = "EditCentrosCosto", empresaId = "", centroCostoid = "" }
+            );
+
+            context.MapRoute(
+               name: "GetAddCentroCosto",
+               url: "Administracion/Admin/AddCentroCosto/{empresaId}",
+               defaults: new { area = "Administracion", controller = "Admin", action = "AddCentroCosto", empresaId = "" }
             );
 
             #endregion

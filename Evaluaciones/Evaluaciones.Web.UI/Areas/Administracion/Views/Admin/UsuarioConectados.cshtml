@@ -1,0 +1,33 @@
+﻿@model Evaluaciones.Web.UI.Areas.Administracion.Models.UsuariosConectados
+
+@{
+    ViewBag.Title = "UsuarioConectados";
+    Layout = "~/Views/Shared/_Layout.cshtml";
+}
+
+<div id="form" class="admin-form">
+    <div class="panel">
+        <div class="panel-heading">
+            <span class="panel-title">Número de usuarios conectados</span>
+        </div>
+        <div class="form-horizontal">
+            <div class="panel-body">
+                <div class="form-group">
+                    @Html.LabelFor(x => x.NumeroUsuarios, new { @for = "numeroUsuarios", @class = "col-md-6 control-label" })
+                    <div class="col-md-3">
+                        <div class="bs-component">
+                            <label for="numeroUsuarios" class="field prepend-icon">
+                                @Html.TextBoxFor(x => x.NumeroUsuarios, new { @class = "textBoxDisabled", @id = "numeroUsuarios", @disabled = false })
+                                <label for="numeroUsuarios" class="field-icon">
+                                    <i class="fa fa-eye-slash"></i>
+                                </label>
+                            </label>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+</div>
+
+@Scripts.Render("~/js/usuariosConectados")

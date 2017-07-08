@@ -171,6 +171,8 @@ namespace Evaluaciones.Web.UI.App_Start
             ScriptBundle permiso = new ScriptBundle("~/js/permiso");
             ScriptBundle usuario = new ScriptBundle("~/js/usuarios");
             ScriptBundle empresa = new ScriptBundle("~/js/empresas");
+            ScriptBundle centroCosto = new ScriptBundle("~/js/centrosCosto");
+            ScriptBundle usuariosConectados = new ScriptBundle("~/js/usuariosConectados");
 
             bundles.Add(aplicacion.Include("~/Content/js/admin/aplicaciones/aplicaciones.js"));
             bundles.Add(menuItem.Include("~/Content/js/admin/menuItem/menuItem.js"));
@@ -178,6 +180,8 @@ namespace Evaluaciones.Web.UI.App_Start
             bundles.Add(permiso.Include("~/Content/js/admin/rolPermiso/permisos.js"));
             bundles.Add(usuario.Include("~/Content/js/admin/usuarios/usuarios.js"));
             bundles.Add(empresa.Include("~/Content/js/admin/empresas/empresas.js"));
+            bundles.Add(centroCosto.Include("~/Content/js/admin/centrosCosto/centrosCosto.js"));
+            bundles.Add(usuariosConectados.Include("~/Content/js/admin/usuariosConectados/usuariosConectados.js"));
 
             #endregion
 

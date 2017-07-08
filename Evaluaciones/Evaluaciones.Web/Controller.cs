@@ -31,6 +31,11 @@ namespace Evaluaciones.Web
         {
             get
             {
+                if (string.IsNullOrEmpty(this.User.Identity.Name))
+                {
+                    return null;
+                }
+
                 Evaluaciones.Persona persona = Evaluaciones.Persona.Get(new Guid(this.User.Identity.Name));
 
                 return persona;
@@ -41,6 +46,11 @@ namespace Evaluaciones.Web
         {
             get
             {
+                if (string.IsNullOrEmpty(this.User.Identity.Name))
+                {
+                    return null;
+                }
+            
                 Evaluaciones.Membresia.Usuario usuario = Evaluaciones.Membresia.Usuario.Get(new Guid(this.User.Identity.Name));
 
                 return usuario;
