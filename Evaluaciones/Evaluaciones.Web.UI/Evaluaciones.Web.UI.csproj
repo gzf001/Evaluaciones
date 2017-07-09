@@ -155,6 +155,9 @@
     <Compile Include="Areas\Administracion\Models\RolAccion.cs" />
     <Compile Include="Areas\Administracion\Models\Usuario.cs" />
     <Compile Include="Areas\Administracion\Models\UsuariosConectados.cs" />
+    <Compile Include="Areas\BancoPregunta\BancoPreguntaAreaRegistration.cs" />
+    <Compile Include="Areas\BancoPregunta\Controllers\PreguntaController.cs" />
+    <Compile Include="Areas\BancoPregunta\Models\Pregunta.cs" />
     <Compile Include="Areas\Home\Controllers\AccountController.cs" />
     <Compile Include="Areas\Home\HomeAreaRegistration.cs" />
     <Compile Include="Areas\Home\Models\Login.cs" />
@@ -1521,6 +1524,7 @@
     <Content Include="Content\theme\vendor\plugins\c3charts\spec\type-spec.js" />
     <Content Include="Content\theme\vendor\plugins\c3charts\spec\zoom-spec.js" />
     <Content Include="Content\theme\vendor\plugins\ckeditor\adapters\jquery.js" />
+    <Content Include="Content\theme\vendor\plugins\ckeditor\ckeditor.js" />
     <Content Include="Content\theme\vendor\plugins\ckeditor\config.js" />
     <Content Include="Content\theme\vendor\plugins\ckeditor\contents.css" />
     <Content Include="Content\theme\vendor\plugins\ckeditor\plugins\a11yhelp\dialogs\lang\af.js" />
@@ -2213,6 +2217,7 @@
     <Content Include="Content\theme\vendor\plugins\mapplic\mapplic\mapplic-ie.css" />
     <Content Include="Content\theme\vendor\plugins\mapplic\mapplic\mapplic.css" />
     <Content Include="Content\theme\vendor\plugins\map\gmaps.min.js" />
+    <Content Include="Content\theme\vendor\plugins\markdown\bootstrap-markdown.js" />
     <Content Include="Content\theme\vendor\plugins\markdown\locale\bootstrap-markdown.ar.js" />
     <Content Include="Content\theme\vendor\plugins\markdown\locale\bootstrap-markdown.de.js" />
     <Content Include="Content\theme\vendor\plugins\markdown\locale\bootstrap-markdown.es.js" />
@@ -2227,6 +2232,8 @@
     <Content Include="Content\theme\vendor\plugins\markdown\locale\bootstrap-markdown.tr.js" />
     <Content Include="Content\theme\vendor\plugins\markdown\locale\bootstrap-markdown.ua.js" />
     <Content Include="Content\theme\vendor\plugins\markdown\locale\bootstrap-markdown.zh.js" />
+    <Content Include="Content\theme\vendor\plugins\markdown\markdown.js" />
+    <Content Include="Content\theme\vendor\plugins\markdown\to-markdown.js" />
     <Content Include="Content\theme\vendor\plugins\markitup\sets\default\images\bold.png" />
     <Content Include="Content\theme\vendor\plugins\markitup\sets\default\images\clean.png" />
     <Content Include="Content\theme\vendor\plugins\markitup\sets\default\images\image.png" />
@@ -2314,6 +2321,7 @@
     <Content Include="Content\theme\vendor\plugins\slick\fonts\slick.svg" />
     <Content Include="Content\theme\vendor\plugins\slick\slick.css" />
     <Content Include="Content\theme\vendor\plugins\summernote\summernote.css" />
+    <Content Include="Content\theme\vendor\plugins\summernote\summernote.min.js" />
     <Content Include="Content\theme\vendor\plugins\tabdrop\bootstrap-tabdrop.js" />
     <Content Include="Content\theme\vendor\plugins\tagmanager\tagmanager.css" />
     <Content Include="Content\theme\vendor\plugins\tagsinput\tagsinput.css" />
@@ -2326,10 +2334,19 @@
     <Content Include="Content\theme\vendor\plugins\xeditable\img\clear.png" />
     <Content Include="Content\theme\vendor\plugins\xeditable\img\loading.gif" />
     <Content Include="Content\theme\vendor\plugins\xeditable\inputs\address\address.css" />
+    <Content Include="Content\theme\vendor\plugins\xeditable\inputs\address\address.js" />
+    <Content Include="Content\theme\vendor\plugins\xeditable\inputs\typeaheadjs\lib\typeahead.js" />
     <Content Include="Content\theme\vendor\plugins\xeditable\inputs\typeaheadjs\lib\typeahead.js-bootstrap.css" />
     <Content Include="Content\theme\vendor\plugins\xeditable\inputs\typeaheadjs\typeaheadjs.js" />
     <Content Include="Content\theme\vendor\plugins\xeditable\inputs\wysihtml5\bootstrap-wysihtml5-0.0.2\bootstrap-wysihtml5-0.0.2.css" />
+    <Content Include="Content\theme\vendor\plugins\xeditable\inputs\wysihtml5\bootstrap-wysihtml5-0.0.2\bootstrap-wysihtml5-0.0.2.js" />
+    <Content Include="Content\theme\vendor\plugins\xeditable\inputs\wysihtml5\bootstrap-wysihtml5-0.0.2\bootstrap-wysihtml5-0.0.2.min.js" />
+    <Content Include="Content\theme\vendor\plugins\xeditable\inputs\wysihtml5\bootstrap-wysihtml5-0.0.2\wysihtml5-0.3.0.js" />
+    <Content Include="Content\theme\vendor\plugins\xeditable\inputs\wysihtml5\bootstrap-wysihtml5-0.0.2\wysihtml5-0.3.0.min.js" />
     <Content Include="Content\theme\vendor\plugins\xeditable\inputs\wysihtml5\bootstrap-wysihtml5-0.0.2\wysiwyg-color.css" />
+    <Content Include="Content\theme\vendor\plugins\xeditable\inputs\wysihtml5\wysihtml5.js" />
+    <Content Include="Content\theme\vendor\plugins\xeditable\js\bootstrap-editable.js" />
+    <Content Include="Content\theme\vendor\plugins\xeditable\js\bootstrap-editable.min.js" />
     <Content Include="favicon.ico" />
     <Content Include="Global.asax" />
     <Content Include="ApplicationInsights.config">
@@ -3139,7 +3156,6 @@
   </ItemGroup>
   <ItemGroup>
     <Folder Include="App_Data\" />
-    <Folder Include="Areas\Administracion\Views\Shared\" />
     <Folder Include="Content\theme\assets\js\demo\charts\" />
     <Folder Include="Content\theme\assets\js\utility\admindock\" />
     <Folder Include="Content\theme\assets\js\utility\adminpanels\" />
@@ -3267,13 +3283,15 @@
     <Folder Include="Content\theme\vendor\plugins\n3charts\" />
     <Folder Include="Content\theme\vendor\plugins\pnotify\" />
     <Folder Include="Content\theme\vendor\plugins\sparkline\" />
-    <Folder Include="Content\theme\vendor\plugins\xeditable\js\" />
-    <Folder Include="Views\Evaluaciones\" />
   </ItemGroup>
   <ItemGroup>
     <Content Include="packages.config" />
   </ItemGroup>
   <ItemGroup>
+    <ProjectReference Include="..\Evaluaciones.Educacion\Evaluaciones.Educacion.csproj">
+      <Project>{575abf87-1e5e-48f1-88e5-a5b7a416dd79}</Project>
+      <Name>Evaluaciones.Educacion</Name>
+    </ProjectReference>
     <ProjectReference Include="..\Evaluaciones.Evaluacion\Evaluaciones.Evaluacion.csproj">
       <Project>{8d3542a8-3667-42e6-acb0-04a4d1362233}</Project>
       <Name>Evaluaciones.Evaluacion</Name>
@@ -3345,6 +3363,12 @@
   </ItemGroup>
   <ItemGroup>
     <Content Include="Areas\Administracion\Views\Admin\UsuarioConectados.cshtml" />
+  </ItemGroup>
+  <ItemGroup>
+    <Content Include="Areas\BancoPregunta\Views\web.config" />
+  </ItemGroup>
+  <ItemGroup>
+    <Content Include="Areas\BancoPregunta\Views\Pregunta\CrearPregunta.cshtml" />
   </ItemGroup>
   <PropertyGroup>
     <VisualStudioVersion Condition="'$(VisualStudioVersion)' == ''">10.0</VisualStudioVersion>

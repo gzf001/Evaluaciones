@@ -50,6 +50,7 @@
     <Compile Include="Business\Pregunta.cs" />
     <Compile Include="Business\PreguntaAlternativa.cs" />
     <Compile Include="Business\PreguntaBaseCurricular.cs" />
+    <Compile Include="Business\PreguntaRecursoCurricular.cs" />
     <Compile Include="Business\PreguntaSeleccionMultiple.cs" />
     <Compile Include="Business\PreguntaSeleccionMultipleCorrecta.cs" />
     <Compile Include="Business\PreguntaVerdaderoFalso.cs" />
@@ -67,6 +68,7 @@
     <Compile Include="Entity\Pregunta.cs" />
     <Compile Include="Entity\PreguntaAlternativa.cs" />
     <Compile Include="Entity\PreguntaBaseCurricular.cs" />
+    <Compile Include="Entity\PreguntaRecursoCurricular.cs" />
     <Compile Include="Entity\PreguntaSeleccionMultiple.cs" />
     <Compile Include="Entity\PreguntaSeleccionMultipleCorrecta.cs" />
     <Compile Include="Entity\PreguntaVerdaderoFalso.cs" />
@@ -81,6 +83,7 @@
     <Compile Include="Persistent\Pregunta.cs" />
     <Compile Include="Persistent\PreguntaAlternativa.cs" />
     <Compile Include="Persistent\PreguntaBaseCurricular.cs" />
+    <Compile Include="Persistent\PreguntaRecursoCurricular.cs" />
     <Compile Include="Persistent\PreguntaSeleccionMultiple.cs" />
     <Compile Include="Persistent\PreguntaSeleccionMultipleCorrecta.cs" />
     <Compile Include="Persistent\PreguntaVerdaderoFalso.cs" />
@@ -92,6 +95,10 @@
     <Compile Include="Query.cs" />
   </ItemGroup>
   <ItemGroup>
+    <ProjectReference Include="..\Evaluaciones.Educacion\Evaluaciones.Educacion.csproj">
+      <Project>{575abf87-1e5e-48f1-88e5-a5b7a416dd79}</Project>
+      <Name>Evaluaciones.Educacion</Name>
+    </ProjectReference>
     <ProjectReference Include="..\Evaluaciones\Evaluaciones.csproj">
       <Project>{a73e5c06-9117-4f3e-a5ee-514ec29133f0}</Project>
       <Name>Evaluaciones</Name>

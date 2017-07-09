@@ -39,6 +39,14 @@ namespace Evaluaciones.Web.UI.App_Start
 
             StyleBundle fancytree = new StyleBundle("~/Content/fancytree");
 
+            StyleBundle summernoteCss = new StyleBundle("~/Content/summernoteCss");
+
+            StyleBundle bootstrap_editable = new StyleBundle("~/Content/bootstrap_editable");
+
+            StyleBundle address = new StyleBundle("~/Content/address");
+
+            StyleBundle typeahead_bootstrap = new StyleBundle("~/Content/typeahead_bootstrap");
+
             bundles.Add(bootstrap.Include("~/Content/bootstrap/css/bootstrap.min.css"));
 
             bundles.Add(theme.Include("~/Content/theme/assets/skin/default_skin/css/theme.min.css"));
@@ -64,6 +72,14 @@ namespace Evaluaciones.Web.UI.App_Start
             bundles.Add(nestable.Include("~/Content/theme/vendor/plugins/nestable/nestable.css"));
 
             bundles.Add(fancytree.Include("~/Content/theme/vendor/plugins/fancytree/skin-win8/ui.fancytree.min.css"));
+
+            bundles.Add(summernoteCss.Include("~/Content/theme/vendor/plugins/summernote/summernote.css"));
+
+            bundles.Add(bootstrap_editable.Include("~/Content/theme/vendor/plugins/xeditable/css/bootstrap-editable.css"));
+
+            bundles.Add(address.Include("~/Content/theme/vendor/plugins/xeditable/inputs/address/address.css"));
+
+            bundles.Add(typeahead_bootstrap.Include("~/Content/theme/vendor/plugins/xeditable/inputs/typeaheadjs/lib/typeahead.js-bootstrap.css"));
             
             #endregion
 
@@ -115,6 +131,8 @@ namespace Evaluaciones.Web.UI.App_Start
 
             ScriptBundle jqueryFancyTree = new ScriptBundle("~/Content/jqueryFancyTree");
 
+            ScriptBundle summernoteJs = new ScriptBundle("~/Content/summernoteJs");
+
             bundles.Add(jquery.Include("~/Content/js/jquery-3.2.0.min.js"));
 
             bundles.Add(jqueryUI.Include("~/Content/js/jquery_ui/jquery-ui.min.js"));
@@ -160,6 +178,9 @@ namespace Evaluaciones.Web.UI.App_Start
             bundles.Add(tableTools.Include("~/Content/theme/vendor/plugins/datatables/extensions/TableTools/js/dataTables.tableTools.min.js"));
             bundles.Add(colReorder.Include("~/Content/theme/vendor/plugins/datatables/extensions/ColReorder/js/dataTables.colReorder.min.js"));
             bundles.Add(dataTables_bootstrapJS.Include("~/Content/theme/vendor/plugins/datatables/media/js/dataTables.bootstrap.js"));
+
+            //Editor
+            bundles.Add(summernoteJs.Include("~/Content/theme/vendor/plugins/summernote/summernote.min.js"));
 
             //Local JS
 
