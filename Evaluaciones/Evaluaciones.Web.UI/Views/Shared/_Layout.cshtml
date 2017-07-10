@@ -26,8 +26,15 @@
     @Styles.Render("~/Content/css/dataTables_bootstrap")
     @Styles.Render("~/Content/css/dataTables_plugins")
     @Styles.Render("~/Content/magnific_popup")
+
+    @Styles.Render("~/Content/summernoteCss")
+    @*@Styles.Render("~/Content/bootstrap_editable")
+        @Styles.Render("~/Content/address")
+        @Styles.Render("~/Content/typeahead_bootstrap")*@
+
     @Styles.Render("~/Content/theme/assets")
     @Styles.Render("~/Content/tooltips")
+
 
     @Scripts.Render("~/Content/jquery")
     @Scripts.Render("~/Content/jquery_ui")
@@ -261,37 +268,20 @@
     @Scripts.Render("~/Content/monthpicker")
     @Scripts.Render("~/Content/timepicker")
     @Scripts.Render("~/Content/spectrum")
-
     @Scripts.Render("~/Content/dataTables")
     @Scripts.Render("~/Content/dataTables.tableTools")
     @Scripts.Render("~/Content/dataTables.colReorder")
     @Scripts.Render("~/Content/dataTables_bootstrapJS")
     @Scripts.Render("~/Content/magnific_popupJS")
     @Scripts.Render("~/Content/jqueryValidate")
-    @Scripts.Render("~/Content/theme/utility")
-    @Scripts.Render("~/Content/theme/demo")
     @Scripts.Render("~/Content/Masks")
-    @Scripts.Render("~/Content/theme/main")
     @Scripts.Render("~/Content/sweetalertJS")
     @Scripts.Render("~/Content/toolTipJS")
-    @*@Scripts.Render("~/Content/summernoteJs")*@
-
-    <!-- Ckeditor JS -->
-    <script src="/Content/theme/vendor/plugins/ckeditor/ckeditor.js"></script>
-    <!-- Summernote Plugin -->
-    <script src="/Content/theme/vendor/plugins/summernote/summernote.min.js"></script>
-    <!-- MarkDown JS -->
-    <script src="/Content/theme/vendor/plugins/markdown/markdown.js"></script>
-    <script src="/Content/theme/vendor/plugins/markdown/to-markdown.js"></script>
-    <script src="/Content/theme/vendor/plugins/markdown/bootstrap-markdown.js"></script>
-    <!-- X-Edit JS -->
-    <script src="/Content/theme/vendor/plugins/moment/moment.min.js"></script>
-    <!-- X-Edit Dependencies -->
-    <script src="/Content/theme/vendor/plugins/xeditable/js/bootstrap-editable.min.js"></script>
-    <script src="/Content/theme/vendor/plugins/xeditable/inputs/address/address.js"></script>
-    <script src="/Content/theme/vendor/plugins/xeditable/inputs/typeaheadjs/lib/typeahead.js"></script>
-    <script src="/Content/theme/vendor/plugins/xeditable/inputs/typeaheadjs/typeaheadjs.js"></script>
-
+    @Scripts.Render("~/Content/theme/utility")
+    @Scripts.Render("~/Content/theme/demo")
+    @Scripts.Render("~/Content/theme/main")
+    @Scripts.Render("~/Content/summernoteJs")
+    
     @Scripts.Render("~/Content/layoutJS")
 
     @RenderSection("bottom_scripts_render", false)
@@ -308,11 +298,22 @@
             "use strict";
             // Init Theme Core
             Core.init();
+
+            $('.summernote').summernote({
+                height: 255,
+                focus: false,
+                oninit: function () { },
+                onChange: function (contents, $editable) { },
+            });
+
+            $('.summernote-edit').summernote({
+                airMode: true,
+                focus: false
+            });
         });
     </script>
     @RenderSection("bottom_code_scripts", false)
 
     @*- END: PAGE SCRIPTS *@
-
 </body>
 </html>

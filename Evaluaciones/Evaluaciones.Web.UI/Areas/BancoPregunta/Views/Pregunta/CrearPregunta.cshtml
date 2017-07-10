@@ -1,59 +1,13 @@
-﻿
+﻿@model Evaluaciones.Web.UI.Areas.BancoPregunta.Models.Pregunta
+
 @{
     ViewBag.Title = "CrearPregunta";
     Layout = "~/Views/Shared/_Layout.cshtml";
 }
 
-@Styles.Render("~/Content/summernoteCss")
-@Styles.Render("~/Content/bootstrap_editable")
-@Styles.Render("~/Content/address")
-@Styles.Render("~/Content/typeahead_bootstrap")
-
-<section id="content" class="table-layout animated fadeIn">
-    <div class="tray tray-center">
-        <!-- Summernote Editor -->
-        <h4 class="micro-header">Summernote - Panel & Live Editor</h4>
-        <div class="panel">
-            <div class="panel-body pn of-h" id="summer-demo">
-                <div class="summernote" style="height: 400px;">
-                    This is the
-                    <b>Summernote</b> Editor...
-                </div>
-            </div>
+<div class="panel">
+    <div class="panel-body pn of-h" id="summer-demo">
+        <div class="summernote" style="height: 400px;">
         </div>
     </div>
-</section>
-
-<style>
-    /* demo styles -summernote */
-    .btn-toolbar > .btn-group.note-fontname {
-        display: none;
-    }
-    /* demo styles - hides several ckeditor toolbar buttons */
-    #cke_52,
-    #cke_53 {
-        display: none !important;
-    }
-</style>
-
-<script type="text/javascript">
-
-    jQuery(document).ready(function () {
-
-        // Init Summernote Plugin
-        $('.summernote').summernote({
-            height: 255, //set editable area's height
-            focus: false, //set focus editable area after Initialize summernote
-            oninit: function () { },
-            onChange: function (contents, $editable) { },
-        });
-
-        // Init Inline Summernote Plugin
-        $('.summernote-edit').summernote({
-            airMode: true,
-            focus: false //set focus editable area after Initialize summernote            
-        });
-
-    })
-
-</script>        
+</div>

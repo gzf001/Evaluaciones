@@ -180,7 +180,7 @@ namespace Evaluaciones.Web.UI.App_Start
             bundles.Add(dataTables_bootstrapJS.Include("~/Content/theme/vendor/plugins/datatables/media/js/dataTables.bootstrap.js"));
 
             //Editor
-            bundles.Add(summernoteJs.Include("~/Content/theme/vendor/plugins/summernote/summernote.min.js"));
+            bundles.Add(summernoteJs.Include("~/Content/theme/vendor/plugins/summernote/summernote.js"));
 
             //Local JS
 
