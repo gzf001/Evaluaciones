@@ -4,10 +4,251 @@
     ViewBag.Title = "CrearPregunta";
     Layout = "~/Views/Shared/_Layout.cshtml";
 }
+@Styles.Render("~/Content/jqueryUIcss1121")
 
-<div class="panel">
-    <div class="panel-body pn of-h" id="summer-demo">
-        <div class="summernote" style="height: 400px;">
+<div id="form" class="admin-form">
+    <div class="panel">
+        <div class="panel-heading">
+            <span class="panel-title">Banco de preguntas</span>
+        </div>
+        <div class="form-horizontal">
+            <div class="panel-body">
+                <div class="col-md-6">
+                    <div id="accordion">
+                        <h3>Configuración</h3>
+                        <div>
+                            <div class="section row">
+                                <div class="form-group">
+                                    @Html.LabelFor(x => x.TipoEducacionCodigo, new { @for = "tipoEducacion", @class = "col-md-4 control-label" })
+                                    <div class="col-md-8">
+                                        <div class="bs-component">
+                                            @Html.DropDownListFor(x => x.TipoEducacionCodigo, Evaluaciones.Educacion.TipoEducacion.TipoEducaciones, new { @id = "tipoEducacion", @class = "form-control" })
+                                            <i class="arrow"></i>
+                                        </div>
+                                    </div>
+                                </div>
+                            </div>
+                            <div class="section row">
+                                <div class="form-group">
+                                    @Html.LabelFor(x => x.GradoCodigo, new { @for = "grado", @class = "col-md-4 control-label" })
+                                    <div class="col-md-8">
+                                        <div class="bs-component">
+                                            @Html.DropDownListFor(x => x.GradoCodigo, Model == null ? Evaluaciones.Educacion.Grado.DefaultItem : Evaluaciones.Educacion.Grado.Grados(Model.TipoEducacionCodigo), new { @id = "grado", @class = "form-control" })
+                                            <i class="arrow"></i>
+                                        </div>
+                                    </div>
+                                </div>
+                            </div>
+                            <div class="section row">
+                                <div class="form-group">
+                                    @Html.LabelFor(x => x.SectorId, new { @for = "sector", @class = "col-md-4 control-label" })
+                                    <div class="col-md-8">
+                                        <div class="bs-component">
+                                            @Html.DropDownListFor(x => x.SectorId, Evaluaciones.Educacion.Sector.DefaultItem, new { @id = "sector", @class = "form-control" })
+                                            <i class="arrow"></i>
+                                        </div>
+                                    </div>
+                                </div>
+                            </div>
+                            <div class="section row">
+                                <div class="form-group">
+                                    @Html.LabelFor(x => x.DificultadCodigo, new { @for = "dificultad", @class = "col-md-4 control-label" })
+                                    <div class="col-md-8">
+                                        <div class="bs-component">
+                                            @Html.DropDownListFor(x => x.DificultadCodigo, Evaluaciones.Evaluacion.Dificultad.Dificultades, new { @id = "dificultad", @class = "form-control" })
+                                            <i class="arrow"></i>
+                                        </div>
+                                    </div>
+                                </div>
+                            </div>
+                            <div class="section row">
+                                <div class="form-group">
+                                    @Html.LabelFor(x => x.TipoReactivoCodigo, new { @for = "tipoReactivo", @class = "col-md-4 control-label" })
+                                    <div class="col-md-8">
+                                        <div class="bs-component">
+                                            @Html.DropDownListFor(x => x.TipoReactivoCodigo, Evaluaciones.Evaluacion.TipoReactivo.TiposReactivos, new { @id = "tipoReactivo", @class = "form-control" })
+                                            <i class="arrow"></i>
+                                        </div>
+                                    </div>
+                                </div>
+                            </div>
+                            <div class="section row">
+                                <div class="form-group">
+                                    @Html.LabelFor(x => x.TipoEvaluacionCodigo, new { @for = "tipoEvaluacion", @class = "col-md-4 control-label" })
+                                    <div class="col-md-8">
+                                        <div class="bs-component">
+                                            @Html.DropDownListFor(x => x.TipoEvaluacionCodigo, Evaluaciones.Evaluacion.TipoEvaluacion.TiposEvaluaciones, new { @id = "tipoEvaluacion", @class = "form-control" })
+                                            <i class="arrow"></i>
+                                        </div>
+                                    </div>
+                                </div>
+                            </div>
+                            <div class="section row">
+                                <div class="form-group">
+                                    @Html.LabelFor(x => x.HabilidadCodigo, new { @for = "habilidad", @class = "col-md-4 control-label" })
+                                    <div class="col-md-8">
+                                        <div class="bs-component">
+                                            @Html.DropDownListFor(x => x.HabilidadCodigo, Evaluaciones.Evaluacion.Habilidad.Habilidades, new { @id = "habilidad", @class = "form-control" })
+                                            <i class="arrow"></i>
+                                        </div>
+                                    </div>
+                                </div>
+                            </div>
+                            <div class="section row">
+                                <div class="pull-right">
+                                    <label class="option block">
+                                        <input type="checkbox" id="privada" name="Privada" />
+                                        <span class="checkbox"></span>Privada
+                                    </label>
+                                </div>
+                            </div>
+                        </div>
+                        <h3>Recursos curriculares</h3>
+                        <div>
+                            <div class="section row">
+                                <div class="form-group">
+                                    @Html.LabelFor(x => x.TipoEducacionCodigo, new { @for = "tipoEducacion", @class = "col-md-4 control-label" })
+                                    <div class="col-md-8">
+                                        <div class="bs-component">
+                                            @Html.DropDownListFor(x => x.TipoEducacionCodigo, Evaluaciones.Educacion.TipoEducacion.TipoEducaciones, new { @id = "tipoEducacion", @class = "form-control" })
+                                            <i class="arrow"></i>
+                                        </div>
+                                    </div>
+                                </div>
+                            </div>
+                            <div class="section row">
+                                <div class="form-group">
+                                    @Html.LabelFor(x => x.GradoCodigo, new { @for = "grado", @class = "col-md-4 control-label" })
+                                    <div class="col-md-8">
+                                        <div class="bs-component">
+                                            @Html.DropDownListFor(x => x.GradoCodigo, Model == null ? Evaluaciones.Educacion.Grado.DefaultItem : Evaluaciones.Educacion.Grado.Grados(Model.TipoEducacionCodigo), new { @id = "grado", @class = "form-control" })
+                                            <i class="arrow"></i>
+                                        </div>
+                                    </div>
+                                </div>
+                            </div>
+                            <div class="section row">
+                                <div class="form-group">
+                                    @Html.LabelFor(x => x.SectorId, new { @for = "sector", @class = "col-md-4 control-label" })
+                                    <div class="col-md-8">
+                                        <div class="bs-component">
+                                            @Html.DropDownListFor(x => x.SectorId, Evaluaciones.Educacion.Sector.DefaultItem, new { @id = "sector", @class = "form-control" })
+                                            <i class="arrow"></i>
+                                        </div>
+                                    </div>
+                                </div>
+                            </div>
+                            <div class="section row">
+                                <div class="form-group">
+                                    @Html.LabelFor(x => x.DificultadCodigo, new { @for = "dificultad", @class = "col-md-4 control-label" })
+                                    <div class="col-md-8">
+                                        <div class="bs-component">
+                                            @Html.DropDownListFor(x => x.DificultadCodigo, Evaluaciones.Evaluacion.Dificultad.Dificultades, new { @id = "dificultad", @class = "form-control" })
+                                            <i class="arrow"></i>
+                                        </div>
+                                    </div>
+                                </div>
+                            </div>
+                            <div class="section row">
+                                <div class="form-group">
+                                    @Html.LabelFor(x => x.TipoReactivoCodigo, new { @for = "tipoReactivo", @class = "col-md-4 control-label" })
+                                    <div class="col-md-8">
+                                        <div class="bs-component">
+                                            @Html.DropDownListFor(x => x.TipoReactivoCodigo, Evaluaciones.Evaluacion.TipoReactivo.TiposReactivos, new { @id = "tipoReactivo", @class = "form-control" })
+                                            <i class="arrow"></i>
+                                        </div>
+                                    </div>
+                                </div>
+                            </div>
+                            <div class="section row">
+                                <div class="form-group">
+                                    @Html.LabelFor(x => x.TipoEvaluacionCodigo, new { @for = "tipoEvaluacion", @class = "col-md-4 control-label" })
+                                    <div class="col-md-8">
+                                        <div class="bs-component">
+                                            @Html.DropDownListFor(x => x.TipoEvaluacionCodigo, Evaluaciones.Evaluacion.TipoEvaluacion.TiposEvaluaciones, new { @id = "tipoEvaluacion", @class = "form-control" })
+                                            <i class="arrow"></i>
+                                        </div>
+                                    </div>
+                                </div>
+                            </div>
+                            <div class="section row">
+                                <div class="form-group">
+                                    @Html.LabelFor(x => x.HabilidadCodigo, new { @for = "habilidad", @class = "col-md-4 control-label" })
+                                    <div class="col-md-8">
+                                        <div class="bs-component">
+                                            @Html.DropDownListFor(x => x.HabilidadCodigo, Evaluaciones.Evaluacion.Habilidad.Habilidades, new { @id = "habilidad", @class = "form-control" })
+                                            <i class="arrow"></i>
+                                        </div>
+                                    </div>
+                                </div>
+                            </div>
+                            <div class="section row">
+                                <div class="pull-right">
+                                    <label class="option block">
+                                        <input type="checkbox" id="privada" name="Privada" />
+                                        <span class="checkbox"></span>Privada
+                                    </label>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+                <div class="col-md-6">
+                    <div class="panel">
+                        <div class="panel-body pn of-h" id="summer-demo">
+                            <div class="summernote">
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
         </div>
     </div>
+    <div class="pull-right col-sm-7">
+        <button type="button" id="cancelOrder" class="button btn-dark">Cancelar</button>
+        <button id="saveOrder" class="button btn-primary">Guardar</button>
+    </div>
 </div>
+<script type="text/javascript">
+
+    jQuery(document).ready(function () {
+
+        $("#accordion").accordion({
+            collapsible: true,
+        });
+
+        $("#tipoEducacion").change(function () {
+
+            $("#grado").html("<option value='-1'>[Seleccione]</option>");
+            $("#sector").html("<option value='-1'>[Seleccione]</option>");
+
+            $.getJSON('/Educacion/Grados?tipoEducacion=' + $('#tipoEducacion').val(), function (data) {
+
+                var items = "";
+
+                $.each(data, function (i, grado) {
+                    items += "<option value='" + grado.Value + "'>" + grado.Text + "</option>";
+                });
+
+                $("#grado").html(items);
+            });
+        });
+
+        $("#grado").change(function () {
+
+            $("#sector").html("<option value='-1'>[Seleccione]</option>");
+
+            $.getJSON('/Educacion/Sectores/' + $("#tipoEducacion").val() + '/' + $("#grado").val(), function (data) {
+
+                var items = "";
+
+                $.each(data, function (i, sector) {
+                    items += "<option value='" + sector.Value + "'>" + sector.Text + "</option>";
+                });
+
+                $("#sector").html(items);
+            });
+        });
+    })
+
+</script>

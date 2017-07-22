@@ -628,9 +628,9 @@ namespace Evaluaciones.Web.UI.Areas.Administracion.Controllers
                         NacionalidadCodigo = model.Persona.NacionalidadCodigo,
                         EstadoCivilCodigo = model.Persona.EstadoCivilCodigo,
                         NivelEducacionalCodigo = model.Persona.NivelEducacionalCodigo,
-                        RegionCodigo = model.Persona.RegionCodigo,
-                        CiudadCodigo = model.Persona.CiudadCodigo,
-                        ComunaCodigo = model.Persona.ComunaCodigo,
+                        RegionCodigo = model.Persona.ComunaCodigo.Value > 0 ? model.Persona.RegionCodigo.Value : default(short),
+                        CiudadCodigo = model.Persona.ComunaCodigo.Value > 0 ? model.Persona.CiudadCodigo.Value : default(short),
+                        ComunaCodigo = model.Persona.ComunaCodigo.Value > 0 ? model.Persona.ComunaCodigo.Value : default(short),
                         VillaPoblacion = model.Persona.VillaPoblacion,
                         Direccion = model.Persona.Direccion,
                         Telefono = model.Persona.Telefono,
@@ -684,7 +684,6 @@ namespace Evaluaciones.Web.UI.Areas.Administracion.Controllers
 
         [Authorize]
         [HttpGet]
-        //[Evaluaciones.Web.Authorization(ActionType = new Evaluaciones.Web.ActionType[] { Evaluaciones.Web.ActionType.Access }, Root = "Usuarios", Area = Area)]
         public JsonResult GetAllUsuarios(Evaluaciones.FindType findType, string filter)
         {
             Evaluaciones.Web.UI.Areas.Administracion.Models.Usuario.Usuarios usuarios = this.UsuarioGridView(findType, filter);
@@ -855,7 +854,7 @@ namespace Evaluaciones.Web.UI.Areas.Administracion.Controllers
 
         [Authorize]
         [HttpPost]
-        //[Evaluaciones.Web.Authorization(ActionType = new Evaluaciones.Web.ActionType[] { Evaluaciones.Web.ActionType.Accept }, Root = "Usuarios", Area = Area)]
+        [Evaluaciones.Web.Authorization(ActionType = new Evaluaciones.Web.ActionType[] { Evaluaciones.Web.ActionType.Accept }, Root = "Usuarios", Area = Area)]
         public ActionResult ChangePass(Evaluaciones.Web.UI.Areas.Administracion.Models.Usuario model)
         {
             if (!this.ModelState.IsValid)
@@ -1023,8 +1022,7 @@ namespace Evaluaciones.Web.UI.Areas.Administracion.Controllers
                     Run = usuario.Persona.Run,
                     Estado = usuario.Bloqueado ? "Bloquedo" : "Activo",
                     UltimoLogin = usuario.UltimoAcceso.ToString(),
-                    Accion = string.Format("{0}{1}{2}{3}{4}", Evaluaciones.Helpers.ActionLinkExtension.ActionLinkCrudEmbedded(usuario.Id, null, Evaluaciones.Helpers.TypeButton.Edit, this),
-                                                              Evaluaciones.Helpers.ActionLinkExtension.ActionLinkCrudEmbedded(usuario.Id, null, Evaluaciones.Helpers.TypeButton.Delete, this),
+                    Accion = string.Format("{0}{1}{2}{3}", Evaluaciones.Helpers.ActionLinkExtension.ActionLinkCrudEmbedded(usuario.Id, null, Evaluaciones.Helpers.TypeButton.Edit, this),
                                                               Evaluaciones.Helpers.ActionLinkExtension.ActionLinkCrudEmbedded(usuario.Id, null, Evaluaciones.Helpers.TypeButton.OtherAction, this, "fa-key", "Establecer contraseña", "changePass"),
                                                               Evaluaciones.Helpers.ActionLinkExtension.ActionLinkCrudEmbedded(usuario.Id, null, Evaluaciones.Helpers.TypeButton.OtherAction, this, "fa-wrench", "Asignar roles", "assignRole"),
                                                               botonHabilitado)

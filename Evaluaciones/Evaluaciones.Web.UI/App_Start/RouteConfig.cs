@@ -60,6 +60,26 @@ namespace Evaluaciones.Web.UI
             );
 
             #endregion
+
+            #region Grados
+
+            routes.MapRoute(
+                name: "Grados",
+                url: "Educacion/Grados/{tipoEducacion}",
+                defaults: new { controller = "Educacion", action = "Grados", tipoEducacion = "" }
+            );
+
+            #endregion
+
+            #region Grados
+
+            routes.MapRoute(
+                name: "Sectores",
+                url: "Educacion/Sectores/{tipoEducacion}/{grado}",
+                defaults: new { controller = "Educacion", action = "Sectores", tipoEducacion = "", grado = "" }
+            );
+
+            #endregion
         }
     }
 }

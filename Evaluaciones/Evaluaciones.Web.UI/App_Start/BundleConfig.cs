@@ -15,6 +15,8 @@ namespace Evaluaciones.Web.UI.App_Start
             //CSS
             StyleBundle theme = new StyleBundle("~/Content/theme/assets");
 
+            StyleBundle jqueryUIcss1121 = new StyleBundle("~/Content/jqueryUIcss1121");
+
             StyleBundle bootstrap = new StyleBundle("~/Content/bootstrap");
 
             StyleBundle adminTools = new StyleBundle("~/Content/assets/admin-tools");
@@ -48,6 +50,8 @@ namespace Evaluaciones.Web.UI.App_Start
             StyleBundle typeahead_bootstrap = new StyleBundle("~/Content/typeahead_bootstrap");
 
             bundles.Add(bootstrap.Include("~/Content/bootstrap/css/bootstrap.min.css"));
+
+            bundles.Add(jqueryUIcss1121.Include("~/Content/js/jquery_ui/jquery-ui-themes-1.12.1/jquery-ui.min.css"));
 
             bundles.Add(theme.Include("~/Content/theme/assets/skin/default_skin/css/theme.min.css"));
 
