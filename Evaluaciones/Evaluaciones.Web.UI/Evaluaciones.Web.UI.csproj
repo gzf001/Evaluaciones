@@ -162,13 +162,16 @@
     <Compile Include="Areas\Home\HomeAreaRegistration.cs" />
     <Compile Include="Areas\Home\Models\Login.cs" />
     <Compile Include="Areas\Home\Models\RecoveryPass.cs" />
+    <Compile Include="Controllers\BaseCurricularController.cs" />
     <Compile Include="Controllers\EducacionController.cs" />
     <Compile Include="Controllers\EvaluacionesController.cs" />
+    <Compile Include="Controllers\RecursoCurricularController.cs" />
     <Compile Include="Controllers\UtilsController.cs" />
     <Compile Include="Global.asax.cs">
       <DependentUpon>Global.asax</DependentUpon>
     </Compile>
     <Compile Include="Helpers\TreeViewExtension.cs" />
+    <Compile Include="Models\ObjetivoAprendizaje.cs" />
     <Compile Include="Models\PartialHeader.cs" />
     <Compile Include="Models\PartialSwal.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />
@@ -2340,6 +2343,7 @@
     <Content Include="Content\theme\vendor\plugins\datatables\extensions\TableTools\js\dataTables.tableTools.min.js" />
     <Content Include="Content\theme\vendor\plugins\datatables\extensions\TableTools\swf\copy_csv_xls.swf" />
     <Content Include="Content\theme\vendor\plugins\datatables\extensions\TableTools\swf\copy_csv_xls_pdf.swf" />
+    <Content Include="Content\theme\vendor\plugins\datatables\jquery.dataTables.min.css" />
     <Content Include="Content\theme\vendor\plugins\datatables\license.txt" />
     <Content Include="Content\theme\vendor\plugins\datatables\media\css\dataTables.bootstrap.css" />
     <Content Include="Content\theme\vendor\plugins\datatables\media\css\dataTables.plugins.css" />
@@ -3699,7 +3703,7 @@
     <Folder Include="Content\theme\vendor\plugins\n3charts\" />
     <Folder Include="Content\theme\vendor\plugins\pnotify\" />
     <Folder Include="Content\theme\vendor\plugins\sparkline\" />
-    <Folder Include="Views\Educacion\" />
+    <Folder Include="Views\RecursoCurricular\" />
   </ItemGroup>
   <ItemGroup>
     <Content Include="packages.config" />

@@ -90,6 +90,7 @@
     <Compile Include="Business\Semana.cs" />
     <Compile Include="Business\Sexo.cs" />
     <Compile Include="Context.cs" />
+    <Compile Include="Default.cs" />
     <Compile Include="Entity\Ambito.cs" />
     <Compile Include="Entity\Anio.cs" />
     <Compile Include="Entity\AnioMes.cs" />

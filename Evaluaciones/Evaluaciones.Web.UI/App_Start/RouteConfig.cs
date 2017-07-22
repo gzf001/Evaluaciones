@@ -71,12 +71,40 @@ namespace Evaluaciones.Web.UI
 
             #endregion
 
-            #region Grados
+            #region Sectores
 
             routes.MapRoute(
                 name: "Sectores",
                 url: "Educacion/Sectores/{tipoEducacion}/{grado}",
                 defaults: new { controller = "Educacion", action = "Sectores", tipoEducacion = "", grado = "" }
+            );
+
+            #endregion
+
+            #region BasesCurriculares
+
+            routes.MapRoute(
+                name: "Ejes",
+                url: "BaseCurricular/Ejes/{tipoEducacionCodigo}/{gradoCodigo}/{sectorId}/{unidadId}",
+                defaults: new { controller = "BaseCurricular", action = "Ejes", tipoEducacionCodigo = "", gradoCodigo = "", sectorId = "", unidadId = "" }
+            );
+
+            routes.MapRoute(
+                name: "ObjetivosAprendizaje",
+                url: "BaseCurricular/ObjetivosAprendizaje/{tipoEducacionCodigo}/{gradoCodigo}/{sectorId}/{unidadId}/{ejeId}",
+                defaults: new { controller = "BaseCurricular", action = "ObjetivosAprendizaje", tipoEducacionCodigo = "", gradoCodigo = "", sectorId = "", unidadId = "", ejeId = "" }
+            );
+
+            routes.MapRoute(
+                name: "GetObjetivosAprendizaje",
+                url: "BaseCurricular/GetObjetivosAprendizaje/{tipoEducacionCodigo}/{gradoCodigo}/{sectorId}/{unidadId}/{ejeId}",
+                defaults: new { controller = "BaseCurricular", action = "GetObjetivosAprendizaje", tipoEducacionCodigo = "", gradoCodigo = "", sectorId = "", unidadId = "", ejeId = "" }
+            );
+
+            routes.MapRoute(
+                name: "Unidades",
+                url: "BaseCurricular/Unidades/{tipoEducacionCodigo}/{gradoCodigo}/{sectorId}",
+                defaults: new { controller = "BaseCurricular", action = "Unidades", tipoEducacionCodigo = "", gradoCodigo = "", sectorId = "" }
             );
 
             #endregion

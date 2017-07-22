@@ -67,7 +67,19 @@
     <Reference Include="System.Xml" />
   </ItemGroup>
   <ItemGroup>
+    <Compile Include="Business\BaseCurricular\Eje.cs" />
+    <Compile Include="Business\BaseCurricular\ObjetivoAprendizaje.cs" />
+    <Compile Include="Business\BaseCurricular\Unidad.cs" />
+    <Compile Include="Business\ConexionApi.cs" />
     <Compile Include="Business\Grado.cs" />
+    <Compile Include="Business\PME\Aprendizaje.cs" />
+    <Compile Include="Business\PME\AprendizajeIndicador.cs" />
+    <Compile Include="Business\PME\Habilidad.cs" />
+    <Compile Include="Business\RecursoCurricular\Aprendizaje.cs" />
+    <Compile Include="Business\RecursoCurricular\Contenido.cs" />
+    <Compile Include="Business\RecursoCurricular\Eje.cs" />
+    <Compile Include="Business\RecursoCurricular\RecursoCurricular.cs" />
+    <Compile Include="Business\RecursoCurricular\Unidad.cs" />
     <Compile Include="Business\Sector.cs" />
     <Compile Include="Business\TipoEducacion.cs" />
     <Compile Include="Context.cs" />
@@ -89,5 +101,6 @@
   <ItemGroup>
     <None Include="packages.config" />
   </ItemGroup>
+  <ItemGroup />
   <Import Project="$(MSBuildToolsPath)\Microsoft.CSharp.targets" />
 </Project>

@@ -5,6 +5,7 @@
     Layout = "~/Views/Shared/_Layout.cshtml";
 }
 @Styles.Render("~/Content/jqueryUIcss1121")
+@*<link href="~/Content/theme/vendor/plugins/datatables/jquery.dataTables.min.css" rel="stylesheet" />*@
 
 <div id="form" class="admin-form">
     <div class="panel">
@@ -107,10 +108,10 @@
                         <div>
                             <div class="section row">
                                 <div class="form-group">
-                                    @Html.LabelFor(x => x.TipoEducacionCodigo, new { @for = "tipoEducacion", @class = "col-md-4 control-label" })
+                                    @Html.LabelFor(x => x.BaseCurricular.TipoEducacionCodigo, new { @for = "tipoEducacionRecursoCurrilar", @class = "col-md-4 control-label" })
                                     <div class="col-md-8">
                                         <div class="bs-component">
-                                            @Html.DropDownListFor(x => x.TipoEducacionCodigo, Evaluaciones.Educacion.TipoEducacion.TipoEducaciones, new { @id = "tipoEducacion", @class = "form-control" })
+                                            @Html.DropDownListFor(x => x.BaseCurricular.TipoEducacionCodigo, Evaluaciones.Educacion.TipoEducacion.TipoEducaciones, new { @id = "tipoEducacionRecursoCurrilar", @class = "form-control" })
                                             <i class="arrow"></i>
                                         </div>
                                     </div>
@@ -118,10 +119,10 @@
                             </div>
                             <div class="section row">
                                 <div class="form-group">
-                                    @Html.LabelFor(x => x.GradoCodigo, new { @for = "grado", @class = "col-md-4 control-label" })
+                                    @Html.LabelFor(x => x.BaseCurricular.GradoCodigo, new { @for = "gradoRecursoCurrilar", @class = "col-md-4 control-label" })
                                     <div class="col-md-8">
                                         <div class="bs-component">
-                                            @Html.DropDownListFor(x => x.GradoCodigo, Model == null ? Evaluaciones.Educacion.Grado.DefaultItem : Evaluaciones.Educacion.Grado.Grados(Model.TipoEducacionCodigo), new { @id = "grado", @class = "form-control" })
+                                            @Html.DropDownListFor(x => x.BaseCurricular.GradoCodigo, Model == null ? Evaluaciones.Educacion.Grado.DefaultItem : Evaluaciones.Educacion.Grado.Grados(Model.BaseCurricular.TipoEducacionCodigo), new { @id = "gradoRecursoCurrilar", @class = "form-control" })
                                             <i class="arrow"></i>
                                         </div>
                                     </div>
@@ -129,10 +130,10 @@
                             </div>
                             <div class="section row">
                                 <div class="form-group">
-                                    @Html.LabelFor(x => x.SectorId, new { @for = "sector", @class = "col-md-4 control-label" })
+                                    @Html.LabelFor(x => x.BaseCurricular.UnidadId, new { @for = "unidadRecursoCurrilar", @class = "col-md-4 control-label" })
                                     <div class="col-md-8">
                                         <div class="bs-component">
-                                            @Html.DropDownListFor(x => x.SectorId, Evaluaciones.Educacion.Sector.DefaultItem, new { @id = "sector", @class = "form-control" })
+                                            @Html.DropDownListFor(x => x.BaseCurricular.UnidadId, Evaluaciones.Educacion.BaseCurricular.Unidad.DefaultItem, new { @id = "unidadRecursoCurrilar", @class = "form-control" })
                                             <i class="arrow"></i>
                                         </div>
                                     </div>
@@ -140,10 +141,10 @@
                             </div>
                             <div class="section row">
                                 <div class="form-group">
-                                    @Html.LabelFor(x => x.DificultadCodigo, new { @for = "dificultad", @class = "col-md-4 control-label" })
+                                    @Html.LabelFor(x => x.BaseCurricular.EjeId, new { @for = "ejeRecursoCurrilar", @class = "col-md-4 control-label" })
                                     <div class="col-md-8">
                                         <div class="bs-component">
-                                            @Html.DropDownListFor(x => x.DificultadCodigo, Evaluaciones.Evaluacion.Dificultad.Dificultades, new { @id = "dificultad", @class = "form-control" })
+                                            @Html.DropDownListFor(x => x.BaseCurricular.EjeId, Evaluaciones.Educacion.BaseCurricular.Eje.DefaultItem, new { @id = "ejeRecursoCurrilar", @class = "form-control" })
                                             <i class="arrow"></i>
                                         </div>
                                     </div>
@@ -151,45 +152,28 @@
                             </div>
                             <div class="section row">
                                 <div class="form-group">
-                                    @Html.LabelFor(x => x.TipoReactivoCodigo, new { @for = "tipoReactivo", @class = "col-md-4 control-label" })
-                                    <div class="col-md-8">
-                                        <div class="bs-component">
-                                            @Html.DropDownListFor(x => x.TipoReactivoCodigo, Evaluaciones.Evaluacion.TipoReactivo.TiposReactivos, new { @id = "tipoReactivo", @class = "form-control" })
-                                            <i class="arrow"></i>
-                                        </div>
+                                    <div class="col-md-12">
+                                        <table class="table" id="objetivoGridView" cellspacing="0" width="100%">
+                                            <thead>
+                                                <tr>
+                                                    <th>Descripción</th>
+                                                </tr>
+                                            </thead>
+                                        </table>
                                     </div>
                                 </div>
                             </div>
-                            <div class="section row">
-                                <div class="form-group">
-                                    @Html.LabelFor(x => x.TipoEvaluacionCodigo, new { @for = "tipoEvaluacion", @class = "col-md-4 control-label" })
-                                    <div class="col-md-8">
-                                        <div class="bs-component">
-                                            @Html.DropDownListFor(x => x.TipoEvaluacionCodigo, Evaluaciones.Evaluacion.TipoEvaluacion.TiposEvaluaciones, new { @id = "tipoEvaluacion", @class = "form-control" })
-                                            <i class="arrow"></i>
+                            @*<div class="section row">
+                                    <div class="form-group">
+                                        @Html.LabelFor(x => x.BaseCurricular.ObjetivoAprendizajeId, new { @for = "objetivoRecursoCurrilar", @class = "col-md-4 control-label" })
+                                        <div class="col-md-8">
+                                            <div class="bs-component">
+                                                @Html.DropDownListFor(x => x.BaseCurricular.ObjetivoAprendizajeId, Evaluaciones.Educacion.BaseCurricular.ObjetivoAprendizaje.DefaultItem, new { @id = "objetivoRecursoCurrilar", @class = "form-control" })
+                                                <i class="arrow"></i>
+                                            </div>
                                         </div>
                                     </div>
-                                </div>
-                            </div>
-                            <div class="section row">
-                                <div class="form-group">
-                                    @Html.LabelFor(x => x.HabilidadCodigo, new { @for = "habilidad", @class = "col-md-4 control-label" })
-                                    <div class="col-md-8">
-                                        <div class="bs-component">
-                                            @Html.DropDownListFor(x => x.HabilidadCodigo, Evaluaciones.Evaluacion.Habilidad.Habilidades, new { @id = "habilidad", @class = "form-control" })
-                                            <i class="arrow"></i>
-                                        </div>
-                                    </div>
-                                </div>
-                            </div>
-                            <div class="section row">
-                                <div class="pull-right">
-                                    <label class="option block">
-                                        <input type="checkbox" id="privada" name="Privada" />
-                                        <span class="checkbox"></span>Privada
-                                    </label>
-                                </div>
-                            </div>
+                                </div>*@
                         </div>
                     </div>
                 </div>
@@ -213,11 +197,17 @@
 
     jQuery(document).ready(function () {
 
+        var table;
+
         $("#accordion").accordion({
             collapsible: true,
         });
 
-        $("#tipoEducacion").change(function () {
+        $("#tipoEducacion").change(function (e) {
+
+            e.preventDefault();
+
+            e.stopPropagation();
 
             $("#grado").html("<option value='-1'>[Seleccione]</option>");
             $("#sector").html("<option value='-1'>[Seleccione]</option>");
@@ -234,7 +224,11 @@
             });
         });
 
-        $("#grado").change(function () {
+        $("#grado").change(function (e) {
+
+            e.preventDefault();
+
+            e.stopPropagation();
 
             $("#sector").html("<option value='-1'>[Seleccione]</option>");
 
@@ -249,6 +243,135 @@
                 $("#sector").html(items);
             });
         });
+
+        $("#tipoEducacionRecursoCurrilar").change(function (e) {
+
+            e.preventDefault();
+
+            e.stopPropagation();
+
+            $("#gradoRecursoCurrilar").html("<option value='-1'>[Seleccione]</option>");
+            $("#unidadRecursoCurrilar").html("<option value='-1'>[Seleccione]</option>");
+            $("#ejeRecursoCurrilar").html("<option value='-1'>[Seleccione]</option>");
+            $("#objetivoRecursoCurrilar").html("<option value='-1'>[Seleccione]</option>");
+
+            $.getJSON('/Educacion/Grados?tipoEducacion=' + $('#tipoEducacionRecursoCurrilar').val(), function (data) {
+
+                var items = "";
+
+                $.each(data, function (i, grado) {
+                    items += "<option value='" + grado.Value + "'>" + grado.Text + "</option>";
+                });
+
+                $("#gradoRecursoCurrilar").html(items);
+            });
+        });
+
+        $("#gradoRecursoCurrilar").change(function (e) {
+
+            e.preventDefault();
+
+            e.stopPropagation();
+
+            $("#unidadRecursoCurrilar").html("<option value='-1'>[Seleccione]</option>");
+            $("#ejeRecursoCurrilar").html("<option value='-1'>[Seleccione]</option>");
+            $("#objetivoRecursoCurrilar").html("<option value='-1'>[Seleccione]</option>");
+
+            var tipoEducacion = $("#tipoEducacionRecursoCurrilar").val();
+            var grado = $("#gradoRecursoCurrilar").val();
+            var sector = $("#sector").val();
+
+            if (sector == -1) {
+
+                swal("Error", "Debe seleccionar en la configuración de la pregunta el sector", "error");
+            }
+            else {
+
+                $.getJSON('/BaseCurricular/Unidades/' + tipoEducacion + '/' + grado + '/' + sector, function (data) {
+
+                    var items = "";
+
+                    $.each(data, function (i, unidad) {
+                        items += "<option value='" + unidad.Value + "'>" + unidad.Text + "</option>";
+                    });
+
+                    $("#unidadRecursoCurrilar").html(items);
+                });
+            }
+        });
+
+        $("#unidadRecursoCurrilar").change(function (e) {
+
+            e.preventDefault();
+
+            e.stopPropagation();
+
+            $("#ejeRecursoCurrilar").html("<option value='-1'>[Seleccione]</option>");
+            $("#objetivoRecursoCurrilar").html("<option value='-1'>[Seleccione]</option>");
+
+            var tipoEducacion = $("#tipoEducacionRecursoCurrilar").val();
+            var grado = $("#gradoRecursoCurrilar").val();
+            var sector = $("#sector").val();
+            var unidad = $("#unidadRecursoCurrilar").val();
+
+            $.getJSON('/BaseCurricular/Ejes/' + tipoEducacion + '/' + grado + '/' + sector + '/' + unidad, function (data) {
+
+                var items = "";
+
+                $.each(data, function (i, eje) {
+                    items += "<option value='" + eje.Value + "'>" + eje.Text + "</option>";
+                });
+
+                $("#ejeRecursoCurrilar").html(items);
+            });
+        });
+
+        $("#ejeRecursoCurrilar").change(function (e) {
+
+            e.preventDefault();
+
+            e.stopPropagation();
+
+            var tipoEducacion = $("#tipoEducacionRecursoCurrilar").val();
+            var grado = $("#gradoRecursoCurrilar").val();
+            var sector = $("#sector").val();
+            var unidad = $("#unidadRecursoCurrilar").val();
+            var eje = $("#ejeRecursoCurrilar").val();
+
+            table = $('#objetivoGridView').DataTable({
+                'ajax': '/BaseCurricular/GetObjetivosAprendizaje/' + tipoEducacion + '/' + grado + '/' + sector + '/' + unidad + '/' + eje,
+                'columns': [
+                    { 'data': 'Descripcion' }
+                ],
+                'destroy': true,
+                'bPaginate': false,
+                'sDom': '<"dt-panelfooter clearfix"ip>',
+            });
+
+            selectedRow(e);
+        });
+
+        function selectedRow(e) {
+            e.preventDefault();
+
+            e.stopPropagation();
+            $('#objetivoGridView tbody').on('click', 'tr', function (x) {
+
+                x.preventDefault();
+
+                x.stopPropagation();
+
+                if ($(this).hasClass('activeText')) {
+                    $(this).removeClass('activeText');
+                    $(this).addClass('odd');
+                }
+                else {
+                    table.$('tr.activeText').removeClass('activeText');
+                    $(this).addClass('activeText');
+                    $(this).removeClass('odd');
+                }
+            })
+        }
     })
 
 </script>

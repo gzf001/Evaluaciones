@@ -15,7 +15,9 @@ namespace Evaluaciones.Web.UI.Areas.BancoPregunta.Controllers
         [Evaluaciones.Web.Authorization(ActionType = new Evaluaciones.Web.ActionType[] {Evaluaciones.Web.ActionType.Access }, Root = "CrearPregunta", Area = Area)]
         public ActionResult CrearPregunta()
         {
-            return View();
+            Evaluaciones.Web.UI.Areas.BancoPregunta.Models.Pregunta pregunta = new Evaluaciones.Web.UI.Areas.BancoPregunta.Models.Pregunta();
+
+            return View(pregunta);
         }
     }
 }

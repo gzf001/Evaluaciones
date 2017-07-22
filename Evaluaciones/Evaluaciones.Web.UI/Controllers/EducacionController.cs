@@ -14,24 +14,14 @@ namespace Evaluaciones.Web.UI.Controllers
         {
             int tipoEducacionCodigo;
 
-            IEnumerable<SelectListItem> defaultItem = Enumerable.Repeat(new SelectListItem
-            {
-                Value = "-1",
-                Text = "[Seleccione]"
-            }, count: 1);
-
             if (int.TryParse(tipoEducacion, out tipoEducacionCodigo))
             {
-                Evaluaciones.Educacion.TipoEducacion t = Evaluaciones.Educacion.TipoEducacion.Get(tipoEducacionCodigo);
+                IEnumerable<SelectListItem> selectList = Evaluaciones.Educacion.Grado.Grados(tipoEducacionCodigo);
 
-                List<Evaluaciones.Educacion.Grado> grados = Evaluaciones.Educacion.Grado.GetAll(t);
-
-                SelectList selectList = new SelectList(grados, "Codigo", "Nombre");
-
-                return this.Json(defaultItem.Concat(selectList), JsonRequestBehavior.AllowGet);
+                return this.Json(selectList, JsonRequestBehavior.AllowGet);
             }
 
-            return this.Json(defaultItem, JsonRequestBehavior.AllowGet);
+            return this.Json(string.Empty, JsonRequestBehavior.AllowGet);
         }
 
         [HttpGet]

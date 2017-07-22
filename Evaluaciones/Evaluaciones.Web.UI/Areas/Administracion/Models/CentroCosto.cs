@@ -25,7 +25,7 @@ namespace Evaluaciones.Web.UI.Areas.Administracion.Models
             set;
         }
 
-        public class CentrosCosto
+        public new class CentrosCosto
         {
             public List<CentroCosto> data
             {
