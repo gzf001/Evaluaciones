@@ -2324,6 +2324,44 @@
     <Content Include="Content\theme\vendor\plugins\datatables\extensions\Scroller\examples\data\ssp.php" />
     <Content Include="Content\theme\vendor\plugins\datatables\extensions\Scroller\images\loading-background.png" />
     <Content Include="Content\theme\vendor\plugins\datatables\extensions\Scroller\Readme.txt" />
+    <Content Include="Content\theme\vendor\plugins\datatables\extensions\Select\css\select.bootstrap.css" />
+    <Content Include="Content\theme\vendor\plugins\datatables\extensions\Select\css\select.bootstrap.min.css" />
+    <Content Include="Content\theme\vendor\plugins\datatables\extensions\Select\css\select.bootstrap4.css" />
+    <Content Include="Content\theme\vendor\plugins\datatables\extensions\Select\css\select.bootstrap4.min.css" />
+    <Content Include="Content\theme\vendor\plugins\datatables\extensions\Select\css\select.dataTables.css" />
+    <Content Include="Content\theme\vendor\plugins\datatables\extensions\Select\css\select.dataTables.min.css" />
+    <Content Include="Content\theme\vendor\plugins\datatables\extensions\Select\css\select.foundation.css" />
+    <Content Include="Content\theme\vendor\plugins\datatables\extensions\Select\css\select.foundation.min.css" />
+    <Content Include="Content\theme\vendor\plugins\datatables\extensions\Select\css\select.jqueryui.css" />
+    <Content Include="Content\theme\vendor\plugins\datatables\extensions\Select\css\select.jqueryui.min.css" />
+    <Content Include="Content\theme\vendor\plugins\datatables\extensions\Select\css\select.semanticui.css" />
+    <Content Include="Content\theme\vendor\plugins\datatables\extensions\Select\css\select.semanticui.min.css" />
+    <Content Include="Content\theme\vendor\plugins\datatables\extensions\Select\examples\api\cancellableEvents.html" />
+    <Content Include="Content\theme\vendor\plugins\datatables\extensions\Select\examples\api\events.html" />
+    <Content Include="Content\theme\vendor\plugins\datatables\extensions\Select\examples\api\get.html" />
+    <Content Include="Content\theme\vendor\plugins\datatables\extensions\Select\examples\api\index.html" />
+    <Content Include="Content\theme\vendor\plugins\datatables\extensions\Select\examples\api\select.html" />
+    <Content Include="Content\theme\vendor\plugins\datatables\extensions\Select\examples\index.html" />
+    <Content Include="Content\theme\vendor\plugins\datatables\extensions\Select\examples\initialisation\blurable.html" />
+    <Content Include="Content\theme\vendor\plugins\datatables\extensions\Select\examples\initialisation\buttons.html" />
+    <Content Include="Content\theme\vendor\plugins\datatables\extensions\Select\examples\initialisation\cells.html" />
+    <Content Include="Content\theme\vendor\plugins\datatables\extensions\Select\examples\initialisation\checkbox.html" />
+    <Content Include="Content\theme\vendor\plugins\datatables\extensions\Select\examples\initialisation\deferRender.html" />
+    <Content Include="Content\theme\vendor\plugins\datatables\extensions\Select\examples\initialisation\i18n.html" />
+    <Content Include="Content\theme\vendor\plugins\datatables\extensions\Select\examples\initialisation\index.html" />
+    <Content Include="Content\theme\vendor\plugins\datatables\extensions\Select\examples\initialisation\multi.html" />
+    <Content Include="Content\theme\vendor\plugins\datatables\extensions\Select\examples\initialisation\reload.html" />
+    <Content Include="Content\theme\vendor\plugins\datatables\extensions\Select\examples\initialisation\simple.html" />
+    <Content Include="Content\theme\vendor\plugins\datatables\extensions\Select\examples\initialisation\single.html" />
+    <Content Include="Content\theme\vendor\plugins\datatables\extensions\Select\examples\styling\bootstrap.html" />
+    <Content Include="Content\theme\vendor\plugins\datatables\extensions\Select\examples\styling\bootstrap4.html" />
+    <Content Include="Content\theme\vendor\plugins\datatables\extensions\Select\examples\styling\foundation.html" />
+    <Content Include="Content\theme\vendor\plugins\datatables\extensions\Select\examples\styling\index.html" />
+    <Content Include="Content\theme\vendor\plugins\datatables\extensions\Select\examples\styling\jqueryui.html" />
+    <Content Include="Content\theme\vendor\plugins\datatables\extensions\Select\examples\styling\semanticui.html" />
+    <Content Include="Content\theme\vendor\plugins\datatables\extensions\Select\js\dataTables.select.js" />
+    <Content Include="Content\theme\vendor\plugins\datatables\extensions\Select\js\dataTables.select.min.js" />
+    <Content Include="Content\theme\vendor\plugins\datatables\extensions\Select\License.txt" />
     <Content Include="Content\theme\vendor\plugins\datatables\extensions\TableTools\css\dataTables.tableTools.css" />
     <Content Include="Content\theme\vendor\plugins\datatables\extensions\TableTools\css\dataTables.tableTools.min.css" />
     <Content Include="Content\theme\vendor\plugins\datatables\extensions\TableTools\images\background.png" />
@@ -3790,6 +3828,9 @@
   </ItemGroup>
   <ItemGroup>
     <Content Include="Areas\BancoPregunta\Views\Pregunta\CrearPregunta.cshtml" />
+  </ItemGroup>
+  <ItemGroup>
+    <Content Include="Content\theme\vendor\plugins\datatables\extensions\Select\Readme.md" />
   </ItemGroup>
   <PropertyGroup>
     <VisualStudioVersion Condition="'$(VisualStudioVersion)' == ''">10.0</VisualStudioVersion>
