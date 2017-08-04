@@ -210,6 +210,14 @@ namespace Evaluaciones.Web.UI.App_Start
 
             #endregion
 
+            #region Banco de preguntas
+
+            ScriptBundle bancoPregunta = new ScriptBundle("~/js/bancoPregunta");
+
+            bundles.Add(bancoPregunta.Include("~/Content/js/bancoPreguntas/bancoPreguntas.js"));
+
+            #endregion
+
             #endregion
         }
     }

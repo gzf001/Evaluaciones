@@ -22,7 +22,7 @@ namespace Evaluaciones.Educacion.RecursoCurricular
             set;
         }
 
-        public static IEnumerable<SelectListItem> Ejes(int tipoEducacionCodigo, int gradoCodigo, int anioNumero, Guid sectorId, Guid aprendizajeId, Guid ejeId)
+        public static IEnumerable<SelectListItem> Contenidos(int tipoEducacionCodigo, int gradoCodigo, Guid sectorId, Guid aprendizajeId, Guid ejeId)
         {
             List<Evaluaciones.Educacion.RecursoCurricular.Contenido> contenidos = Evaluaciones.Educacion.RecursoCurricular.Contenido.GetAll(tipoEducacionCodigo, gradoCodigo, DateTime.Today.Year, sectorId, aprendizajeId, ejeId);
 

@@ -10,7 +10,7 @@ namespace Evaluaciones.Educacion.RecursoCurricular
 {
     public class Unidad : Evaluaciones.Educacion.RecursoCurricular.RecursoCurricular
     {
-        public static IEnumerable<SelectListItem> Unidades(int tipoEducacionCodigo, int gradoCodigo, int anioNumero, Guid sectorId)
+        public static IEnumerable<SelectListItem> Unidades(int tipoEducacionCodigo, int gradoCodigo, Guid sectorId)
         {
             List<Evaluaciones.Educacion.RecursoCurricular.Unidad> unidades = Evaluaciones.Educacion.RecursoCurricular.Unidad.GetAll(tipoEducacionCodigo, gradoCodigo, DateTime.Today.Year, sectorId);
 

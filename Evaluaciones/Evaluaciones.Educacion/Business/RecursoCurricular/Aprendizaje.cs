@@ -29,7 +29,7 @@ namespace Evaluaciones.Educacion.RecursoCurricular
         {
             string url = string.Format("{0}/RecursoCurricular/Aprendizajes", System.Configuration.ConfigurationManager.AppSettings["api"]);
 
-            string parametros = string.Format("tipoEducacionCodigo={0}&gradoCodigo={0}&anioNumero={2}&sectorId={3}&unidadId={3}", tipoEducacionCodigo, gradoCodigo, DateTime.Today.Year, sectorId, unidadId);
+            string parametros = string.Format("tipoEducacionCodigo={0}&gradoCodigo={1}&anioNumero={2}&sectorId={3}&unidadId={4}", tipoEducacionCodigo, gradoCodigo, DateTime.Today.Year, sectorId, unidadId);
 
             Evaluaciones.Educacion.ConexionApi conexionApi = new Evaluaciones.Educacion.ConexionApi();
 

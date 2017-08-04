@@ -158,6 +158,7 @@
     <Compile Include="Areas\BancoPregunta\BancoPreguntaAreaRegistration.cs" />
     <Compile Include="Areas\BancoPregunta\Controllers\PreguntaController.cs" />
     <Compile Include="Areas\BancoPregunta\Models\Pregunta.cs" />
+    <Compile Include="Areas\BancoPregunta\Models\Referencia.cs" />
     <Compile Include="Areas\Home\Controllers\AccountController.cs" />
     <Compile Include="Areas\Home\HomeAreaRegistration.cs" />
     <Compile Include="Areas\Home\Models\Login.cs" />
@@ -171,9 +172,12 @@
       <DependentUpon>Global.asax</DependentUpon>
     </Compile>
     <Compile Include="Helpers\TreeViewExtension.cs" />
+    <Compile Include="Models\Aprendizaje.cs" />
+    <Compile Include="Models\Contenido.cs" />
     <Compile Include="Models\ObjetivoAprendizaje.cs" />
     <Compile Include="Models\PartialHeader.cs" />
     <Compile Include="Models\PartialSwal.cs" />
+    <Compile Include="Models\RecursoCurricular.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />
   </ItemGroup>
   <ItemGroup>
@@ -203,6 +207,7 @@
     <Content Include="Content\js\admin\rolPermiso\roles.js" />
     <Content Include="Content\js\admin\usuariosConectados\usuariosConectados.js" />
     <Content Include="Content\js\admin\usuarios\usuarios.js" />
+    <Content Include="Content\js\bancoPreguntas\bancoPreguntas.js" />
     <Content Include="Content\js\bootstrap.sweetalert\sweetalert.css" />
     <Content Include="Content\js\bootstrap.sweetalert\sweetalert.js" />
     <Content Include="Content\js\bootstrap.sweetalert\sweetalert.min.js" />

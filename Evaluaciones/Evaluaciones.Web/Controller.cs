@@ -6,6 +6,7 @@ using System.Threading.Tasks;
 
 namespace Evaluaciones.Web
 {
+    //[AuthorizeSessionAttribute]
     public abstract class Controller : System.Web.Mvc.Controller
     {
         public Evaluaciones.Membresia.MenuItem CurrentMenuItem

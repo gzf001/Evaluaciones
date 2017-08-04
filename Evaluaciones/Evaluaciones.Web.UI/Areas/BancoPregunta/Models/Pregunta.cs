@@ -9,18 +9,25 @@ namespace Evaluaciones.Web.UI.Areas.BancoPregunta.Models
     {
         public Pregunta()
         {
-            this.BaseCurricular = new Evaluaciones.Web.UI.Areas.BancoPregunta.Models.Pregunta.PreguntaBaseCurricular();
+            this.BaseCurricular = new Evaluaciones.Evaluacion.PreguntaBaseCurricular();
         }
 
-        public Evaluaciones.Web.UI.Areas.BancoPregunta.Models.Pregunta.PreguntaBaseCurricular BaseCurricular
+        public Evaluaciones.Evaluacion.PreguntaBaseCurricular BaseCurricular
         {
             get;
             set;
         }
 
-        public class PreguntaBaseCurricular : Evaluaciones.Evaluacion.PreguntaBaseCurricular
+        public Evaluaciones.Evaluacion.PreguntaRecursoCurricular RecursoCurricular
         {
+            get;
+            set;
+        }
 
+        public Evaluaciones.Evaluacion.Referencia PreguntaReferencia
+        {
+            get;
+            set;
         }
     }
 }
