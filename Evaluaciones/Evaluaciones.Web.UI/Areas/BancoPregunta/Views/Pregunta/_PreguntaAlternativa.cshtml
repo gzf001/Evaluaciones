@@ -1,0 +1,53 @@
+﻿@model Evaluaciones.Web.UI.Areas.BancoPregunta.Models.PreguntaAlernativa
+
+<div class="form-group">
+    <div class="section row">
+        @Html.LabelFor(x => x.AlternativaA, new { @for = "alternativaA", @class = "col-md-3 control-label" })
+        <div class="col-md-8">
+            <label class="field textarea-grow">
+                @Html.TextAreaFor(x => x.AlternativaA, new { @class = "gui-textarea", @id = "alternativaB", @rows = "100" })
+            </label>
+        </div>
+    </div>
+    <div class="section row">
+        @Html.LabelFor(x => x.AlternativaB, new { @for = "alternativaB", @class = "col-md-3 control-label" })
+        <div class="col-md-8">
+            <label class="field textarea-grow">
+                @Html.TextAreaFor(x => x.AlternativaB, new { @class = "gui-textarea", @id = "alternativaB", @rows = "100" })
+            </label>
+        </div>
+    </div>
+    <div class="section row">
+        @Html.LabelFor(x => x.AlternativaC, new { @for = "alternativaC", @class = "col-md-3 control-label" })
+        <div class="col-md-8">
+            <label class="field textarea-grow">
+                @Html.TextAreaFor(x => x.AlternativaC, new { @class = "gui-textarea", @id = "alternativaC", @rows = "100" })
+            </label>
+        </div>
+    </div>
+    <div class="section row">
+        @Html.LabelFor(x => x.AlternativaD, new { @for = "alternativaD", @class = "col-md-3 control-label" })
+        <div class="col-md-8">
+            <label class="field textarea-grow">
+                @Html.TextAreaFor(x => x.AlternativaD, new { @class = "gui-textarea", @id = "alternativaD", @rows = "100" })
+            </label>
+        </div>
+    </div>
+    <div class="section row">
+        @Html.LabelFor(x => x.AlternativaE, new { @for = "alternativaE", @class = "col-md-3 control-label" })
+        <div class="col-md-8">
+            <label class="field textarea-grow">
+                @Html.TextAreaFor(x => x.AlternativaE, new { @class = "gui-textarea", @id = "alternativaE", @rows = "100" })
+            </label>
+        </div>
+    </div>
+    <div class="section row">
+        @Html.LabelFor(x => x.AlternativaCorrecta, new { @for = "alternativaCorrecta", @class = "col-md-3 control-label" })
+        <div class="col-md-8">
+            <div class="bs-component">
+                @Html.DropDownListFor(x => x.AlternativaCorrecta, Evaluaciones.Evaluacion.PreguntaAlternativa.Alternativas, new { @id = "alternativaCorrecta", @class = "form-control" })
+                <i class="arrow"></i>
+            </div>
+        </div>
+    </div>
+</div>

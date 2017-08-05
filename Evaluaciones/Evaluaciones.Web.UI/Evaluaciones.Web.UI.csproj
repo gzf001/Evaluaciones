@@ -158,6 +158,9 @@
     <Compile Include="Areas\BancoPregunta\BancoPreguntaAreaRegistration.cs" />
     <Compile Include="Areas\BancoPregunta\Controllers\PreguntaController.cs" />
     <Compile Include="Areas\BancoPregunta\Models\Pregunta.cs" />
+    <Compile Include="Areas\BancoPregunta\Models\PreguntaAlernativa.cs" />
+    <Compile Include="Areas\BancoPregunta\Models\PreguntaSeleccionMultiple.cs" />
+    <Compile Include="Areas\BancoPregunta\Models\PreguntaVerdaderoFalso.cs" />
     <Compile Include="Areas\BancoPregunta\Models\Referencia.cs" />
     <Compile Include="Areas\Home\Controllers\AccountController.cs" />
     <Compile Include="Areas\Home\HomeAreaRegistration.cs" />
@@ -3746,7 +3749,6 @@
     <Folder Include="Content\theme\vendor\plugins\n3charts\" />
     <Folder Include="Content\theme\vendor\plugins\pnotify\" />
     <Folder Include="Content\theme\vendor\plugins\sparkline\" />
-    <Folder Include="Views\RecursoCurricular\" />
   </ItemGroup>
   <ItemGroup>
     <Content Include="packages.config" />
@@ -3836,6 +3838,15 @@
   </ItemGroup>
   <ItemGroup>
     <Content Include="Content\theme\vendor\plugins\datatables\extensions\Select\Readme.md" />
+  </ItemGroup>
+  <ItemGroup>
+    <Content Include="Areas\BancoPregunta\Views\Pregunta\_PreguntaAlternativa.cshtml" />
+  </ItemGroup>
+  <ItemGroup>
+    <Content Include="Areas\BancoPregunta\Views\Pregunta\_PreguntaSeleccionMultiple.cshtml" />
+  </ItemGroup>
+  <ItemGroup>
+    <Content Include="Areas\BancoPregunta\Views\Pregunta\_PreguntaVerdaderoFalso.cshtml" />
   </ItemGroup>
   <PropertyGroup>
     <VisualStudioVersion Condition="'$(VisualStudioVersion)' == ''">10.0</VisualStudioVersion>

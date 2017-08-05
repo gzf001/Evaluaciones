@@ -29,5 +29,23 @@ namespace Evaluaciones.Web.UI.Areas.BancoPregunta.Models
             get;
             set;
         }
+
+        public Evaluaciones.Web.UI.Areas.BancoPregunta.Models.PreguntaAlernativa PreguntaAlternativa
+        {
+            get;
+            set;
+        }
+
+        public Evaluaciones.Web.UI.Areas.BancoPregunta.Models.PreguntaVerdaderoFalso PreguntaVerdaderoFalso
+        {
+            get;
+            set;
+        }
+
+        public Evaluaciones.Web.UI.Areas.BancoPregunta.Models.PreguntaSeleccionMultiple PreguntaSeleccionMultiple
+        {
+            get;
+            set;
+        }        
     }
 }

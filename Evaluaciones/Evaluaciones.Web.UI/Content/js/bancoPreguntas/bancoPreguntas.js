@@ -6,6 +6,9 @@
 
     var contenidoId;
 
+    $('#preguntaAlternativa').hide();
+    $('#preguntaSeleccionMultiple').hide();
+
     $("#accordion").accordion({
         collapsible: true,
     });
@@ -64,6 +67,49 @@
                 $("#sector").html(items);
             });
         });
+    });
+
+    $("#tipoReactivo").change(function (e) {
+
+        e.preventDefault();
+
+        var tipoReactivo = parseInt($('#tipoReactivo').val());
+
+        switch (tipoReactivo) {
+
+            case 1:
+                {
+                    $('#preguntaAlternativa').show();
+                    $('#preguntaSeleccionMultiple').hide();
+                    $('#preguntaVerdaderoFalso').hide();
+
+                    break;
+                }
+            case 2:
+                { 
+                    $('#preguntaAlternativa').hide();
+                    $('#preguntaSeleccionMultiple').show();
+                    $('#preguntaVerdaderoFalso').hide();
+
+                    break;
+                }
+            case 3:
+                {
+                    $('#preguntaAlternativa').hide();
+                    $('#preguntaSeleccionMultiple').hide();
+                    $('#preguntaVerdaderoFalso').show();
+
+                    break;
+                }
+            case 4:
+                {
+                    $('#preguntaAlternativa').hide();
+                    $('#preguntaSeleccionMultiple').hide();
+                    $('#preguntaVerdaderoFalso').hide();
+
+                    break;
+                }
+        }
     });
 
     /************************************************************************************/

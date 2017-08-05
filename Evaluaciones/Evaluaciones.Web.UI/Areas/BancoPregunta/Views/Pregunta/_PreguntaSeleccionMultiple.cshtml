@@ -1,0 +1,84 @@
+﻿@model Evaluaciones.Web.UI.Areas.BancoPregunta.Models.PreguntaSeleccionMultiple
+
+<div class="form-group">
+    <div class="section row">
+        <div class="col-md-2">
+            <div class="pull-right">
+                <label class="option block">
+                    <input type="checkbox" id="aCorrecta" name="Correcta" />
+                    <span class="checkbox"></span>
+                </label>
+            </div>
+        </div>
+        @Html.LabelFor(x => x.AlternativaA, new { @for = "alternativaA", @class = "col-md-3 control-label" })
+        <div class="col-md-6">
+            <label class="field textarea-grow">
+                @Html.TextAreaFor(x => x.AlternativaA, new { @class = "gui-textarea", @id = "alternativaB", @rows = "100" })
+            </label>
+        </div>
+    </div>
+    <div class="section row">
+        <div class="col-md-2">
+            <div class="pull-right">
+                <label class="option block">
+                    <input type="checkbox" id="bCorrecta" name="Correcta" />
+                    <span class="checkbox"></span>
+                </label>
+            </div>
+        </div>
+        @Html.LabelFor(x => x.AlternativaB, new { @for = "alternativaB", @class = "col-md-3 control-label" })
+        <div class="col-md-6">
+            <label class="field textarea-grow">
+                @Html.TextAreaFor(x => x.AlternativaB, new { @class = "gui-textarea", @id = "alternativaB", @rows = "100" })
+            </label>
+        </div>
+    </div>
+    <div class="section row">
+        <div class="col-md-2">
+            <div class="pull-right">
+                <label class="option block">
+                    <input type="checkbox" id="cCorrecta" name="Correcta" />
+                    <span class="checkbox"></span>
+                </label>
+            </div>
+        </div>
+        @Html.LabelFor(x => x.AlternativaC, new { @for = "alternativaC", @class = "col-md-3 control-label" })
+        <div class="col-md-6">
+            <label class="field textarea-grow">
+                @Html.TextAreaFor(x => x.AlternativaC, new { @class = "gui-textarea", @id = "alternativaC", @rows = "100" })
+            </label>
+        </div>
+    </div>
+    <div class="section row">
+        <div class="col-md-2">
+            <div class="pull-right">
+                <label class="option block">
+                    <input type="checkbox" id="dCorrecta" name="Correcta" />
+                    <span class="checkbox"></span>
+                </label>
+            </div>
+        </div>
+        @Html.LabelFor(x => x.AlternativaD, new { @for = "alternativaD", @class = "col-md-3 control-label" })
+        <div class="col-md-6">
+            <label class="field textarea-grow">
+                @Html.TextAreaFor(x => x.AlternativaD, new { @class = "gui-textarea", @id = "alternativaD", @rows = "100" })
+            </label>
+        </div>
+    </div>
+    <div class="section row">
+        <div class="col-md-2">
+            <div class="pull-right">
+                <label class="option block">
+                    <input type="checkbox" id="eCorrecta" name="Correcta" />
+                    <span class="checkbox"></span>
+                </label>
+            </div>
+        </div>
+        @Html.LabelFor(x => x.AlternativaE, new { @for = "alternativaE", @class = "col-md-3 control-label" })
+        <div class="col-md-6">
+            <label class="field textarea-grow">
+                @Html.TextAreaFor(x => x.AlternativaE, new { @class = "gui-textarea", @id = "alternativaE", @rows = "100" })
+            </label>
+        </div>
+    </div>
+</div>
