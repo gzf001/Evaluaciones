@@ -92,24 +92,6 @@
                                 <h3 id="baseCurricular">Bases curriculares</h3>
                                 <div id="baseCurricular">
                                     <div class="form-group">
-                                        @Html.LabelFor(x => x.BaseCurricular.TipoEducacionCodigo, new { @for = "tipoEducacionBaseCurrilar", @class = "col-md-4 control-label" })
-                                        <div class="col-md-8">
-                                            <div class="bs-component">
-                                                @Html.DropDownListFor(x => x.BaseCurricular.TipoEducacionCodigo, Evaluaciones.Educacion.TipoEducacion.TipoEducaciones, new { @id = "tipoEducacionBaseCurrilar", @class = "form-control" })
-                                                <i class="arrow"></i>
-                                            </div>
-                                        </div>
-                                    </div>
-                                    <div class="form-group">
-                                        @Html.LabelFor(x => x.BaseCurricular.GradoCodigo, new { @for = "gradoBaseCurrilar", @class = "col-md-4 control-label" })
-                                        <div class="col-md-8">
-                                            <div class="bs-component">
-                                                @Html.DropDownListFor(x => x.BaseCurricular.GradoCodigo, Model == null ? Evaluaciones.Educacion.Grado.DefaultItem : Evaluaciones.Educacion.Grado.Grados(Model.BaseCurricular.TipoEducacionCodigo), new { @id = "gradoBaseCurrilar", @class = "form-control" })
-                                                <i class="arrow"></i>
-                                            </div>
-                                        </div>
-                                    </div>
-                                    <div class="form-group">
                                         @Html.LabelFor(x => x.BaseCurricular.UnidadId, new { @for = "unidadBaseCurrilar", @class = "col-md-4 control-label" })
                                         <div class="col-md-8">
                                             <div class="bs-component">
@@ -141,24 +123,6 @@
                                 </div>
                                 <h3 id="recursoCurricular">Recursos curriculares</h3>
                                 <div id="recursoCurricular">
-                                    <div class="form-group">
-                                        @Html.LabelFor(x => x.RecursoCurricular.TipoEducacionCodigo, new { @for = "tipoEducacionRecursoCurricular", @class = "col-md-4 control-label" })
-                                        <div class="col-md-8">
-                                            <div class="bs-component">
-                                                @Html.DropDownListFor(x => x.RecursoCurricular.TipoEducacionCodigo, Evaluaciones.Educacion.TipoEducacion.TipoEducaciones, new { @id = "tipoEducacionRecursoCurricular", @class = "form-control" })
-                                                <i class="arrow"></i>
-                                            </div>
-                                        </div>
-                                    </div>
-                                    <div class="form-group">
-                                        @Html.LabelFor(x => x.RecursoCurricular.GradoCodigo, new { @for = "gradoRecursoCurricular", @class = "col-md-4 control-label" })
-                                        <div class="col-md-8">
-                                            <div class="bs-component">
-                                                @Html.DropDownListFor(x => x.RecursoCurricular.GradoCodigo, Model == null ? Evaluaciones.Educacion.Grado.DefaultItem : Evaluaciones.Educacion.Grado.Grados(Model.BaseCurricular.TipoEducacionCodigo), new { @id = "gradoRecursoCurricular", @class = "form-control" })
-                                                <i class="arrow"></i>
-                                            </div>
-                                        </div>
-                                    </div>
                                     <div class="form-group">
                                         @Html.LabelFor(x => x.RecursoCurricular.UnidadId, new { @for = "unidadRecursoCurricular", @class = "col-md-4 control-label" })
                                         <div class="col-md-8">
@@ -203,33 +167,6 @@
                                 <h3>Referencias</h3>
                                 <div>
                                     <div class="form-group">
-                                        @Html.LabelFor(x => x.PreguntaReferencia.TipoEducacionCodigo, new { @for = "tipoEducacionReferencia", @class = "col-md-4 control-label" })
-                                        <div class="col-md-8">
-                                            <div class="bs-component">
-                                                @Html.DropDownListFor(x => x.PreguntaReferencia.TipoEducacionCodigo, Evaluaciones.Educacion.TipoEducacion.TipoEducaciones, new { @id = "tipoEducacionReferencia", @class = "form-control" })
-                                                <i class="arrow"></i>
-                                            </div>
-                                        </div>
-                                    </div>
-                                    <div class="form-group">
-                                        @Html.LabelFor(x => x.PreguntaReferencia.GradoCodigo, new { @for = "gradoReferencia", @class = "col-md-4 control-label" })
-                                        <div class="col-md-8">
-                                            <div class="bs-component">
-                                                @Html.DropDownListFor(x => x.PreguntaReferencia.GradoCodigo, Model == null ? Evaluaciones.Educacion.Grado.DefaultItem : Evaluaciones.Educacion.Grado.Grados(Model.TipoEducacionCodigo), new { @id = "gradoReferencia", @class = "form-control" })
-                                                <i class="arrow"></i>
-                                            </div>
-                                        </div>
-                                    </div>
-                                    <div class="form-group">
-                                        @Html.LabelFor(x => x.PreguntaReferencia.SectorId, new { @for = "sectorReferencia", @class = "col-md-4 control-label" })
-                                        <div class="col-md-8">
-                                            <div class="bs-component">
-                                                @Html.DropDownListFor(x => x.PreguntaReferencia.SectorId, Evaluaciones.Educacion.Sector.DefaultItem, new { @id = "sectorReferencia", @class = "form-control" })
-                                                <i class="arrow"></i>
-                                            </div>
-                                        </div>
-                                    </div>
-                                    <div class="form-group">
                                         <div class="col-md-12">
                                             <table class="table" id="referenciaGridView" cellspacing="0" width="100%">
                                                 <thead>
@@ -248,9 +185,8 @@
                         <div class="col-md-6">
                             <div class="col-md-12">
                                 <div class="panel">
-                                    <div class="panel-body pn of-h" id="summer-demo">
-                                        <div class="summernote">
-                                        </div>
+                                    <div class="panel-body pn of-h">
+                                        <textarea id="editor" class="summernote"></textarea>
                                     </div>
                                 </div>
                             </div>
@@ -291,6 +227,8 @@
                         <button type="submit" id="saveOrder" class="button btn-primary">Guardar</button>
                     </div>
                 </div>
+            </div>
+        </div>
     </form>
 </div>
 <div id="modal-form" class="popup-basic admin-form mfp-with-anim mfp-hide mw800">

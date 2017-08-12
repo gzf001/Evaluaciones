@@ -23,7 +23,7 @@ namespace Evaluaciones.Web.UI.Controllers
                 return this.Json(selectList, JsonRequestBehavior.AllowGet);
             }
 
-            return this.Json(string.Empty, JsonRequestBehavior.AllowGet);
+            return this.Json(null, JsonRequestBehavior.AllowGet);
         }
 
         [HttpGet]
@@ -42,7 +42,7 @@ namespace Evaluaciones.Web.UI.Controllers
                 return this.Json(selectList, JsonRequestBehavior.AllowGet);
             }
 
-            return this.Json(string.Empty, JsonRequestBehavior.AllowGet);
+            return this.Json(null, JsonRequestBehavior.AllowGet);
         }
 
         [HttpGet]
@@ -60,7 +60,7 @@ namespace Evaluaciones.Web.UI.Controllers
                 return this.Json(selectList, JsonRequestBehavior.AllowGet);
             }
 
-            return this.Json(string.Empty, JsonRequestBehavior.AllowGet);
+            return this.Json(null, JsonRequestBehavior.AllowGet);
         }
 
         [HttpGet]
@@ -77,7 +77,7 @@ namespace Evaluaciones.Web.UI.Controllers
                 return this.Json(selectList, JsonRequestBehavior.AllowGet);
             }
 
-            return this.Json(string.Empty, JsonRequestBehavior.AllowGet);
+            return this.Json(null, JsonRequestBehavior.AllowGet);
         }
 
         [HttpGet]

@@ -3,6 +3,7 @@ using System.Collections.Generic;
 using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
+using System.Web.Mvc;
 
 namespace Evaluaciones.Web
 {
@@ -51,7 +52,7 @@ namespace Evaluaciones.Web
                 {
                     return null;
                 }
-            
+
                 Evaluaciones.Membresia.Usuario usuario = Evaluaciones.Membresia.Usuario.Get(new Guid(this.User.Identity.Name));
 
                 return usuario;
@@ -98,6 +99,18 @@ namespace Evaluaciones.Web
                     return centroCosto;
                 }
             }
+        }
+
+        public string GetError()
+        {
+            string text = string.Empty;
+
+            foreach (ModelError error in this.ModelState.Values.Where<ModelState>(x => x.Errors.Any<ModelError>()).SelectMany<ModelState, ModelError>(x => x.Errors).Distinct())
+            {
+                text += error.ErrorMessage + Environment.NewLine;
+            }
+
+            return text;
         }
     }
 }

@@ -6,8 +6,23 @@
 
     var contenidoId;
 
+    var referenciaId;
+
     $('#preguntaAlternativa').hide();
     $('#preguntaSeleccionMultiple').hide();
+    $('#preguntaVerdaderoFalso').hide();
+
+    $('.summernote').summernote({
+        height: 255,
+        focus: false,
+        oninit: function () { },
+        onChange: function (contents, $editable) { },
+    });
+
+    $('.summernote-edit').summernote({
+        airMode: true,
+        focus: false
+    });
 
     $("#accordion").accordion({
         collapsible: true,
@@ -69,6 +84,59 @@
         });
     });
 
+    $("#sector").change(function (e) {
+
+        e.preventDefault();
+
+        var tipoEducacion = $('#tipoEducacion').val();
+        var grado = $('#grado').val();
+        var sector = $('#sector').val();
+
+        loadReferencia();
+
+        if ($('#baseCurricular').hasClass('ui-state-disabled')) {
+
+           //Recursos curriculares
+
+            $("#unidadRecursoCurricular").html("<option value='-1'>[Seleccione]</option>");
+            $("#ejeRecursoCurricular").html("<option value='-1'>[Seleccione]</option>");
+
+            loadAprendizaje();
+            loadContenido();
+
+            $.getJSON('/RecursoCurricular/Unidades/' + tipoEducacion + '/' + grado + '/' + sector, function (data) {
+
+                var items = "";
+
+                $.each(data, function (i, unidad) {
+                    items += "<option value='" + unidad.Value + "'>" + unidad.Text + "</option>";
+                });
+
+                $("#unidadRecursoCurricular").html(items);
+            });
+        }
+        else {
+
+            //Bases curriculares
+
+            $("#unidadBaseCurrilar").html("<option value='-1'>[Seleccione]</option>");
+            $("#ejeBaseCurrilar").html("<option value='-1'>[Seleccione]</option>");
+
+            $.getJSON('/BaseCurricular/Unidades/' + tipoEducacion + '/' + grado + '/' + sector, function (data) {
+
+                var items = "";
+
+                $.each(data, function (i, unidad) {
+                    items += "<option value='" + unidad.Value + "'>" + unidad.Text + "</option>";
+                });
+
+                $("#unidadBaseCurrilar").html(items);
+            });
+
+            loadObjetivosAprendizaje();
+        }
+    });
+
     $("#tipoReactivo").change(function (e) {
 
         e.preventDefault();
@@ -101,7 +169,7 @@
 
                     break;
                 }
-            case 4:
+            default:
                 {
                     $('#preguntaAlternativa').hide();
                     $('#preguntaSeleccionMultiple').hide();
@@ -113,275 +181,98 @@
     });
 
     /************************************************************************************/
-    $("#tipoEducacionBaseCurrilar").change(function (e) {
-
-        e.preventDefault();
-
-        $("#gradoBaseCurrilar").html("<option value='-1'>[Seleccione]</option>");
-        $("#unidadBaseCurrilar").html("<option value='-1'>[Seleccione]</option>");
-        $("#ejeBaseCurrilar").html("<option value='-1'>[Seleccione]</option>");
-
-        $.getJSON('/Educacion/Grados?tipoEducacion=' + $('#tipoEducacionBaseCurrilar').val(), function (data) {
-
-            var items = "";
-
-            $.each(data, function (i, grado) {
-                items += "<option value='" + grado.Value + "'>" + grado.Text + "</option>";
-            });
-
-            $("#gradoBaseCurrilar").html(items);
-        });
-    });
-
-    $("#gradoBaseCurrilar").change(function (e) {
-
-        e.preventDefault();
-
-        $("#unidadBaseCurrilar").html("<option value='-1'>[Seleccione]</option>");
-        $("#ejeBaseCurrilar").html("<option value='-1'>[Seleccione]</option>");
-
-        var tipoEducacion = $("#tipoEducacionBaseCurrilar").val();
-        var grado = $("#gradoBaseCurrilar").val();
-        var sector = $("#sector").val();
-
-        if (sector == -1) {
-
-            swal("Error", "Debe seleccionar en la configuración de la pregunta el sector", "error");
-        }
-        else {
-
-            $.getJSON('/BaseCurricular/Unidades/' + tipoEducacion + '/' + grado + '/' + sector, function (data) {
-
-                var items = "";
-
-                $.each(data, function (i, unidad) {
-                    items += "<option value='" + unidad.Value + "'>" + unidad.Text + "</option>";
-                });
-
-                $("#unidadBaseCurrilar").html(items);
-            });
-        }
-    });
-
     $("#unidadBaseCurrilar").change(function (e) {
 
         e.preventDefault();
 
         $("#ejeBaseCurrilar").html("<option value='-1'>[Seleccione]</option>");
 
-        var tipoEducacion = $("#tipoEducacionBaseCurrilar").val();
-        var grado = $("#gradoBaseCurrilar").val();
-        var sector = $("#sector").val();
+        var tipoEducacion = $('#tipoEducacion').val();
+        var grado = $('#grado').val();
+        var sector = $('#sector').val();
         var unidad = $("#unidadBaseCurrilar").val();
 
-        if (sector == -1) {
+        $("#ejeBaseCurrilar").html("<option value='-1'>[Seleccione]</option>");
 
-            swal("Error", "Debe seleccionar en la configuración de la pregunta el sector", "error");
-        }
-        else {
-            $.getJSON('/BaseCurricular/Ejes/' + tipoEducacion + '/' + grado + '/' + sector + '/' + unidad, function (data) {
+        $.getJSON('/BaseCurricular/Ejes/' + tipoEducacion + '/' + grado + '/' + sector + '/' + unidad, function (data) {
 
-                var items = "";
+            var items = "";
 
-                $.each(data, function (i, eje) {
-                    items += "<option value='" + eje.Value + "'>" + eje.Text + "</option>";
-                });
-
-                $("#ejeBaseCurrilar").html(items);
+            $.each(data, function (i, eje) {
+                items += "<option value='" + eje.Value + "'>" + eje.Text + "</option>";
             });
-        }
+
+            $("#ejeBaseCurrilar").html(items);
+        });
+
+        loadObjetivosAprendizaje();
     });
 
     $("#ejeBaseCurrilar").change(function (e) {
 
         e.preventDefault();
 
-        var tipoEducacion = $("#tipoEducacionBaseCurrilar").val();
-        var grado = $("#gradoBaseCurrilar").val();
-        var sector = $("#sector").val();
+        loadObjetivosAprendizaje();
+    });
+
+    function loadObjetivosAprendizaje() {
+
+        var tipoEducacion = $('#tipoEducacion').val();
+        var grado = $('#grado').val();
+        var sector = $('#sector').val();
         var unidad = $("#unidadBaseCurrilar").val();
         var eje = $("#ejeBaseCurrilar").val();
 
-        if (sector == -1) {
+        var table = $('#objetivoGridView').DataTable({
+            'ajax': '/BaseCurricular/GetObjetivosAprendizaje/' + tipoEducacion + '/' + grado + '/' + sector + '/' + unidad + '/' + eje,
+            'columns': [
+                { 'data': 'Descripcion' }
+            ],
+            'destroy': true,
+            'bPaginate': false,
+            'fnCreatedRow': function (nRow, aData, iDataIndex) {
 
-            swal("Error", "Debe seleccionar en la configuración de la pregunta el sector", "error");
-        }
-        else {
+                $(nRow).on('click', function () {
 
-            var table = $('#objetivoGridView').DataTable({
-                'ajax': '/BaseCurricular/GetObjetivosAprendizaje/' + tipoEducacion + '/' + grado + '/' + sector + '/' + unidad + '/' + eje,
-                'columns': [
-                    { 'data': 'Descripcion' }
-                ],
-                'destroy': true,
-                'bPaginate': false,
-                'fnCreatedRow': function (nRow, aData, iDataIndex) {
+                    if ($(nRow).hasClass('selected')) {
 
-                    $(nRow).on('click', function () {
+                        $(nRow).removeClass('selected');
 
-                        if ($(nRow).hasClass('selected')) {
+                        $(nRow).addClass('odd');
 
-                            $(nRow).removeClass('selected');
+                        objetivoAprendizajeId = '';
+                    }
+                    else {
+                        table.$('tr.selected').removeClass('selected');
 
-                            $(nRow).addClass('odd');
+                        $(nRow).addClass('selected');
 
-                            objetivoAprendizajeId = '';
-                        }
-                        else {
-                            table.$('tr.selected').removeClass('selected');
+                        $(nRow).removeClass('odd');
 
-                            $(nRow).addClass('selected');
-
-                            $(nRow).removeClass('odd');
-
-                            objetivoAprendizajeId = aData.Id;
-                        }
-                    });
-                },
-                'sDom': '<"dt-panelfooter clearfix"ip>',
-            });
-        }
-    });
-    /************************************************************************************/
-
-
-    /************************************************************************************/
-    $("#tipoEducacionRecursoCurricular").change(function (e) {
-
-        e.preventDefault();
-
-        $("#gradoRecursoCurricular").html("<option value='-1'>[Seleccione]</option>");
-        $("#unidadRecursoCurricular").html("<option value='-1'>[Seleccione]</option>");
-        $("#ejeRecursoCurricular").html("<option value='-1'>[Seleccione]</option>");
-
-        loadAprendizaje();
-        loadContenido();
-
-        $.getJSON('/Educacion/Grados?tipoEducacion=' + $('#tipoEducacionRecursoCurricular').val(), function (data) {
-
-            var items = "";
-
-            $.each(data, function (i, grado) {
-                items += "<option value='" + grado.Value + "'>" + grado.Text + "</option>";
-            });
-
-            $("#gradoRecursoCurricular").html(items);
-        });
-    });
-
-    $("#gradoRecursoCurricular").change(function (e) {
-
-        e.preventDefault();
-
-        $("#unidadRecursoCurricular").html("<option value='-1'>[Seleccione]</option>");
-        $("#ejeRecursoCurricular").html("<option value='-1'>[Seleccione]</option>");
-
-        loadAprendizaje();
-        loadContenido();
-
-        var tipoEducacion = $("#tipoEducacionRecursoCurricular").val();
-        var grado = $("#gradoRecursoCurricular").val();
-        var sector = $("#sector").val();
-
-        if (sector == -1) {
-
-            swal("Error", "Debe seleccionar en la configuración de la pregunta el sector", "error");
-        }
-        else {
-
-            $.getJSON('/RecursoCurricular/Unidades/' + tipoEducacion + '/' + grado + '/' + sector, function (data) {
-
-                var items = "";
-
-                $.each(data, function (i, unidad) {
-                    items += "<option value='" + unidad.Value + "'>" + unidad.Text + "</option>";
+                        objetivoAprendizajeId = aData.Id;
+                    }
                 });
+            },
+            'sDom': '<"dt-panelfooter clearfix"ip>',
+        });
+    }
+    /************************************************************************************/
 
-                $("#unidadRecursoCurricular").html(items);
-            });
-        }
-    });
 
+    /************************************************************************************/
     $("#unidadRecursoCurricular").change(function (e) {
 
         e.preventDefault();
 
-        $("#ejeRecursoCurricular").html("<option value='-1'>[Seleccione]</option>");
+        loadContenido();
 
-        if (sector == -1) {
-
-            swal("Error", "Debe seleccionar en la configuración de la pregunta el sector", "error");
-        }
-        else {
-
-            loadAprendizaje();
-
-            loadContenido();
-        }
+        loadAprendizaje();
     });
 
     $("#ejeRecursoCurricular").change(function (e) {
 
-        e.preventDefault();
-
-        if (sector == -1) {
-
-            swal("Error", "Debe seleccionar en la configuración de la pregunta el sector", "error");
-        }
-        else {
-
-            loadContenido();
-        }
+        loadContenido();
     });
-
-    $("#tipoEducacionReferencia").change(function (e) {
-
-        e.preventDefault();
-
-        $("#gradoReferencia").html("<option value='-1'>[Seleccione]</option>");
-        $("#sectorReferencia").html("<option value='-1'>[Seleccione]</option>");
-
-        //loadReferencia();
-
-        $.getJSON('/Educacion/Grados?tipoEducacion=' + $('#tipoEducacionReferencia').val(), function (data) {
-
-            var items = "";
-
-            $.each(data, function (i, grado) {
-                items += "<option value='" + grado.Value + "'>" + grado.Text + "</option>";
-            });
-
-            $("#gradoReferencia").html(items);
-        });
-    });
-
-    $("#gradoReferencia").change(function (e) {
-
-        e.preventDefault();
-
-        var tipoEducacion = $('#tipoEducacionReferencia').val();
-        var grado = $('#gradoReferencia').val();
-
-        $("#sectorReferencia").html("<option value='-1'>[Seleccione]</option>");
-
-        $.getJSON('/Educacion/Sectores/' + tipoEducacion + '/' + grado, function (data) {
-
-            var items = "";
-
-            $.each(data, function (i, sector) {
-                items += "<option value='" + sector.Value + "'>" + sector.Text + "</option>";
-            });
-
-            $("#sectorReferencia").html(items);
-        });
-    });
-
-    $("#sectorReferencia").change(function (e) {
-
-        e.preventDefault();
-
-        loadReferencia();
-    })
     /************************************************************************************/
 
     $(document).on('click', 'a[typebutton=OtherAction]', function () {
@@ -410,12 +301,11 @@
         });
     })
 
-
     function loadAprendizaje() {
 
-        var tipoEducacion = $("#tipoEducacionRecursoCurricular").val();
-        var grado = $("#gradoRecursoCurricular").val();
-        var sector = $("#sector").val();
+        var tipoEducacion = $('#tipoEducacion').val();
+        var grado = $('#grado').val();
+        var sector = $('#sector').val();
         var unidad = $("#unidadRecursoCurricular").val();
 
         var table = $('#aprendizajeGridView').DataTable({
@@ -467,9 +357,9 @@
 
     function loadContenido() {
 
-        var tipoEducacion = $("#tipoEducacionRecursoCurricular").val();
-        var grado = $("#gradoRecursoCurricular").val();
-        var sector = $("#sector").val();
+        var tipoEducacion = $('#tipoEducacion').val();
+        var grado = $('#grado').val();
+        var sector = $('#sector').val();
         var eje = $("#ejeRecursoCurricular").val();
 
         var table = $('#contenidoGridView').DataTable({
@@ -508,9 +398,9 @@
 
     function loadReferencia() {
 
-        var tipoEducacion = $('#tipoEducacionReferencia').val();
-        var grado = $('#gradoReferencia').val();
-        var sector = $('#sectorReferencia').val();
+        var tipoEducacion = $('#tipoEducacion').val();
+        var grado = $('#grado').val();
+        var sector = $('#sector').val();
 
         var table = $('#referenciaGridView').DataTable({
             "ajax": "/BancoPregunta/Pregunta/Referencias/" + tipoEducacion + "/" + grado + "/" + sector,
@@ -542,6 +432,8 @@
                         $(nRow).removeClass('selected');
 
                         $(nRow).addClass('odd');
+
+                        referenciaId = '';
                     }
                     else {
                         table.$('tr.selected').removeClass('selected');
@@ -549,17 +441,13 @@
                         $(nRow).addClass('selected');
 
                         $(nRow).removeClass('odd');
+
+                        referenciaId = aData.Id;
                     }
                 });
             },
             "sDom": '<"dt-panelmenu clearfix"lfr>t<"dt-panelfooter clearfix"ip>'
         });
-    }
-
-    function showHideBaseCurricular(valor) {
-
-
-
     }
 
     /************************************************************************************/
@@ -602,6 +490,30 @@
             },
             "BaseCurricular.EjeId": {
                 notEqual: '-1'
+            },
+            "RecursoCurricular.TipoEducacionCodigo": {
+                notEqual: '-1'
+            },
+            "RecursoCurricular.GradoCodigo": {
+                notEqual: '-1'
+            },
+            "RecursoCurricular.UnidadId": {
+                notEqual: '-1'
+            },
+            "RecursoCurricular.EjeId": {
+                notEqual: '-1'
+            },
+            "AlternativaA": {
+                required: true
+            },
+            "AlternativaB": {
+                required: true
+            },
+            "AlternativaC": {
+                required: true
+            },
+            "AlternativaCorrecta": {
+                notEqual: '-1'
             }
         },
         messages: {
@@ -633,10 +545,34 @@
                 notEqual: 'Debe seleccionar el grado de las bases curriculares'
             },
             "BaseCurricular.UnidadId": {
-                notEqual: 'Debe seleccionar la unidad bases curriculares'
+                notEqual: 'Debe seleccionar la unidad de las bases curriculares'
             },
             "BaseCurricular.EjeId": {
                 notEqual: 'Debe seleccionar el eje de las bases curriculares'
+            },
+            "RecursoCurricular.TipoEducacionCodigo": {
+                notEqual: 'Debe seleccionar el tipo de educación de los recursos curriculares'
+            },
+            "RecursoCurricular.GradoCodigo": {
+                notEqual: 'Debe seleccionar el grado de los recursos curriculares'
+            },
+            "RecursoCurricular.UnidadId": {
+                notEqual: 'Debe seleccionar la unidad de los recursos curriculares'
+            },
+            "RecursoCurricular.EjeId": {
+                notEqual: 'Debe seleccionar el eje de los recursos curriculares'
+            },
+            "AlternativaA": {
+                required: 'Debe texto para la alternativa A'
+            },
+            "AlternativaB": {
+                required: 'Debe texto para la alternativa B'
+            },
+            "AlternativaC": {
+                required: 'Debe texto para la alternativa C'
+            },
+            "AlternativaCorrecta": {
+                notEqual: 'Debe seleccionar la alternativa correcta'
             }
         },
         highlight: function (element, errorClass, validClass) {
@@ -655,26 +591,39 @@
                 var fecha = new Date();
 
                 var obj = {
-                    id: data,
-                    referenciaId: null,
-                    sectorId: $('#sector').val(),
                     tipoEducacionCodigo: $('#tipoEducacion').val(),
                     gradoCodigo: $('#grado').val(),
+                    sectorId: $('#sector').val(),
+                    id: data,
+                    referenciaId: referenciaId,
                     codigo: 0,
                     dificultadCodigo: $('#dificultad').val(),
                     tipoReactivoCodigo: $('#tipoReactivo').val(),
                     tipoEvaluacionCodigo: $('#tipoEvaluacion').val(),
                     habilidadCodigo: $('#habilidad').val(),
-                    texto: 'texto de prueba',
+                    texto: $('#editor').val(),
                     privado: $("#privada").prop("checked"),
                     baseCurricular: {
+                        tipoEducacionCodigo: $('#tipoEducacion').val(),
+                        gradoCodigo: $('#grado').val(),
+                        sectorId: $('#sector').val(),
                         preguntaId: data,
-                        tipoEducacionCodigo: $('#tipoEducacionBaseCurrilar').val(),
-                        gradoCodigo: $('#gradoBaseCurrilar').val(),
                         anioNumero: fecha.getFullYear(),
                         unidadId: $('#unidadBaseCurrilar').val(),
                         ejeId: $('#ejeBaseCurrilar').val(),
                         objetivoAprendizajeId: objetivoAprendizajeId
+                    },
+                    preguntaAlternativa: {
+                        tipoEducacionCodigo: $('#tipoEducacion').val(),
+                        gradoCodigo: $('#grado').val(),
+                        sectorId: $('#sector').val(),
+                        preguntaId: data,
+                        alternativaCorrecta: $('#alternativaCorrecta').val(),
+                        alternativaA: $('#alternativaA').val(),
+                        alternativaB: $('#alternativaB').val(),
+                        alternativaC: $('#alternativaC').val(),
+                        alternativaD: $('#alternativaD').val(),
+                        alternativaE: $('#alternativaE').val()
                     }
                 };
 

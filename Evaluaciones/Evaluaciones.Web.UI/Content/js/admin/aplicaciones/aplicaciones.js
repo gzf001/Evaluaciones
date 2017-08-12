@@ -11,7 +11,7 @@
         errorElement: 'em',
         rules: {
             Nombre: {
-                required: true,
+                required: true
             },
             Clave: {
                 required: true

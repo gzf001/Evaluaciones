@@ -27,26 +27,53 @@ namespace Evaluaciones.Web.UI.Areas.BancoPregunta.Controllers
         {
             if (!this.ModelState.IsValid)
             {
-                return this.Json("500");
+                return this.Json(this.GetError());
             }
 
             using (Evaluaciones.Evaluacion.Context context = new Evaluaciones.Evaluacion.Context())
             {
                 Evaluaciones.Evaluacion.Pregunta pregunta = new Evaluaciones.Evaluacion.Pregunta
                 {
-                    ReferenciaId = default(Guid),
-                    SectorId = Guid.NewGuid(),
-                    TipoEducacionCodigo = 110,
-                    GradoCodigo = 1,
-                    DificultadCodigo = 1,
-                    TipoReactivoCodigo = 1,
-                    TipoEvaluacionCodigo = 1,
-                    HabilidadCodigo = 1,
-                    Texto = "Texto",
-                    Privado = false
+                    TipoEducacionCodigo = model.TipoEducacionCodigo,
+                    GradoCodigo = model.GradoCodigo,
+                    SectorId = model.SectorId,
+                    Id = model.Id,
+                    ReferenciaId = model.ReferenciaId,
+                    DificultadCodigo = model.DificultadCodigo,
+                    TipoReactivoCodigo = model.TipoReactivoCodigo,
+                    TipoEvaluacionCodigo = model.TipoEvaluacionCodigo,
+                    HabilidadCodigo = model.HabilidadCodigo,
+                    Texto = model.Texto,
+                    Privado = model.Privado
                 };
 
                 pregunta.Save(context);
+
+                new Evaluaciones.Evaluacion.PreguntaBaseCurricular
+                {
+                    TipoEducacionCodigo = model.BaseCurricular.TipoEducacionCodigo,
+                    GradoCodigo = model.BaseCurricular.GradoCodigo,
+                    SectorId = model.SectorId,
+                    PreguntaId = model.BaseCurricular.PreguntaId,
+                    AnioNumero = model.BaseCurricular.AnioNumero,
+                    UnidadId = model.BaseCurricular.UnidadId,
+                    EjeId = model.BaseCurricular.EjeId,
+                    ObjetivoAprendizajeId = model.BaseCurricular.ObjetivoAprendizajeId
+                }.Save(context);
+
+                new Evaluaciones.Evaluacion.PreguntaAlternativa
+                {
+                    TipoEducacionCodigo = model.PreguntaAlternativa.TipoEducacionCodigo,
+                    GradoCodigo = model.PreguntaAlternativa.GradoCodigo,
+                    SectorId = model.PreguntaAlternativa.SectorId,
+                    PreguntaId = model.PreguntaAlternativa.PreguntaId,
+                    AlternativaCorrecta = model.PreguntaAlternativa.AlternativaCorrecta,
+                    AlternativaA = model.PreguntaAlternativa.AlternativaA,
+                    AlternativaB = model.PreguntaAlternativa.AlternativaB,
+                    AlternativaC = model.PreguntaAlternativa.AlternativaC,
+                    AlternativaD = model.PreguntaAlternativa.AlternativaD,
+                    AlternativaE = model.PreguntaAlternativa.AlternativaE
+                }.Save(context);
 
                 context.SubmitChanges();
 

@@ -1,1 +1,19 @@
 ﻿@model Evaluaciones.Web.UI.Areas.BancoPregunta.Models.PreguntaVerdaderoFalso
+
+<div class="form-group">
+    <div class="section row">
+        @Html.LabelFor(x => x.Respuesta, new { @for = "respuesta", @class = "col-md-4 control-label" })<br />
+        <div class="col-md-8">
+            <div class="option-group field section">
+                <label for="respuestaVerdadero" class="option block mt15">
+                    @Html.RadioButtonFor(x => x.Respuesta, true, new { @id = "respuestaVerdadero", @checked = true })
+                    <span class="radio"></span>Verdadero
+                </label>
+                <label for="respuestaFalso" class="option block mt15">
+                    @Html.RadioButtonFor(x => x.Respuesta, true, new { @id = "respuestaFalso" })
+                    <span class="radio"></span>Falso
+                </label>
+            </div>
+        </div>
+    </div>
+</div>
